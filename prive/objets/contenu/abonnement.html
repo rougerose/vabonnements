@@ -1,0 +1,52 @@
+<BOUCLE_abonnement(ABONNEMENTS){id_abonnement}{statut?}>
+[<div class="champ contenu_id_abonnements_offre[ (#ID_ABONNEMENTS_OFFRE*|strlen|?{'',vide})]">
+	<label><:abonnement:champ_id_abonnements_offre_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{id_abonnements_offre} id_abonnements_offre">(#ID_ABONNEMENTS_OFFRE)</span>
+</div>]
+
+[<div class="champ contenu_id_auteur[ (#ID_AUTEUR*|strlen|?{'',vide})]">
+	<label><:abonnement:champ_id_auteur_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{id_auteur} id_auteur">(#ID_AUTEUR)</span>
+</div>]
+
+[<div class="champ contenu_id_commande[ (#ID_COMMANDE*|strlen|?{'',vide})]">
+	<label><:abonnement:champ_id_commande_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{id_commande} id_commande">(#ID_COMMANDE)</span>
+</div>]
+
+[<div class="champ contenu_date[ (#DATE*|strlen|?{'',vide})]">
+	<label><:abonnement:champ_date_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{date} date">(#DATE)</span>
+</div>]
+
+[<div class="champ contenu_date_debut[ (#DATE_DEBUT*|!={0000-00-00 00:00:00}|?{'',vide})]">
+	<label><:abonnement:champ_date_debut_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{date_debut} date_debut">(#DATE_DEBUT|=={0000-00-00 00:00:00}|?{'',[(#DATE_DEBUT|affdate)]})</span>
+</div>]
+
+[<div class="champ contenu_date_fin[ (#DATE_FIN*|!={0000-00-00 00:00:00}|?{'',vide})]">
+	<label><:abonnement:champ_date_fin_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{date_fin} date_fin">(#DATE_FIN|=={0000-00-00 00:00:00}|?{'',[(#DATE_FIN|affdate)]})</span>
+</div>]
+
+[<div class="champ contenu_numero_debut[ (#NUMERO_DEBUT*|strlen|?{'',vide})]">
+	<label><:abonnement:champ_numero_debut_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{numero_debut} numero_debut">(#NUMERO_DEBUT)</span>
+</div>]
+
+[<div class="champ contenu_numero_fin[ (#NUMERO_FIN*|strlen|?{'',vide})]">
+	<label><:abonnement:champ_numero_fin_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{numero_fin} numero_fin">(#NUMERO_FIN)</span>
+</div>]
+
+[<div class="champ contenu_mode_paiement[ (#MODE_PAIEMENT*|strlen|?{'',vide})]">
+	<label><:abonnement:champ_mode_paiement_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{mode_paiement} mode_paiement">(#MODE_PAIEMENT)</span>
+</div>]
+
+[<div class="champ contenu_log[ (#LOG*|strlen|?{'',vide})]">
+	<label><:abonnement:champ_log_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{log} log">(#LOG)</span>
+</div>]
+
+</BOUCLE_abonnement>

@@ -1,0 +1,9 @@
+/**
+ * 
+ * Styles privés du plugin
+ * 
+ */
+
+.formulaire_editer .champ_width_auto {
+    width: auto !important;
+}

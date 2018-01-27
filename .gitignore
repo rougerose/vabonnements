@@ -1,0 +1,5 @@
+# fichiers systemes
+.DS_Store
+
+# spip fabrique
+fabrique_*

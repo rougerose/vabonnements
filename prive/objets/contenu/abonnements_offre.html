@@ -1,0 +1,32 @@
+<BOUCLE_abonnements_offre(ABONNEMENTS_OFFRES){id_abonnements_offre}{statut?}>
+[<div class="champ contenu_titre[ (#TITRE*|strlen|?{'',vide})]">
+	<label><:abonnements_offre:champ_titre_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{titre} titre">(#TITRE)</span>
+</div>]
+
+[<div class="champ contenu_descriptif[ (#DESCRIPTIF*|strlen|?{'',vide})]">
+	<label><:abonnements_offre:champ_descriptif_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{descriptif} descriptif">(#DESCRIPTIF)</span>
+</div>]
+
+[<div class="champ contenu_duree[ (#DUREE*|strlen|?{'',vide})]">
+	<label><:abonnements_offre:champ_duree_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{duree} duree">(#DUREE|periode_en_clair)</span>
+</div>]
+
+[<div class="champ contenu_prix_ht[ (#PRIX_HT*|strlen|?{'',vide})]">
+	<label><:abonnements_offre:champ_prix_ht_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{prix_ht} prix_ht">(#PRIX_HT)</span>
+</div>]
+
+[<div class="champ contenu_prix_ttc[ (#PRIX_HT*|strlen|?{'',vide})]">
+	<label><:abonnements_offre:champ_prix_ttc_label:> : </label>
+	<span dir="#LANG_DIR" class="prix_ht">(#PRIX)</span>
+</div>]
+
+[<div class="champ contenu_taxe[ (#TAXE*|strlen|?{'',vide})]">
+	<label><:abonnements_offre:champ_taxe_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{taxe} taxe">(#TAXE|mult{100}|round{2}) %</span>
+</div>]
+
+</BOUCLE_abonnements_offre>
