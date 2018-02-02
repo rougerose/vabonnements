@@ -20,7 +20,8 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'champ_id_commande_label' => 'Id commande',
 	'champ_log_label' => 'Log',
 	'champ_mode_paiement_label' => 'Mode paiement',
-	'champ_numero_debut_label' => 'Numéro début',
+	'champ_numero_debut_explication' => "Le dernier numéro d'abonnement sera calculé automatiquement en fonction de la durée et du premier numéro choisis",
+	'champ_numero_debut_label' => 'Premier numéro',
 	'champ_numero_fin_label' => 'Numéro fin',
 	'confirmer_supprimer_abonnement' => 'Confirmez-vous la suppression de cet abonnement ?',
 
@@ -31,6 +32,11 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'info_abonnements_auteur' => 'Les abonnements de cet auteur',
 	'info_aucun_abonnement' => 'Aucun abonnement',
 	'info_nb_abonnements' => '@nb@ abonnements',
+	
+	// N
+	'numero_encours_info' => " (Numéro actuel)",
+	'numero_precedent_info' => " (Numéro précédent)",
+	'numero_prochain_info' => " (Prochain numéro)",
 
 	// R
 	'retirer_lien_abonnement' => 'Retirer ce abonnement',

@@ -1,0 +1,32 @@
+[(#REM)
+<!-- 
+	Saisie de début d'abonnement 
+	============================
+	Le calcul préalable détermine : 
+	- le numéro le plus récent et qui est en stock
+	- le numéro précédent et qui est en stock
+	- le numéro à venir
+-->
+]
+#SET{data_numero, #ARRAY}
+<BOUCLE_numeros(RUBRIQUES spip_mots){id_mot!=108}{id_secteur=115}{profondeur=1}{0,2}{!par titre}>
+	[(#COMPTEUR_BOUCLE|=={1}|oui)
+		[(#REM) <!-- Numéro en cours --> ]
+		[(#SET{reference_encours, #REFERENCE})]
+		[(#SET{titre_encours, #TITRE <:abonnement:numero_encours_info:>})]
+		[(#SET{data_numero, #GET{data_numero}|plus{#ARRAY{#GET{reference_encours}, #GET{titre_encours}}}})]
+		[(#REM) <!-- Numéro suivant --> ]
+		[(#SET{titre_prochain, #GET{reference_encours}|calculer_numero_prochain{true}|concat{<:abonnement:numero_prochain_info:>}})]
+		[(#SET{reference_prochain, #GET{reference_encours}|calculer_numero_prochain})]
+		[(#SET{data_numero, #GET{data_numero}|plus{#ARRAY{#GET{reference_prochain}, #GET{titre_prochain}}}})]
+	][(#COMPTEUR_BOUCLE|=={2}|oui)
+		[(#REM) <!-- Numéro précédent --> ]
+		[(#SET{reference_precedent, #REFERENCE})]
+		[(#SET{titre_precedent, #TITRE <:abonnement:numero_precedent_info:>})]
+		[(#SET{data_numero, #GET{data_numero}|plus{#ARRAY{#GET{reference_precedent}, #GET{titre_precedent}}}})]
+	]
+</BOUCLE_numeros>
+[(#REM) <!-- Trier par clé. Filtre "maison" de ksort qui ne  --> ]
+[(#SET{data_numero, #GET{data_numero}|keysort})]
+
+#INCLURE{fond=saisies/radio, env, datas=#GET{data_numero}}

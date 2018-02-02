@@ -1,0 +1,15 @@
+#FORMULAIRE_RECHERCHE_ECRIRE{#SELF,ajax}
+<div class="nettoyeur"></div>
+
+<INCLURE{fond=prive/objets/liste/abonnements, env, ajax, sinon=<:abonnement:info_aucun_abonnement:>}>
+
+[(#REM)
+	Pas de bouton de création d'abonnement ici : 
+	- la création suppose de préciser l'auteur concerné (choisir dans une
+	liste ou le créer) : interface compliquée, à voir plus tard ?
+	- la création est possible uniquement sur la page d'un auteur
+	
+	[(#AUTORISER{creer,abonnement})
+		[(#URL_ECRIRE{abonnement_edit,new=oui}|icone_verticale{<:abonnement:icone_creer_abonnement:>,abonnement,new,right})]
+	]
+]

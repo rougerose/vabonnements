@@ -110,26 +110,32 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 		),
 		'key' => array(
 			'PRIMARY KEY'        => 'id_abonnement',
-			'KEY statut'         => 'statut',
+			'KEY statut'         => 'statut'
 		),
 		'titre' => '"" AS titre, "" AS lang',
 		'date' => 'date',
-		'champs_editables'  => array('date_debut', 'date_fin', 'numero_debut', 'numero_fin', 'mode_paiement'),
-		'champs_versionnes' => array('date_debut', 'date_fin', 'numero_debut', 'numero_fin', 'mode_paiement'),
+		'champs_editables'  => array('id_abonnements_offre', 'id_auteur', 'date_debut', 'date_fin', 'numero_debut', 'numero_fin', 'mode_paiement'),
+		'champs_versionnes' => array('id_abonnements_offre', 'date_debut', 'date_fin', 'numero_debut', 'numero_fin', 'mode_paiement'),
 		'rechercher_champs' => array(),
 		'tables_jointures'  => array(),
 		'statut_textes_instituer' => array(
-			'prepa'    => 'texte_statut_en_cours_redaction',
-			'prop'     => 'texte_statut_propose_evaluation',
-			'publie'   => 'texte_statut_publie',
-			'refuse'   => 'texte_statut_refuse',
+			'prepa'    => 'abonnement:texte_statut_prepa',
+			'actif'   => 'abonnement:texte_statut_actif',
+			'resilie'   => 'abonnement:texte_statut_resilie',
 			'poubelle' => 'texte_statut_poubelle',
+		),
+		'statut_images' => array(
+			'abonnement-16.png',
+			'prepa'=>'puce-preparer-8.png',
+			'actif'=>'puce-publier-8.png',
+			'resilie'=>'puce-refuser-8.png',
+			'poubelle'=>'puce-supprimer-8.png'
 		),
 		'statut'=> array(
 			array(
 				'champ'     => 'statut',
-				'publie'    => 'publie',
-				'previsu'   => 'publie,prop,prepa',
+				'publie'    => 'actif',
+				'previsu'   => 'actif,prepa',
 				'post_date' => 'date',
 				'exception' => array('statut','tout')
 			)

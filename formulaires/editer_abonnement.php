@@ -16,6 +16,52 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 include_spip('inc/actions');
 include_spip('inc/editer');
 
+function formulaires_editer_abonnement_saisies_dist($id_abonnement='new', $retour='', $lier_trad=0, $config_fonc='', $row=array(), $hidden='') {
+	$id_auteur = _request('id_auteur');
+
+	$saisies = array(
+		array(
+			'saisie' => 'hidden',
+			'options' => array(
+				'nom' => 'id_auteur',
+				'defaut' => $id_auteur
+			)
+		),
+		array(
+			'saisie' => 'abonnements_offres',
+			'options' => array(
+				'nom' => 'id_abonnements_offre',
+				'label' => _T('abonnements_offre:titre_abonnements_offre'),
+				'obligatoire' => 'oui'
+			)
+		),
+		array(
+			'saisie' => 'abonnement_numero_debut',
+			'options' => array(
+				'nom' => 'numero_debut',
+				'label' => _T('abonnement:champ_numero_debut_label'),
+				'obligatoire' => 'oui',
+				'explication' => _T('abonnement:champ_numero_debut_explication')
+			)
+		),
+		array(
+			'saisie' => 'selection',
+			'options' => array(
+				'nom' => 'mode_paiement',
+				'label' => _T('abonnement:champ_mode_paiement_label'),
+				'obligatoire' => 'oui',
+				'datas' => array(
+					'gratuit' => _T('abonnement:texte_paiement_gratuit'),
+					'cheque' => _T('abonnement:texte_paiement_cheque'),
+					'virement' => _T('abonnement:texte_paiement_virement')
+				)
+			)
+		)
+	);
+	
+	return $saisies;
+}
+
 
 /**
  * Identifier le formulaire en faisant abstraction des paramètres qui ne représentent pas l'objet edité
@@ -63,6 +109,7 @@ function formulaires_editer_abonnement_identifier_dist($id_abonnement = 'new', $
  */
 function formulaires_editer_abonnement_charger_dist($id_abonnement = 'new', $retour = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
 	$valeurs = formulaires_editer_objet_charger('abonnement', $id_abonnement, '', $lier_trad, $retour, $config_fonc, $row, $hidden);
+
 	return $valeurs;
 }
 
@@ -91,22 +138,7 @@ function formulaires_editer_abonnement_charger_dist($id_abonnement = 'new', $ret
 function formulaires_editer_abonnement_verifier_dist($id_abonnement = 'new', $retour = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
 	$erreurs = array();
 
-	$verifier = charger_fonction('verifier', 'inc');
-
-	foreach (array('date_debut', 'date_fin') AS $champ) {
-		$normaliser = null;
-		if ($erreur = $verifier(_request($champ), 'date', array('normaliser'=>'datetime'), $normaliser)) {
-			$erreurs[$champ] = $erreur;
-		// si une valeur de normalisation a ete transmis, la prendre.
-		} elseif (!is_null($normaliser)) {
-			set_request($champ, $normaliser);
-		// si pas de normalisation ET pas de date soumise, il ne faut pas tenter d'enregistrer ''
-		} else {
-			set_request($champ, null);
-		}
-	}
-
-	$erreurs += formulaires_editer_objet_verifier('abonnement', $id_abonnement);
+	$erreurs += formulaires_editer_objet_verifier('abonnement', $id_abonnement, array('id_abonnements_offre', 'id_auteur', 'numero_debut', 'mode_paiement'));
 
 	return $erreurs;
 }
@@ -134,6 +166,35 @@ function formulaires_editer_abonnement_verifier_dist($id_abonnement = 'new', $re
  *     Retours des traitements
  */
 function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $retour = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+	
+	$numero_debut = _request('numero_debut');
+	$id_abonnements_offre = _request('id_abonnements_offre');
+	
+	include_spip('inc/vabonnements_calculer_date');
+	
+    // Calcul date de début d'abonnement
+	$date_debut = sql_getfetsel('date_numero', 'spip_rubriques', 'reference='.sql_quote($numero_debut));
+	$date_debut = vabonnements_calculer_date_debut($date_debut);
+	
+	// Calcul durée
+	$duree = sql_getfetsel('duree', 'spip_abonnements_offres', 'id_abonnements_offre='.$id_abonnements_offre);
+	$duree = explode(" ", $duree);
+	$duree_valeur = reset($duree);
+	// $duree_unite = end($duree);
+	
+	// Calcul date de fin d'abonnement
+	$date_fin = vabonnements_calculer_date_fin($date_debut, $duree_valeur);
+	
+	// Nombre de numéros à servir
+	$numeros_quantite = $duree_valeur / 3; 
+		
+	// Calcul numéro de fin d'abonnement
+	$numero_fin = filtre_calculer_numero_prochain($numero_debut, $titre = false, $rang = $numeros_quantite - 1);
+	
+	set_request('date_debut', $date_debut);
+	set_request('date_fin', $date_fin);
+	set_request('numero_fin', $numero_fin);
+	
 	$retours = formulaires_editer_objet_traiter('abonnement', $id_abonnement, '', $lier_trad, $retour, $config_fonc, $row, $hidden);
 	return $retours;
 }

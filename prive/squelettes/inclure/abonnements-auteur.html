@@ -1,0 +1,8 @@
+<div class="nettoyeur"></div>
+<div class="abonnements">
+  <INCLURE{fond=prive/objets/liste/abonnements,id_auteur,titre=<:abonnement:info_abonnements_auteur:>,ajax,env} />
+  [(#AUTORISER{creer,abonnement})
+    [(#URL_ECRIRE{abonnement_edit}|parametre_url{new, oui}|parametre_url{id_auteur, #ID_AUTEUR}|icone_verticale{<:abonnement:icone_creer_abonnement:>,abonnement,new,right})]
+  ]
+</div>
+<div class="nettoyeur"></div>

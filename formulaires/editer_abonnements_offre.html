@@ -19,16 +19,17 @@
 			<[(#DIV|sinon{li})] class="editer editer_[(#GET{name})][ (#GET{obli})][ (#GET{erreurs}|oui)erreur]">
 				<label for="duree_valeur"><:abonnements_offre:champ_duree_label:></label>[
 				<span class='erreur_message'>(#GET{erreurs})</span>
-				]#SET{name,duree_valeur}#SET{obli,'obligatoire'}#SET{defaut,'1'}
-				<input type="text" name="#GET{name}" class="text champ_duree champ_width_auto" value="#ENV*{#GET{name},#GET{defaut}}" id="#GET{name}" [(#HTML5|et{#GET{obli}})required='required'] size="2" />
+				]#SET{name,duree_valeur} #SET{defaut,'12'}
+				<select name="#GET{name}" class="select champ_duree champ_width_auto" id="#GET{name}">
+					#SET{val, 12}
+					<option value="#GET{val}"[(#ENV{#GET{name},#GET{defaut}}|=={#GET{val}}|oui)selected="selected"]>#GET{val}</option>
+					#SET{val, 24}
+					<option value="#GET{val}"[(#ENV{#GET{name},#GET{defaut}}|=={#GET{val}}|oui)selected="selected"]>#GET{val}</option>
+				</select>
 				#SET{name,duree_unite} #SET{obli,'obligatoire'} #SET{defaut,'month'}
 				<select name="#GET{name}" class="select champ_duree champ_width_auto" id="#GET{name}">
-					#SET{val, week}
-					<option value="#GET{val}"[(#ENV{#GET{name},#GET{defaut}}|=={#GET{val}}|oui)selected="selected"]>semaines</option>
 					#SET{val, month}
 					<option value="#GET{val}"[(#ENV{#GET{name},#GET{defaut}}|=={#GET{val}}|oui)selected="selected"]>mois</option>
-					#SET{val, year}
-					<option value="#GET{val}"[(#ENV{#GET{name},#GET{defaut}}|=={#GET{val}}|oui)selected="selected"]>année</option>
 				</select>
 			</[(#DIV|sinon{li})]>
 
