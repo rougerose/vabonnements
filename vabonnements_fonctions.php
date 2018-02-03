@@ -3,10 +3,10 @@
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
 /**
- * Traduit la duree d'abonnement en info lisible, sous forme de periode
+ * Traduire la duree d'abonnement en info lisible, sous forme de periode
  * tous les x mois, tous les ans...
  *
- * Reprise du plugin Abos
+ * Repris du plugin Abos https://github.com/nursit/abos
  * 
  * @param $duree
  * @return mixed|string
@@ -17,6 +17,34 @@ function filtre_periode_en_clair($periodicite){
 	$duree = ($nb==1 ? _T('abonnements_offre:periodicite_' . $duree) : _T('abonnements_offre:periodicite_tous_les_nb_' . $duree, array('nb' => $nb)));
 	return $duree;
 }
+
+
+
+/**
+ * Traduire le mode de paiement enregistré en base
+ * en infos texte.
+ * 
+ * @param  [type] $mode_paiement [description]
+ * @return [type]                [description]
+ */
+function filtre_paiement_en_clair($mode_paiement) {
+	switch ($mode_paiement) {
+		case 'cheque':
+			$texte_paiement = 'abonnement:info_paiement_cheque';
+			break;
+		case 'gratuit':
+			$texte_paiement = 'abonnement:info_paiement_gratuit';
+			break;
+		case 'virement':
+			$texte_paiement = 'abonnement:info_paiement_virement';
+			break;
+		case 'paypal':
+			$texte_paiement = 'abonnement:info_paiement_paypal';
+	}
+	
+	return $texte_paiement;
+}
+
 
 
 /**
@@ -43,6 +71,7 @@ function filtre_calculer_numero_prochain($reference, $titre = false, $rang = 1) 
 	
 	return $numero_suivant;
 }
+
 
 
 /**
