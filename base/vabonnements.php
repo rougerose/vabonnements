@@ -114,7 +114,7 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 		),
 		'titre' => '"" AS titre, "" AS lang',
 		'date' => 'date',
-		'champs_editables'  => array('id_abonnements_offre', 'id_auteur', 'date_debut', 'date_fin', 'numero_debut', 'numero_fin', 'mode_paiement'),
+		'champs_editables'  => array('id_abonnements_offre', 'id_auteur', 'date_debut', 'date_fin', 'numero_debut', 'numero_fin', 'mode_paiement', 'log'),
 		'champs_versionnes' => array('id_abonnements_offre', 'date_debut', 'date_fin', 'numero_debut', 'numero_fin', 'mode_paiement'),
 		'rechercher_champs' => array(),
 		'tables_jointures'  => array(),

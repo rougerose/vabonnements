@@ -4,6 +4,11 @@
  * 
  */
 
+/* formulaires */
 .formulaire_editer .champ_width_auto {
-    width: auto !important;
+	width: auto !important;
 }
+
+/* Prévisualisation */
+.abonnement #wysiwyg label {display: inline; color: #888;}
+.abonnement pre {font-family: monospace;overflow: auto;max-height: 40em;white-space: pre-wrap;}
