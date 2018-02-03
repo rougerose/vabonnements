@@ -6,24 +6,8 @@
 	</head>
 	<body>
 		#SET{data_numero, #ARRAY}
-		<BOUCLE_numeros(RUBRIQUES spip_mots){id_mot!=108}{id_secteur=115}{profondeur=1}{0,2}{!par titre}>
-			[(#COMPTEUR_BOUCLE|=={1}|oui)
-				[(#REM) <!-- Numéro en cours --> ]
-				[(#SET{reference_encours, #REFERENCE})]
-				[(#SET{titre_encours, #TITRE <:abonnement:numero_encours_info:>})]
-				[(#SET{data_numero, #GET{data_numero}|plus{#ARRAY{#GET{reference_encours}, #GET{titre_encours}}}})]
-				[(#REM) <!-- Numéro suivant --> ]
-				[(#SET{titre_prochain, #GET{reference_encours}|calculer_numero_suivant{true}|concat{<:abonnement:numero_prochain_info:>}})]
-				[(#SET{reference_prochain, #GET{reference_encours}|calculer_numero_suivant})]
-				[(#SET{data_numero, #GET{data_numero}|plus{#ARRAY{#GET{reference_prochain}, #GET{titre_prochain}}}})]
-			][(#COMPTEUR_BOUCLE|=={2}|oui)
-				[(#REM) <!-- Numéro précédent --> ]
-				[(#SET{reference_precedent, #REFERENCE})]
-				[(#SET{titre_precedent, #TITRE <:abonnement:numero_precedent_info:>})]
-				[(#SET{data_numero, #GET{data_numero}|plus{#ARRAY{#GET{reference_precedent}, #GET{titre_precedent}}}})]
-			]
+		<BOUCLE_numeros(RUBRIQUES){id_parent=115}{0,1}{!par titre}>
+			#TITRE
 		</BOUCLE_numeros>
-		[(#SET{data_numero, #GET{data_numero}|keysort})]
-		[(#GET{data_numero}|print_r)]
 	</body>
 </html>

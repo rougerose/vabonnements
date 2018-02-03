@@ -17,12 +17,12 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'champ_date_label' => 'date',
 	'champ_id_abonnements_offre_label' => 'Id abonnements offre',
 	'champ_id_auteur_label' => 'Id Auteur',
-	'champ_id_commande_label' => 'Id commande',
+	'champ_id_commande_label' => 'Référence de la commande',
 	'champ_log_label' => 'Log',
-	'champ_mode_paiement_label' => 'Mode paiement',
+	'champ_mode_paiement_label' => 'Paiement',
 	'champ_numero_debut_explication' => "Le dernier numéro d'abonnement sera calculé automatiquement en fonction de la durée et du premier numéro choisis",
 	'champ_numero_debut_label' => 'Premier numéro',
-	'champ_numero_fin_label' => 'Numéro fin',
+	'champ_numero_fin_label' => 'Dernier numéro',
 	'confirmer_supprimer_abonnement' => 'Confirmez-vous la suppression de cet abonnement ?',
 
 	// I
@@ -31,7 +31,12 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'info_1_abonnement' => 'Un abonnement',
 	'info_abonnements_auteur' => 'Les abonnements de cet auteur',
 	'info_aucun_abonnement' => 'Aucun abonnement',
+	'info_aucune_commande' => 'Aucune commande',
 	'info_nb_abonnements' => '@nb@ abonnements',
+	'info_paiement_cheque' => 'Chèque',
+	'info_paiement_gratuit' => 'Gratuit',
+	'info_paiement_paypal' => 'Carte bleue - Paypal',
+	'info_paiement_virement' => 'Virement',
 	
 	// N
 	'numero_encours_info' => " (Numéro actuel)",

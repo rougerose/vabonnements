@@ -166,34 +166,62 @@ function formulaires_editer_abonnement_verifier_dist($id_abonnement = 'new', $re
  *     Retours des traitements
  */
 function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $retour = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
-	
+	$abo_log = '';
 	$numero_debut = _request('numero_debut');
 	$id_abonnements_offre = _request('id_abonnements_offre');
 	
-	include_spip('inc/vabonnements_calculer_date');
-	
-    // Calcul date de début d'abonnement
-	$date_debut = sql_getfetsel('date_numero', 'spip_rubriques', 'reference='.sql_quote($numero_debut));
-	$date_debut = vabonnements_calculer_date_debut($date_debut);
-	
-	// Calcul durée
-	$duree = sql_getfetsel('duree', 'spip_abonnements_offres', 'id_abonnements_offre='.$id_abonnements_offre);
-	$duree = explode(" ", $duree);
-	$duree_valeur = reset($duree);
-	// $duree_unite = end($duree);
-	
-	// Calcul date de fin d'abonnement
-	$date_fin = vabonnements_calculer_date_fin($date_debut, $duree_valeur);
-	
-	// Nombre de numéros à servir
-	$numeros_quantite = $duree_valeur / 3; 
+	if ($id_abonnement == 'oui') {
+		// Calcul date de début d'abonnement
+		include_spip('inc/vabonnements_calculer_date');
+		$debut = sql_fetsel('id_rubrique, date_numero', 'spip_rubriques', 'reference='.sql_quote($numero_debut));
 		
-	// Calcul numéro de fin d'abonnement
-	$numero_fin = filtre_calculer_numero_prochain($numero_debut, $titre = false, $rang = $numeros_quantite - 1);
-	
-	set_request('date_debut', $date_debut);
-	set_request('date_fin', $date_fin);
-	set_request('numero_fin', $numero_fin);
+		if ($debut) {
+			$date_debut = vabonnements_calculer_date_debut($debut['date_numero']);
+			
+		} else {
+			// L'abonnement débute avec le prochain numéro : 
+			// il n'est pas encore créé dans la base.
+			// Il faut récupérer la date du numéro en cours et décaler de 3 mois.
+			$encours_numero = sql_fetsel("id_rubrique, reference, date_numero", "spip_rubriques", "statut='publie' AND id_parent=115", "", "titre DESC");
+			
+			// la date début de saison.
+			$encours_date = vabonnements_calculer_date_debut($encours_numero['date_numero']);
+			
+			// la date au début de la saison prochaine.
+			$prochain_date = new DateTime($encours_date);
+			$prochain_date->modify('+ 3 month');
+			$prochain_date_debut = $prochain_date->format('Y-m-d H:i:s');
+			
+			$date_debut = $prochain_date_debut;
+		}
+		
+		// Calcul durée
+		$offre = sql_fetsel('duree, titre', 'spip_abonnements_offres', 'id_abonnements_offre='.$id_abonnements_offre);
+		$duree = explode(" ", $offre['duree']);
+		$duree_valeur = reset($duree);
+		// $duree_unite = end($duree);
+		
+		// Calcul date de fin d'abonnement
+		$date_fin = vabonnements_calculer_date_fin($date_debut, $duree_valeur);
+		
+		// Nombre de numéros à servir
+		$numeros_quantite = $duree_valeur / 3; 
+			
+		// Calcul numéro de fin d'abonnement
+		$numero_fin = filtre_calculer_numero_prochain($numero_debut, $titre = false, $rang = $numeros_quantite - 1);
+		
+		// log
+		$mode_paiement = _request('mode_paiement');
+		$abo_log .= "Création abonnement avec l'offre ". $offre['titre'] . ", du numéro ". $numero_debut . " au numéro ". $numero_fin . ". Paiement ". _T($mode_paiement);
+		
+		include_spip('inc/vabonnements');
+		$log = vabonnements_log($abo_log);
+		
+		set_request('date_debut', $date_debut);
+		set_request('date_fin', $date_fin);
+		set_request('numero_fin', $numero_fin);
+		set_request('log', $log);
+	}
 	
 	$retours = formulaires_editer_objet_traiter('abonnement', $id_abonnement, '', $lier_trad, $retour, $config_fonc, $row, $hidden);
 	return $retours;
