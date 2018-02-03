@@ -20,7 +20,7 @@ function vabonnements_calculer_date_debut($date) {
 	
 	list($annee, $mois, $jour, $heures, $minutes, $secondes) = $date_array;
 	
-	$mois_debut = vabonnements_calculer_mois_saison($mois);
+	$mois_debut = vabonnements_calculer_mois_saison($jour, $mois);
 	$jour_debut = 21;
 	$date_debut = date("Y-m-d H:i:s", mktime($heures, $minutes, $secondes, $mois_debut, $jour_debut, $annee));
 	return $date_debut;
@@ -57,12 +57,13 @@ function vabonnements_calculer_date_fin($date_debut, $duree) {
 
 
 /**
- * Calculer une saison à partir d'un mois donné
+ * Calculer une saison à partir d'une date jour + mois
  * et retourner le premier mois de la saison. 
- * @param  int  $mois
+ * @param  int  $jour
+ * @param int $mois
  * @return int
  */
-function vabonnements_calculer_mois_saison($mois) {
+function vabonnements_calculer_mois_saison($jour, $mois) {
 	$saison = 12; // décembre = hiver
 	
 	if (($mois == 3 and $jour >= 21) or $mois > 3) {
