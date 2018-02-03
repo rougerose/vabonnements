@@ -2,7 +2,7 @@
 [(#SET{url_voir,#VAL{abonnement}|objet_info{url_voir}})]
 [(#SET{url_edit,#VAL{abonnement}|objet_info{url_edit}})]
 <BOUCLE_abonnement(ABONNEMENTS){id_abonnement}{statut==.*}{si #ENV{exec}|=={#GET{url_voir}}}>
-[(#BOITE_OUVRIR{[
+[(#BOITE_OUVRIR{
 	[(#AUTORISER{modifier,abonnement,#ID_ABONNEMENT})
 		[(#ID_ABONNEMENT|afficher_qui_edite{abonnement}|non)
 			[(#URL_ECRIRE{#GET{url_edit},id_abonnement=#ID_ABONNEMENT}|icone_verticale{<:abonnement:icone_modifier_abonnement:>,abonnement,edit,right ajax preload})]
@@ -11,21 +11,17 @@
 			[(#URL_ECRIRE{#GET{url_edit},id_abonnement=#ID_ABONNEMENT}|icone_verticale{#ID_ABONNEMENT|afficher_qui_edite{abonnement},warning-24,'',right edition_deja ajax preload})]
 		]
 	]
-
-	<h1>[(#RANG). ](#|sinon{<:info_sans_titre:>})[(#CHEMIN_IMAGE{abonnement-24.png}|balise_img{abonnement,cadre-icone})]</h1>
-
-],simple fiche_objet})]
-
+	<h1>[<:abonnement:titre_abonnement:> <a href="[(#ID_AUTEUR|generer_url_entite{auteur})]">(#INFO_NOM{auteur, #ID_AUTEUR})</a>][(#CHEMIN_IMAGE{abonnement-24.png}|balise_img{abonnement,cadre-icone})]</h1>
+,simple fiche_objet})]
 <div class="ajax">
 	#FORMULAIRE_DATER{abonnement,#ID_ABONNEMENT}
 </div>
-
 <!--affiche_milieu-->
 
 <div id="wysiwyg">
-<INCLURE{fond=prive/objets/contenu/abonnement,id=#ID_ABONNEMENT,id_abonnement=#ID_ABONNEMENT,virtuel=oui,ajax=wysiwyg,wysiwyg=1}>
+	<h3 class="soustitre"><:abonnements_offre:titre_abonnements_offre:> : <a href="[(#ID_ABONNEMENTS_OFFRE|generer_url_entite{abonnements_offre})]">[(#INFO_TITRE{abonnements_offre, #ID_ABONNEMENTS_OFFRE})]</a></h3>
+	<INCLURE{fond=prive/objets/contenu/abonnement,id=#ID_ABONNEMENT,id_abonnement=#ID_ABONNEMENT,env,wysiwyg=1,espace_prive}>
 </div>
-
 <div class="nettoyeur"></div>
 
 [(#AUTORISER{modifier,abonnement,#ID_ABONNEMENT})
