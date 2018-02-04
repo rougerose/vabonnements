@@ -92,6 +92,7 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 	$tables['spip_abonnements'] = array(
 		'type' => 'abonnement',
 		'principale' => 'oui',
+		'page' => false,
 		'field'=> array(
 			'id_abonnement'      => 'bigint(21) NOT NULL',
 			'id_abonnements_offre' => 'bigint(21) NOT NULL DEFAULT 0',
