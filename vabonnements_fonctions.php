@@ -24,24 +24,11 @@ function filtre_periode_en_clair($periodicite){
  * Traduire le mode de paiement enregistré en base
  * en infos texte.
  * 
- * @param  [type] $mode_paiement [description]
- * @return [type]                [description]
+ * @param  string $mode_paiement
+ * @return string
  */
 function filtre_paiement_en_clair($mode_paiement) {
-	switch ($mode_paiement) {
-		case 'cheque':
-			$texte_paiement = 'abonnement:info_paiement_cheque';
-			break;
-		case 'gratuit':
-			$texte_paiement = 'abonnement:info_paiement_gratuit';
-			break;
-		case 'virement':
-			$texte_paiement = 'abonnement:info_paiement_virement';
-			break;
-		case 'paypal':
-			$texte_paiement = 'abonnement:info_paiement_paypal';
-	}
-	
+	$texte_paiement = _T('abonnement:info_paiement_'.$mode_paiement);
 	return $texte_paiement;
 }
 
