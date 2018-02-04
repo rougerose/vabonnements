@@ -18,46 +18,66 @@ include_spip('inc/editer');
 
 function formulaires_editer_abonnement_saisies_dist($id_abonnement='new', $retour='', $lier_trad=0, $config_fonc='', $row=array(), $hidden='') {
 	$id_auteur = _request('id_auteur');
-
-	$saisies = array(
-		array(
-			'saisie' => 'hidden',
-			'options' => array(
-				'nom' => 'id_auteur',
-				'defaut' => $id_auteur
-			)
-		),
-		array(
-			'saisie' => 'abonnements_offres',
-			'options' => array(
-				'nom' => 'id_abonnements_offre',
-				'label' => _T('abonnements_offre:titre_abonnements_offre'),
-				'obligatoire' => 'oui'
-			)
-		),
-		array(
-			'saisie' => 'abonnement_numero_debut',
-			'options' => array(
-				'nom' => 'numero_debut',
-				'label' => _T('abonnement:champ_numero_debut_label'),
-				'obligatoire' => 'oui',
-				'explication' => _T('abonnement:champ_numero_debut_explication')
-			)
-		),
-		array(
-			'saisie' => 'selection',
-			'options' => array(
-				'nom' => 'mode_paiement',
-				'label' => _T('abonnement:champ_mode_paiement_label'),
-				'obligatoire' => 'oui',
-				'datas' => array(
-					'gratuit' => _T('abonnement:texte_paiement_gratuit'),
-					'cheque' => _T('abonnement:texte_paiement_cheque'),
-					'virement' => _T('abonnement:texte_paiement_virement')
+	$id_abonnement = intval($id_abonnement);
+	
+	// création d'abonnement
+	if ($id_abonnement == 0) {
+		$saisies = array(
+			array(
+				'saisie' => 'hidden',
+				'options' => array(
+					'nom' => 'id_auteur',
+					'defaut' => $id_auteur
+				)
+			),
+			array(
+				'saisie' => 'abonnements_offres',
+				'options' => array(
+					'nom' => 'id_abonnements_offre',
+					'label' => _T('abonnements_offre:titre_abonnements_offre'),
+					'obligatoire' => 'oui'
+				)
+			),
+			array(
+				'saisie' => 'abonnement_numero_debut',
+				'options' => array(
+					'nom' => 'numero_debut',
+					'label' => _T('abonnement:champ_numero_debut_label'),
+					'obligatoire' => 'oui',
+					'explication' => _T('abonnement:champ_numero_debut_explication')
+				)
+			),
+			array(
+				'saisie' => 'selection',
+				'options' => array(
+					'nom' => 'mode_paiement',
+					'label' => _T('abonnement:champ_mode_paiement_label'),
+					'obligatoire' => 'oui',
+					'datas' => array(
+						'gratuit' => _T('abonnement:texte_paiement_gratuit'),
+						'cheque' => _T('abonnement:texte_paiement_cheque'),
+						'virement' => _T('abonnement:texte_paiement_virement')
+					)
 				)
 			)
-		)
-	);
+		);
+	} else {
+		// une modification d'abonnement, on ne peut modifier
+		// que le numéro de départ d'abonnement. 
+		// $id_abonnements_offre = _request('id_abonnements_offre');
+		
+		$saisies = array(
+			array(
+				'saisie' => 'abonnement_numero_debut',
+				'options' => array(
+					'nom' => 'numero_debut',
+					'label' => _T('abonnement:champ_numero_debut_label'),
+					'obligatoire' => 'oui',
+					'explication' => _T('abonnement:champ_numero_debut_explication')
+				)
+			)
+		);
+	}
 	
 	return $saisies;
 }
@@ -137,9 +157,15 @@ function formulaires_editer_abonnement_charger_dist($id_abonnement = 'new', $ret
  */
 function formulaires_editer_abonnement_verifier_dist($id_abonnement = 'new', $retour = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
 	$erreurs = array();
-
-	$erreurs += formulaires_editer_objet_verifier('abonnement', $id_abonnement, array('id_abonnements_offre', 'id_auteur', 'numero_debut', 'mode_paiement'));
-
+	$id_abonnement = intval($id_abonnement);
+	
+	if ($id_abonnement == 0) {
+		$erreurs += formulaires_editer_objet_verifier('abonnement', $id_abonnement, array('id_abonnements_offre', 'id_auteur', 'numero_debut', 'mode_paiement'));
+	
+	} else {
+		$erreurs += formulaires_editer_objet_verifier('abonnement', $id_abonnement, array('numero_debut'));
+	}
+	
 	return $erreurs;
 }
 
@@ -166,11 +192,22 @@ function formulaires_editer_abonnement_verifier_dist($id_abonnement = 'new', $re
  *     Retours des traitements
  */
 function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $retour = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+	$id_abonnement = intval($id_abonnement);
+	
 	$abo_log = '';
+	$modif = false;
+	
 	$numero_debut = _request('numero_debut');
 	$id_abonnements_offre = _request('id_abonnements_offre');
 	
-	if ($id_abonnement == 'oui') {
+	$row_abo = sql_fetsel('*', 'spip_abonnements', 'id_abonnement=' . $id_abonnement);
+	
+	if ($id_abonnement > 0 && $row_abo['numero_debut'] !== $numero_debut) {
+		$modif = true;
+		$id_abonnements_offre = $row_abo['id_abonnements_offre'];
+	}
+	
+	if ($id_abonnement == 0 OR $modif) {
 		// Calcul date de début d'abonnement
 		include_spip('inc/vabonnements_calculer_date');
 		$debut = sql_fetsel('id_rubrique, date_numero', 'spip_rubriques', 'reference='.sql_quote($numero_debut));
@@ -209,13 +246,28 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 			
 		// Calcul numéro de fin d'abonnement
 		$numero_fin = filtre_calculer_numero_prochain($numero_debut, $titre = false, $rang = $numeros_quantite - 1);
+	}
+	
+	include_spip('inc/vabonnements');
+	
+	if ($id_abonnement == 0) {
 		
 		// log
 		$mode_paiement = _request('mode_paiement');
-		$abo_log .= "Création abonnement avec l'offre ". $offre['titre'] . ", du numéro ". $numero_debut . " au numéro ". $numero_fin . ". Paiement ". _T($mode_paiement);
+		$abo_log .= "Création de l'abonnement. 0ffre ". $offre['titre'] . ". Du numéro ". $numero_debut . " au numéro ". $numero_fin . ". Paiement ". _T($mode_paiement) . ".";
 		
-		include_spip('inc/vabonnements');
 		$log = vabonnements_log($abo_log);
+		
+		set_request('date_debut', $date_debut);
+		set_request('date_fin', $date_fin);
+		set_request('numero_fin', $numero_fin);
+		set_request('log', $log);
+	}
+	
+	if ($modif) {
+		$abo_log = "Modification de l'abonnement. Du numéro " . $numero_debut . " au numéro " . $numero_fin . "." ;
+		$log = $row_abo['log'];
+		$log .= vabonnements_log($abo_log);
 		
 		set_request('date_debut', $date_debut);
 		set_request('date_fin', $date_fin);

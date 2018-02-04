@@ -22,7 +22,7 @@ function vabonnements_log($abo_log) {
 
 	$abo_log = date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']) . " | "
 		. $par
-		. ' : ' . $abo_log . "\n--\n";
+		. " :\n" . $abo_log . "\n--\n";
 	
 	return $abo_log;
 }
