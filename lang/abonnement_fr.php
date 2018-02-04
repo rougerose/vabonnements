@@ -28,7 +28,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	// I
 	'icone_creer_abonnement' => 'Créer un abonnement',
 	'icone_modifier_abonnement' => 'Modifier ce abonnement',
-	'info_1_abonnement' => 'Un abonnement',
+	'info_1_abonnement' => '1 abonnement',
 	'info_abonnements_auteur' => 'Les abonnements de cet auteur',
 	'info_afficher' => 'Voir',
 	'info_aucun_abonnement' => 'Aucun abonnement',

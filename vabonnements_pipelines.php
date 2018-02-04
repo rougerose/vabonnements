@@ -21,8 +21,9 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  * 
  */
 function vabonnements_compter_contributions_auteur($flux) {
+	$in = sql_in('statut', array('actif', 'prepa'));
 	if ($id_auteur = intval($flux['args']['id_auteur'])
-		AND $cpt = sql_countsel("spip_abonnements AS A", "A.id_auteur=" . intval($id_auteur) . ' AND statut=' . sql_quote('ok'))
+		AND $cpt = sql_countsel("spip_abonnements AS A", "A.id_auteur=" . intval($id_auteur) . ' AND ' . $in)
 	){
 		$contributions = singulier_ou_pluriel($cpt, 'abonnement:info_1_abonnement', 'abonnement:info_nb_abonnements');
 		$flux['data'][] = $contributions;
