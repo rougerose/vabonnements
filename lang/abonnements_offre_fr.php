@@ -26,7 +26,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'info_1_abonnements_offre' => 'Une offre d\'abonnement',
 	'info_abonnements_offres_auteur' => 'Les offres d\'abonnement de cet auteur',
 	'info_aucun_abonnements_offre' => 'Aucune offre d\'abonnement',
-	'info_nb_abonnements_offres' => '@nb@ offre d\'abonnement',
+	'info_nb_abonnements_offres' => '@nb@ offres d\'abonnement',
 	
 	// P
 	'periodicite_month'=>'mensuel',

@@ -1,45 +1,44 @@
 [(#SET{defaut_tri, #ARRAY{
-  id_abonnement, -1,
-  id_abonnements_offre, -1,
-  points, -1
+	id_abonnement, -1,
+	id_abonnements_offre, -1,
+	points, -1
 }})]
 <B_liste_abonnements>
-  #ANCRE_PAGINATION
-  <div class="liste-objets abonnements">
-    <table class="spip liste">
-      [<caption><strong class="caption">(#ENV*{titre, #GRAND_TOTAL|singulier_ou_pluriel{abonnement:info_1_abonnement, abonnement:info_nb_abonnements}})</strong></caption>]
-      <thead>
-        <tr class="first_row">
-          <th class="id">[(#TRI{id_abonnement, <:info_numero_abbreviation:>, ajax})]</th>
-          <th class="statut">[(#TRI{statut, <span title="<:lien_trier_statut|attribut_html:>">#</span>, ajax})]</th>
-          <th class="titre">[(#TRI{id_abonnements_offre, <:abonnementsoffre:titre_abonnementsoffre:>, ajax})]</th>
-          <th class="nom">[(#TRI{nom, <:abonnement:info_nom_auteur:>, ajax})]</th>
-          <th class="duree">[(#TRI{duree, <:abonnementsoffre:champ_duree_label:>, ajax})]</th>
-          <th class="numero_debut">[(#TRI{numero_debut, <:abonnement:info_numero_debut:>, ajax})]</th>
-          <th class="numero_fin">[(#TRI{numero_debut, <:abonnement:info_numero_fin:>, ajax})]</th>
-          <th class="paiement">[(#TRI{mode_paiement, <:abonnement:info_paiement:>, ajax})]</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <BOUCLE_liste_abonnements(ABONNEMENTS auteurs){id_abonnements_offre?}{id_auteur?}{statut?}{recherche?}{tri #ENV{par,id_abonnement},#GET{defaut_tri}}{pagination #ENV{nb,10}}>
-          <BOUCLE_offre(ABONNEMENTS_OFFRES){id_abonnements_offre}>#SET{duree, #DUREE} #SET{periode, #PERIODE}</BOUCLE_offre>
-          <tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})]">
-            <td class="id"><a href="[(#ID_ABONNEMENT|generer_url_entite{abonnement})]">#ID_ABONNEMENT</a></td>
-            <td class="statut">[(#STATUT|puce_statut{abonnement,#ID_ABONNEMENT})]</td>
-            <td class="titre">[(#INFO_TITRE{abonnements_offre, #ID_ABONNEMENTS_OFFRE})]</td>
-            <td class="nom"><a href="[(#ID_AUTEUR|generer_url_entite{auteur})]">[(#INFO_NOM{auteur, #ID_AUTEUR})]</a></td>
-            <td class="duree">[(#GET{duree})[ (#GET{periode})]]</td>
-            <td class="numero_debut">[(#NUMERO_DEBUT|replace{'V-', ''}|ltrim{'0'})]</td>
-            <td class="numero_fin">[(#NUMERO_FIN|replace{'V-', ''}|ltrim{'0'})]</td>
-            <td class="numero_fin">#MODE_PAIEMENT</td>
-            <td class="lien_voir"><a href="[(#ID_ABONNEMENT|generer_url_entite{abonnement})]"><:abonnement:info_afficher:></a></td>
-          </tr>
-        </BOUCLE_liste_abonnements>
-      </tbody>
-    </table>
-    [<p class='pagination'>(#PAGINATION{prive})</p>]
-  </div>
+	#ANCRE_PAGINATION
+	<div class="liste-objets abonnements">
+		<table class="spip liste">
+			[<caption><strong class="caption">(#ENV*{titre, #GRAND_TOTAL|singulier_ou_pluriel{abonnement:info_1_abonnement, abonnement:info_nb_abonnements}})</strong></caption>]
+			<thead>
+				<tr class="first_row">
+					<th class="id">[(#TRI{id_abonnement, <:info_numero_abbreviation:>, ajax})]</th>
+					<th class="statut">[(#TRI{statut, <span title="<:lien_trier_statut|attribut_html:>">#</span>, ajax})]</th>
+					<th class="titre">[(#TRI{id_abonnements_offre, <:abonnements_offre:titre_abonnements_offre:>, ajax})]</th>
+					<th class="nom">[(#TRI{nom, <:abonnement:info_nom_auteur:>, ajax})]</th>
+					<th class="duree">[(#TRI{duree, <:abonnements_offre:champ_duree_label:>, ajax})]</th>
+					<th class="numero_debut">[(#TRI{numero_debut, <:abonnement:champ_numero_debut_label:>, ajax})]</th>
+					<th class="numero_fin">[(#TRI{numero_debut, <:abonnement:champ_numero_fin_label:>, ajax})]</th>
+					<th class="paiement">[(#TRI{mode_paiement, <:abonnement:champ_mode_paiement_label:>, ajax})]</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+			<BOUCLE_liste_abonnements(ABONNEMENTS auteurs){id_abonnements_offre?}{id_auteur?}{statut?}{recherche?}{tri #ENV{par,id_abonnement},#GET{defaut_tri}}{pagination #ENV{nb,10}}>
+				<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})]">
+					<td class="id"><a href="[(#ID_ABONNEMENT|generer_url_entite{abonnement})]">#ID_ABONNEMENT</a></td>
+					<td class="statut">[(#STATUT|puce_statut{abonnement,#ID_ABONNEMENT})]</td>
+					<td class="titre">[(#INFO_TITRE{abonnements_offre, #ID_ABONNEMENTS_OFFRE})]</td>
+					<td class="nom"><a href="[(#ID_AUTEUR|generer_url_entite{auteur})]">[(#INFO_NOM{auteur, #ID_AUTEUR})]</a></td>
+					<td class="duree">[(#INFO_DUREE{abonnements_offre, #ID_ABONNEMENTS_OFFRE}|periode_en_clair)]</td>
+					<td class="numero_debut">[(#NUMERO_DEBUT|replace{'v', ''}|ltrim{'0'})]</td>
+					<td class="numero_fin">[(#NUMERO_FIN|replace{'v', ''}|ltrim{'0'})]</td>
+					<td class="numero_fin">[(#MODE_PAIEMENT|paiement_en_clair)]</td>
+					<td class="lien_voir"><a href="[(#ID_ABONNEMENT|generer_url_entite{abonnement})]"><:abonnement:info_afficher:></a></td>
+				</tr>
+			</BOUCLE_liste_abonnements>
+			</tbody>
+		</table>
+		[<p class='pagination'>(#PAGINATION{prive})</p>]
+	</div>
 </B_liste_abonnements>
-  [<div class="liste-objets abonnements caption-wrap"><strong class="caption">(#ENV*{sinon,<:abonnement:info_aucun_abonnement:>})</strong></div>]
+	[<div class="liste-objets abonnements caption-wrap"><strong class="caption">(#ENV*{sinon,<:abonnement:info_aucun_abonnement:>})</strong></div>]
 <//B_liste_abonnements>
