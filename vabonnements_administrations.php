@@ -52,6 +52,7 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 	# ...
 
 	$maj['create'] = array(array('maj_tables', array('spip_abonnements_offres', 'spip_abonnements')));
+	$maj['1.2.0'] = array(array('sql_alter', 'TABLE spip_abonnements_offres CHANGE titre titre text NOT NULL DEFAULT \'\''));
 
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);

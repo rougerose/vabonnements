@@ -50,7 +50,7 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 		'table_objet_surnoms' => array('abonnementsoffre'), // table_objet('abonnements_offre') => 'abonnements_offres' 
 		'field'=> array(
 			'id_abonnements_offre' => 'bigint(21) NOT NULL',
-			'titre'              => 'varchar(25) NOT NULL DEFAULT ""',
+			'titre'              => 'text NOT NULL DEFAULT ""',
 			'descriptif'         => 'text NOT NULL DEFAULT ""',
 			'duree'              => 'varchar(10) NOT NULL DEFAULT ""',
 			'prix_ht'            => 'varchar(25) NOT NULL DEFAULT ""',
