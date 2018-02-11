@@ -15,6 +15,9 @@
 				label=<:abonnements_offre:champ_descriptif_label:>,
 				conteneur_class=pleine_largeur, rows=4})]
 			
+			[(#SAISIE{input, reference, obligatoire=oui,
+				label=<:abonnements_offre:champ_reference_label:>})]
+			
 			#SET{name, duree} #SET{obli, 'obligatoire'} #SET{defaut, ''} #SET{erreurs, #ENV**{erreurs}|table_valeur{#GET{name}}}
 			<[(#DIV|sinon{li})] class="editer editer_[(#GET{name})][ (#GET{obli})][ (#GET{erreurs}|oui)erreur]">
 				<label for="duree_valeur"><:abonnements_offre:champ_duree_label:></label>[

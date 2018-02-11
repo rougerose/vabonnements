@@ -16,6 +16,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'champ_duree_label' => 'Durée',
 	'champ_prix_ht_label' => 'Prix HT',
 	'champ_prix_ttc_label' => 'Prix TTC',
+	'champ_reference_label' => 'Référence',
 	'champ_taxe_label' => 'TVA',
 	'champ_edit_taxe_label' => 'TVA (%)',
 	'champ_titre_label' => 'Titre',

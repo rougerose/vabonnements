@@ -1,6 +1,7 @@
 #SET{data, #ARRAY}
 <BOUCLE_abonnements_offres(ABONNEMENTS_OFFRES){par num titre, id_abonnements_offre}>
-  #SET{data,#GET{data}|plus{#ARRAY{#ID_ABONNEMENTS_OFFRE, #TITRE}}}
+	[(#SET{libelle, #TITRE|concat{' '}|concat{\(#REFERENCE\)} })]
+	[(#SET{data,#GET{data}|plus{#ARRAY{#ID_ABONNEMENTS_OFFRE, #GET{libelle}}}})]
 </BOUCLE_abonnements_offres>
 
 #INCLURE{fond=saisies/selection, env, datas=#GET{data}}

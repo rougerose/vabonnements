@@ -52,6 +52,7 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 			'id_abonnements_offre' => 'bigint(21) NOT NULL',
 			'titre'              => 'text NOT NULL DEFAULT ""',
 			'descriptif'         => 'text NOT NULL DEFAULT ""',
+			'reference' => 'tinytext NOT NULL DEFAULT ""',
 			'duree'              => 'varchar(10) NOT NULL DEFAULT ""',
 			'prix_ht'            => 'varchar(25) NOT NULL DEFAULT ""',
 			'taxe'               => 'decimal(4,3) default null',
@@ -64,9 +65,9 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 		),
 		'titre' => 'titre AS titre, "" AS lang',
 		 #'date' => '',
-		'champs_editables'  => array('titre', 'descriptif', 'duree', 'prix_ht', 'taxe'),
-		'champs_versionnes' => array('titre', 'descriptif', 'duree', 'prix_ht'),
-		'rechercher_champs' => array("titre" => 10, "descriptif" => 5),
+		'champs_editables'  => array('titre', 'descriptif', 'reference', 'duree', 'prix_ht', 'taxe'),
+		'champs_versionnes' => array('titre', 'descriptif', 'reference', 'duree', 'prix_ht'),
+		'rechercher_champs' => array("titre" => 10, "descriptif" => 5, "reference" => 10),
 		'tables_jointures'  => array(),
 		'statut_textes_instituer' => array(
 			'prepa'    => 'texte_statut_en_cours_redaction',
@@ -141,9 +142,7 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 				'exception' => array('statut','tout')
 			)
 		),
-		'texte_changer_statut' => 'abonnement:texte_changer_statut_abonnement',
-
-
+		'texte_changer_statut' => 'abonnement:texte_changer_statut_abonnement'
 	);
 
 	return $tables;

@@ -19,7 +19,7 @@
 <!--affiche_milieu-->
 
 <div id="wysiwyg">
-	<h3 class="soustitre"><:abonnements_offre:titre_abonnements_offre:> : <a href="[(#ID_ABONNEMENTS_OFFRE|generer_url_entite{abonnements_offre})]">[(#INFO_TITRE{abonnements_offre, #ID_ABONNEMENTS_OFFRE})]</a></h3>
+	<h3 class="soustitre"><:abonnements_offre:titre_abonnements_offre:> : <a href="[(#ID_ABONNEMENTS_OFFRE|generer_url_entite{abonnements_offre})]">[(#INFO_TITRE{abonnements_offre, #ID_ABONNEMENTS_OFFRE}) [\((#INFO_REFERENCE{abonnements_offre, #ID_ABONNEMENTS_OFFRE})\)]]</a></h3>
 	<INCLURE{fond=prive/objets/contenu/abonnement,id=#ID_ABONNEMENT,id_abonnement=#ID_ABONNEMENT,env,wysiwyg=1,espace_prive}>
 </div>
 <div class="nettoyeur"></div>

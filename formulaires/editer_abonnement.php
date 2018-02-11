@@ -233,7 +233,7 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 		}
 		
 		// Calcul durée
-		$offre = sql_fetsel('duree, titre', 'spip_abonnements_offres', 'id_abonnements_offre='.$id_abonnements_offre);
+		$offre = sql_fetsel('duree, titre, reference', 'spip_abonnements_offres', 'id_abonnements_offre='.$id_abonnements_offre);
 		$duree = explode(" ", $offre['duree']);
 		$duree_valeur = reset($duree);
 		// $duree_unite = end($duree);
@@ -251,10 +251,9 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 	include_spip('inc/vabonnements');
 	
 	if ($id_abonnement == 0) {
-		
-		// log
+		// Log
 		$mode_paiement = _request('mode_paiement');
-		$abo_log .= "Création de l'abonnement. 0ffre ". $offre['titre'] . ". Du numéro ". $numero_debut . " au numéro ". $numero_fin . ". Paiement ". _T($mode_paiement) . ".";
+		$abo_log .= "Création de l'abonnement. 0ffre ". $offre['titre'] . " (" . $offre['reference'] . "). Du numéro ". $numero_debut . " au numéro ". $numero_fin . ". Paiement ". _T($mode_paiement) . ".";
 		
 		$log = vabonnements_log($abo_log);
 		
@@ -265,6 +264,7 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 	}
 	
 	if ($modif) {
+		// Log
 		$abo_log = "Modification de l'abonnement. Du numéro " . $numero_debut . " au numéro " . $numero_fin . "." ;
 		$log = $row_abo['log'];
 		$log .= vabonnements_log($abo_log);

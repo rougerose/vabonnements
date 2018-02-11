@@ -51,8 +51,11 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 	# );
 	# ...
 
-	$maj['create'] = array(array('maj_tables', array('spip_abonnements_offres', 'spip_abonnements')));
-	$maj['1.2.0'] = array(array('sql_alter', 'TABLE spip_abonnements_offres CHANGE titre titre text NOT NULL DEFAULT \'\''));
+	$maj['create'][] = array('maj_tables', array('spip_abonnements_offres', 'spip_abonnements'));
+	
+	$maj['1.2.0'][] = array('sql_alter', 'TABLE spip_abonnements_offres CHANGE titre titre text NOT NULL DEFAULT \'\'');
+	
+	$maj['1.3.0'][] = array('sql_alter', 'TABLE spip_abonnements_offres ADD COLUMN reference tinytext NOT NULL DEFAULT \'\' AFTER descriptif');
 
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);

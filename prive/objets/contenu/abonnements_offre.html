@@ -9,6 +9,11 @@
 	<span dir="#LANG_DIR" class="#EDIT{descriptif} descriptif">(#DESCRIPTIF)</span>
 </div>]
 
+[<div class="champ contenu_reference[ (#REFERENCE*|strlen|?{'',vide})]">
+	<label><:abonnements_offre:champ_reference_label:> : </label>
+	<span dir="#LANG_DIR" class="#EDIT{reference} reference">(#REFERENCE) \(<:abonnement:abonnement_reference_traduction_{=#REFERENCE}:>\)</span>
+</div>]
+
 [<div class="champ contenu_duree[ (#DUREE*|strlen|?{'',vide})]">
 	<label><:abonnements_offre:champ_duree_label:> : </label>
 	<span dir="#LANG_DIR" class="#EDIT{duree} duree">(#DUREE|periode_en_clair)</span>

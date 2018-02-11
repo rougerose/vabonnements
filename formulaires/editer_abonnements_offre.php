@@ -104,7 +104,7 @@ function formulaires_editer_abonnements_offre_verifier_dist($id_abonnements_offr
 		set_request('duree', intval(_request('duree_valeur')) . ' ' . _request('duree_unite'));
 	}
 
-	$erreurs = formulaires_editer_objet_verifier('abonnements_offre', $id_abonnements_offre, array('titre', 'duree'));
+	$erreurs = formulaires_editer_objet_verifier('abonnements_offre', $id_abonnements_offre, array('titre', 'reference', 'duree'));
 	
 	$verifier = charger_fonction('verifier', 'inc');
 	if ($err = $verifier(_request('taxe'), 'decimal', array('min' => 0, 'max' => 100))){

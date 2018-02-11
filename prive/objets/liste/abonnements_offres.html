@@ -11,6 +11,7 @@
 			<tr class="first_row">
 				<th class="statut" scope="col">[(#TRI{statut,<span title="<:lien_trier_statut|attribut_html:>">#</span>,ajax})]</th> 
 				<th class="titre" scope="col">[(#TRI{titre,<:abonnements_offre:champ_titre_label:>,ajax})]</th>
+				<th class="titre" scope="col">[(#TRI{reference,<:abonnements_offre:champ_reference_label:>,ajax})]</th>
 				<th class="duree" scope="col">[(#TRI{duree,<:abonnements_offre:champ_duree_label:>,ajax})]</th>
 				<th class="prix_ht" scope="col">[(#TRI{prix_ht,<:abonnements_offre:champ_prix_ht_label:>,ajax})]</th>
 				<th class="taxe" scope="col"><:abonnements_offre:champ_taxe_label:></th>
@@ -23,6 +24,7 @@
 			<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})]">
 				<td class="statut">[(#STATUT|puce_statut{abonnements_offre,#ID_ABONNEMENTS_OFFRE})]</td> 
 				<td class="titre principale"><a href="[(#ID_ABONNEMENTS_OFFRE|generer_url_entite{abonnements_offre})]" title="<:info_numero_abbreviation|attribut_html:> #ID_ABONNEMENTS_OFFRE">[(#RANG). ]#TITRE</a></td>
+				<td class="reference">[(#REFERENCE)]</td>
 				<td class="duree">[(#DUREE|periode_en_clair)]</td>
 				<td class="prix_ht">[(#PRIX_HT)]</td>
 				<td class="taxe">[(#TAXE|mult{100}|round{2}) %]</td>

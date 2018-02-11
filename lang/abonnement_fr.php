@@ -9,6 +9,18 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 $GLOBALS[$GLOBALS['idx_lang']] = array(
 
 	// A
+	'abonnement_reference_traduction_A1T1F' => 'abonnement 1 an, tarif réduit, France',
+	'abonnement_reference_traduction_A1T2F' => 'abonnement 1 an, tarif standard, France',
+	'abonnement_reference_traduction_A1T3F' => 'abonnement 1 an, tarif soutien, France',
+	'abonnement_reference_traduction_A2T1F' => 'abonnement 2 ans, tarif réduit, France',
+	'abonnement_reference_traduction_A2T2F' => 'abonnement 2 ans, tarif standard, France',
+	'abonnement_reference_traduction_A2T3F' => 'abonnement 2 ans, tarif soutien, France',
+	'abonnement_reference_traduction_A1T1I' => 'abonnement 1 an, tarif réduit, International',
+	'abonnement_reference_traduction_A1T2I' => 'abonnement 1 an, tarif standard, International',
+	'abonnement_reference_traduction_A1T3I' => 'abonnement 1 an, tarif soutien, International',
+	'abonnement_reference_traduction_A2T1I' => 'abonnement 2 ans, tarif réduit, International',
+	'abonnement_reference_traduction_A2T2I' => 'abonnement 2 ans, tarif standard, International',
+	'abonnement_reference_traduction_A2T3I' => 'abonnement 2 ans, tarif soutien, International',
 	'ajouter_lien_abonnement' => 'Ajouter ce abonnement',
 
 	// C
