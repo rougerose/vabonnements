@@ -21,6 +21,10 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'champ_edit_taxe_label' => 'TVA (%)',
 	'champ_titre_label' => 'Titre',
 	'confirmer_supprimer_abonnements_offre' => 'Confirmez-vous la suppression de cette offre d\'abonnement ?',
+	
+	// D
+	'duree_annee' => "1 an",
+	'duree_annees' => "@nb@ ans",
 
 	// I
 	'icone_creer_abonnements_offre' => 'Créer une offre d\'abonnement',
@@ -29,6 +33,10 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'info_abonnements_offres_auteur' => 'Les offres d\'abonnement de cet auteur',
 	'info_aucun_abonnements_offre' => 'Aucune offre d\'abonnement',
 	'info_nb_abonnements_offres' => '@nb@ offres d\'abonnement',
+	
+	// N
+	'numero' => "1 numéro",
+	'numeros' => "@nb@ numéros",
 	
 	// P
 	'periodicite_month'=>'mensuel',
