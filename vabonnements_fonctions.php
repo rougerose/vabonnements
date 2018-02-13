@@ -33,6 +33,7 @@ function filtre_paiement_en_clair($mode_paiement) {
 }
 
 
+
 /**
  * Traduire la duree d'abonnement en nombre d'années.
  * La traduction n'est valable que si les abonnements sont annuels...
@@ -47,6 +48,8 @@ function filtre_duree_en_clair($periodicite) {
 	return $duree;
 }
 
+
+
 /**
  * Traduire la durée d'abonnement en nombre de numéros
  * 
@@ -59,6 +62,8 @@ function filtre_numero_en_clair($periodicite) {
 	$numeros = ($nb == 1 ? _T('abonnements_offre:numero') : _T('abonnements_offre:numeros', array('nb' => $nb)));
 	return $numeros;
 }
+
+
 
 /**
  * Calculer la référence ou le titre d'un prochain numéro
@@ -86,6 +91,23 @@ function filtre_calculer_numero_prochain($reference, $titre = false, $rang = 1) 
 }
 
 
+/**
+ * Calculer la date du prochain numéro à partir de la date de l'actuel.
+ *
+ * Compte tenu du fait que la date est "normalisée" avec la fonction
+ * vabonnements_calculer_date_debut (on obtient donc le premier jour 
+ * de la saison concernée), si on ajoute 3 mois on obtient le dernier
+ * jour de la même saison. On compte plus large et on ajoute 4 mois.
+ * 
+ * @param  string $date_numero_actuel
+ * @return string
+ */
+function filtre_calculer_date_numero_prochain($date_numero_actuel) {
+	include_spip('inc/vabonnements_calculer_date');
+	$date_actuel = vabonnements_calculer_date_debut($date_numero_actuel);
+	$date_prochain = vabonnements_calculer_date_fin($date_actuel, 4);
+	return $date_prochain;
+}
 
 /**
  * Trier un tableau par clé. 
