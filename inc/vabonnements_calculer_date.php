@@ -67,15 +67,15 @@ function vabonnements_calculer_mois_saison($jour, $mois) {
 	$saison = 12; // décembre = hiver
 	
 	if (($mois == 3 and $jour >= 21) or $mois > 3) {
-		$saison = 03; // mars = printemps
+		$saison = 3; // mars = printemps
 	}
 	
 	if (($mois == 6 and $jour >=21) or $mois > 6) {
-		$saison = 06; // juin = été
+		$saison = 6; // juin = été
 	}
 	
 	if (($mois == 9 and $jour >=21) or $mois > 9) {
-		$saison = 09; // septembre = automne
+		$saison = 9; // septembre = automne
 	}
 	
 	if (($mois == 12 and $jour >=21) or $mois > 12) {
