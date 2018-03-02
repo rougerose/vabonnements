@@ -144,6 +144,13 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 		),
 		'texte_changer_statut' => 'abonnement:texte_changer_statut_abonnement'
 	);
+	
+	$tables['spip_commandes_details']['field']['numero_debut'] = 'tinytext NOT NULL DEFAULT ""';
+	$tables['spip_commandes_details']['field']['numero_fin'] = 'tinytext NOT NULL DEFAULT ""';
+	$tables['spip_commandes_details']['champs_editables'][] = 'numero_debut';
+	$tables['spip_commandes_details']['champs_editables'][] = 'numero_fin';
+	$tables['spip_commandes_details']['champs_versionnes'][] = 'numero_debut';
+	$tables['spip_commandes_details']['champs_versionnes'][] = 'numero_fin';
 
 	return $tables;
 }

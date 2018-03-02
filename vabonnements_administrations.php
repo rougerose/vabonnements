@@ -51,11 +51,13 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 	# );
 	# ...
 
-	$maj['create'][] = array('maj_tables', array('spip_abonnements_offres', 'spip_abonnements'));
+	$maj['create'][] = array('maj_tables', array('spip_abonnements_offres', 'spip_abonnements', 'spip_commandes_details'));
 	
 	$maj['1.2.0'][] = array('sql_alter', 'TABLE spip_abonnements_offres CHANGE titre titre text NOT NULL DEFAULT \'\'');
 	
 	$maj['1.3.0'][] = array('sql_alter', 'TABLE spip_abonnements_offres ADD COLUMN reference tinytext NOT NULL DEFAULT \'\' AFTER descriptif');
+	
+	$maj['1.4.0'][] = array('maj_tables', array('spip_commandes_details'));
 
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
@@ -82,6 +84,8 @@ function vabonnements_vider_tables($nom_meta_base_version) {
 
 	sql_drop_table('spip_abonnements_offres');
 	sql_drop_table('spip_abonnements');
+	sql_alter('TABLE spip_commandes_details DROP numero_debut');
+	sql_alter('TABLE spip_commandes_details DROP numero_fin');
 
 	# Nettoyer les liens courants (le génie optimiser_base_disparus se chargera de nettoyer toutes les tables de liens)
 	sql_delete('spip_documents_liens', sql_in('objet', array('abonnements_offre', 'abonnement')));

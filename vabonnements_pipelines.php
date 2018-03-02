@@ -59,7 +59,89 @@ function vabonnements_affiche_auteurs_interventions($flux) {
 }
 
 
-
+/**
+ * Ajouter les options d'abonnement (numéro de départ et cadeau)
+ * après la création de la commande 
+ * (via appel fonction action_commandes_panier())
+ * 
+ * @param  array $flux Flux du pipeline
+ * @return array       Le flux modifié
+ */
+function vabonnements_post_edition($flux) {
+	if (isset($flux['args']['table']) 
+		AND $flux['args']['table'] == 'spip_commandes' 
+		AND $flux['args']['action'] === 'remplir_commande') {
+		
+		$id_commande = intval($flux['args']['id_objet']);
+		$commande = sql_fetsel('statut, source', 'spip_commandes', 'id_commande='.$id_commande);
+		
+		// La commande est 'encours' et un panier (panier#X) est dans la source
+		if (strpos($commande['source'], 'panier') !== false AND $commande['statut'] == 'encours') {
+			
+			// Récupérer l'identifiant du panier qui n'a pas encore été effacé
+			$panier = explode('#', $commande['source']);
+			$id_panier = $panier[1];
+			
+			// Et les offres d'abonnements que le panier contient
+			$offres = sql_allfetsel('*', 'spip_paniers_liens', 'id_panier='.intval($id_panier).' and objet='.sql_quote('abonnements_offre'));
+			
+			include_spip('action/editer_objet');
+			include_spip('inc/config');
+			$taxe = lire_config('vabonnements/taxe', 0.2);
+			
+			if (count($offres)) {
+				foreach($offres as $offre) {
+					$id_abonnements_offre = $offre['id_objet'];
+					$options = unserialize($offre['options']);
+					
+					$set = array('numero_debut' => $options['numero']);
+					
+					// Récupérer l'offre d'abonnement qui a été 
+					// enregistrée dans la commande
+					$id_commandes_detail = sql_getfetsel('id_commandes_detail', 'spip_commandes_details', 'id_commande='.$id_commande.' and id_objet='.$id_abonnements_offre.' and objet='.sql_quote($offre['objet']));
+					
+					if ($id_commandes_detail) {
+						objet_modifier('commandes_detail', $id_commandes_detail, $set);
+					}
+					
+					// Si le cadeau existe dans le panier,
+					// ajouter le produit correspondant dans la commande.
+					$id_produit = intval($options['cadeau']);
+					
+					if ($id_produit > 0 AND $titre_produit = sql_getfetsel('titre', 'spip_produits', 'id_produit='.$id_produit)) {
+						$set_produit = array(
+							'id_commande' => $id_commande,
+							'objet' => 'produit',
+							'id_objet' => $id_produit,
+							'descriptif' => $titre_produit,
+							'quantite' => 1,
+							'prix_unitaire_ht' => 0, // c'est un cadeau, le prix "réel" n'est pas utilisé.
+							'taxe' => $taxe,
+							'reduction' => 0,
+							'statut' => 'attente'
+						);
+						
+						// Le produit n'a pas déjà été ajouté à la commande ?
+						$where = array();
+						foreach ($set_produit as $k => $w) {
+							if (in_array($k, array('id_commande', 'objet', 'id_objet'))) {
+								$where[] = "$k=" . sql_quote($w);
+							}
+						}
+						
+						if (!$id_commandes_detail = sql_getfetsel('id_commandes_detail', 'spip_commandes_details', $where)) {
+							// créer la ligne relative au cadeau
+							$id_commandes_detail = objet_inserer('commandes_detail');
+							// ajouter toutes les données du produit
+							objet_modifier('commandes_detail', $id_commandes_detail, $set_produit);
+						}
+					}
+				}
+			}
+		}
+	}
+	return $flux;
+}
 
 
 /**
