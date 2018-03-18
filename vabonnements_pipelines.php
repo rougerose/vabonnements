@@ -115,7 +115,7 @@ function vabonnements_post_edition($flux) {
 							'id_commande' => $id_commande,
 							'objet' => 'produit',
 							'id_objet' => $id_produit,
-							'descriptif' => $titre_produit,
+							'descriptif' => $titre_produit . ' abonnements_offre#' . $id_abonnements_offre,
 							'quantite' => 1,
 							'prix_unitaire_ht' => 0, // c'est un cadeau, le prix "réel" n'est pas utilisé.
 							'taxe' => $taxe,
