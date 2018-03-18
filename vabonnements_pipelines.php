@@ -60,6 +60,8 @@ function vabonnements_affiche_auteurs_interventions($flux) {
 
 
 /**
+ * Création de la commande. 
+ * 
  * Ajouter les options d'abonnement (numéro de départ et cadeau)
  * après la création de la commande 
  * (via appel fonction action_commandes_panier())
@@ -145,6 +147,19 @@ function vabonnements_post_edition($flux) {
 
 
 /**
+ * Paiement de la commande : création de l'abonnement.
+ *
+ * @param  [type] $flux [description]
+ * @return [type]       [description]
+ */
+function vabonnements_bank_traiter_reglement($flux) {
+	// ce pipeline peut être appelé deux fois, verifier si l'abonnement
+	// a déjà été créé. 
+	return $flux;
+}
+
+
+/**
  * Optimiser la base de données
  *
  * Supprime les objets à la poubelle.
@@ -161,4 +176,11 @@ function vabonnements_optimiser_base_disparus($flux) {
 	sql_delete('spip_abonnements', "statut='poubelle' AND maj < " . $flux['args']['date']);
 
 	return $flux;
+}
+
+
+function vabonnements_taches_generales_cron($taches_generales) {
+	// référencer les rubriques correspondant aux numéros, 1 fois par heure. 
+	$taches_generales['vabonnements_referencer_numeros'] = 3600;
+	return $taches_generales;
 }

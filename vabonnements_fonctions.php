@@ -80,7 +80,7 @@ function filtre_calculer_numero_prochain($reference, $titre = false, $rang = 1) 
 	$reference_suivant = substr($reference, 1) + $rang;
 	$titre_suivant = 'Vacarme '.str_pad($reference_suivant, 2, 0, STR_PAD_LEFT);
 	
-	if ($titre) {
+	if ($titre == false) {
 		$numero_suivant = $titre_suivant;
 	} else {
 		$convertir = charger_fonction('vextras_convertir_titre_reference', 'inc');
@@ -118,4 +118,30 @@ function filtre_calculer_date_numero_prochain($date_numero_actuel) {
 function filtre_keysort($tableau) {
 	ksort($tableau);
 	return $tableau;
+}
+
+
+
+function filtre_numero_suivant_calculer_titre_reference($reference, $rang = 0, $titre = false) {
+	$reference_chiffre = substr($reference, 1) + $rang;
+	$titre_numero = 'Vacarme '.str_pad($reference_chiffre, 2, 0, STR_PAD_LEFT);
+	
+	if ($titre !== false) {
+		$numero_suivant = $titre_numero;
+	} else {
+		$numero_suivant = filtre_numero_suivant_calculer_titre_reference($titre_numero);
+	}
+	
+	return $numero_suivant;
+}
+
+
+
+function filtre_numero_titre_convertir_reference($titre) {
+	if (preg_match('!\d+!', $titre, $m)) {
+		$reference = 'v' . str_pad(intval($m[0]), 4, '0', STR_PAD_LEFT);
+	} else {
+		$reference = '';
+	}
+	return $reference;
 }

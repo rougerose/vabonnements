@@ -16,5 +16,9 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'cfg_titre_parametrages' => 'Paramétrages',
 
 	// T
+	'titre_config_reference_update' => 'Mise à jour des références des numéros de Vacarme',
 	'titre_page_configurer_vabonnements' => 'Configurer les offres d\'abonnements',
+	
+	// U
+	'update_bouton_label' => "Mettre à jour les références de numéros",
 );

@@ -174,3 +174,17 @@ function autoriser_abonnement_modifier_dist($faire, $type, $id, $qui, $opt) {
 function autoriser_abonnement_supprimer_dist($faire, $type, $id, $qui, $opt) {
 	return $qui['statut'] == '0minirezo' and !$qui['restreint'];
 }
+
+/**
+ * Autorisation de configurer le plugin 
+ * 
+ * @param  [type] $faire [description]
+ * @param  [type] $type  [description]
+ * @param  [type] $id    [description]
+ * @param  [type] $qui   [description]
+ * @param  [type] $opt   [description]
+ * @return [type]        [description]
+ */
+function autoriser_vabonnements_configurer($faire, $type, $id, $qui, $opt) {
+	return autoriser('webmestre');
+}

@@ -145,6 +145,7 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 		'texte_changer_statut' => 'abonnement:texte_changer_statut_abonnement'
 	);
 	
+	// Commandes_details : colonne numero_debut et numero_fin
 	$tables['spip_commandes_details']['field']['numero_debut'] = 'tinytext NOT NULL DEFAULT ""';
 	$tables['spip_commandes_details']['field']['numero_fin'] = 'tinytext NOT NULL DEFAULT ""';
 	$tables['spip_commandes_details']['champs_editables'][] = 'numero_debut';
@@ -153,4 +154,26 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 	$tables['spip_commandes_details']['champs_versionnes'][] = 'numero_fin';
 
 	return $tables;
+}
+
+
+function vabonnements_declarer_champs_extras($champs = array()) {
+	$champs['spip_rubriques']['reference'] = array(
+		'saisie' => 'input',
+		'options' => array(
+			'nom' => 'reference',
+			'label' => _T('vextras:reference_label'),
+			'type' => 'text',
+			'sql' => "tinytext NOT NULL DEFAULT ''",
+			'restrictions' => array(
+				'secteur' => '115'
+			)
+		),
+		'verifier' => array(
+			'type' => 'regex',
+			'options' => array('modele' => '!v\d{4}!')
+		)
+	);
+	
+	return $champs;
 }

@@ -12,18 +12,25 @@
 
 	<necessite nom="saisies" compatibilite="[2.4.0;]" /> 
 	<necessite nom="verifier" compatibilite="[1.0.6;]" /> 
-	<necessite nom="vextras" compatibilite="[1.0.0;]" /> 
+	<necessite nom="cextras" compatibilite="[3.11.3;[" />
 	<necessite nom="commandes" compatibilite="[1.15.3;]" />
 	<necessite nom="paniers" compatibilite="[1.3.3;]" />
+	<necessite nom="bank" compatibilite="[3.5.9;]" />
 
 	<pipeline nom="autoriser" inclure="vabonnements_autorisations.php" />
 
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/vabonnements.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/vabonnements.php" />
+	<pipeline nom="declarer_champs_extras" inclure="base/vabonnements.php" />
+	
 	<pipeline nom="optimiser_base_disparus" inclure="vabonnements_pipelines.php" />
+	<pipeline nom="taches_generales_cron" inclure="vabonnements_pipelines.php" />
+	
 	<pipeline nom="affiche_auteurs_interventions" inclure="vabonnements_pipelines.php" />
 	<pipeline nom="compter_contributions_auteur" inclure="vabonnements_pipelines.php" />
+	
 	<pipeline nom="post_edition" inclure="vabonnements_pipelines.php" />
+	<pipeline nom="bank_traiter_reglement" inclure="vabonnements_pipelines.php" />
 	
 	<menu nom="abonnements_offre" titre="abonnements_offre:titre_abonnements_offres" parent="menu_edition" icone="images/abonnements_offre-16.png" action="abonnements_offres" />
 	<menu nom="abonnement" titre="abonnement:titre_abonnements" parent="menu_activite" icone="images/abonnement-16.png" action="abonnements" />
