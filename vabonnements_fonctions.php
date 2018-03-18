@@ -66,29 +66,83 @@ function filtre_numero_en_clair($periodicite) {
 
 
 /**
- * Calculer la référence ou le titre d'un prochain numéro
- * à partir de la référence du numéro en cours. 
- * Si rang = 1, on obtient le prochain numéro ; si rang = 2, on obtient
- * le numéro qui suit le prochain, etc.
+ * Calculer la référence d'un futur numéro
  * 
- * @param  string  $reference v0000
- * @param  boolean $titre
- * @param  integer $rang
- * @return string La référence ou le titre : v00XX ou Vacarme XX
+ * @param  string  $reference	La référence d'un numéro existant
+ * @param  integer $rang		Le rang du numéro souhaité. 
+ * 								0 est le numéro en cours. 1 le numéro qui suit. Etc. 
+ * @return string La référence du numéro demandé, formatée v0000 
  */
-function filtre_calculer_numero_prochain($reference, $titre = false, $rang = 1) {
+function filtre_calculer_numero_futur_reference($reference, $rang = 1) {
+	return calculer_numero_futur($reference, $rang);
+}
+
+
+
+/**
+ * Calculer le titre d'un futur numéro. 
+ *
+ * @param  string  $reference	La référence d'un numéro existant.
+ * @param  integer $rang		Le rang du numéro souhaité. 
+ * 								0 est le numéro en cours. 1 le numéro qui suit. Etc. 
+ * @return string Le titre du numéro demandé, formaté Vacarme 00
+ */
+function filtre_calculer_numero_futur_titre($reference, $rang = 1) {
+	return calculer_numero_futur($reference, $rang, $titre=true);
+}
+
+
+
+/**
+ * Calculer la date d'un futur numéro. 
+ *
+ * @param  date  $date		La date de sortie d'un numéro existant.
+ * @param  integer $rang 	Le rang du numéro souhaité.
+ * 							0 est le numéro en cours. 1 le numéro qui suit. Etc. 
+ * @return date
+ */
+function filtre_calculer_numero_futur_date($date, $rang = 1) {
+	include_spip('inc/vabonnements_calculer_date');
+	$date_numero_actuel = vabonnements_calculer_date_debut($date);
+	// le numéro souhaité en nombre de mois : 
+	// - le numéro actuel + 1 est dans 3 mois
+	// - le numéro actuel + 2 est dans 6 $mois
+	// - etc.
+	$decalage = $rang * 3;
+	$date_numero_futur = vabonnements_calculer_date_duree($date_numero_actuel, $decalage);
+	return $date_numero_futur;
+}
+
+
+
+/**
+ * Calculer le titre ou la référence d'un futur numéro à partir des
+ * données d'un numéro existant. 
+ * 
+ * @param  string  $reference	La référence d'un numéro existant.
+ * @param  integer $rang		Le rang du numéro souhaité.
+ * 								0 est le numéro en cours. 1 le numéro qui suit. Etc. 
+ * @param  boolean $titre
+ * @return string				La référence ou le titre
+ */
+function calculer_numero_futur($reference, $rang = 1, $titre = false) {
+	// référence du numéro suivant : extraire référence actuelle + rang souhaité
+	// exemple : [v]0080 + 1
 	$reference_suivant = substr($reference, 1) + $rang;
-	$titre_suivant = 'Vacarme '.str_pad($reference_suivant, 2, 0, STR_PAD_LEFT);
 	
-	if ($titre == false) {
-		$numero_suivant = $titre_suivant;
+	// le titre de ce numéro
+	$titre_suivant = 'Vacarme ' . str_pad($reference_suivant, 2, 0, STR_PAD_LEFT);
+	
+	if ($titre) {
+		$numero = $titre_suivant;
 	} else {
-		$convertir = charger_fonction('vextras_convertir_titre_reference', 'inc');
-		$numero_suivant = $convertir($titre_suivant);
+		include_spip('inc/vabonnements_numero');
+		$numero = vabonnements_numero_convertir_titre_reference($titre_suivant);
 	}
 	
-	return $numero_suivant;
+	return $numero;
 }
+
 
 
 /**
@@ -102,12 +156,12 @@ function filtre_calculer_numero_prochain($reference, $titre = false, $rang = 1) 
  * @param  string $date_numero_actuel
  * @return string
  */
-function filtre_calculer_date_numero_prochain($date_numero_actuel) {
-	include_spip('inc/vabonnements_calculer_date');
-	$date_actuel = vabonnements_calculer_date_debut($date_numero_actuel);
-	$date_prochain = vabonnements_calculer_date_fin($date_actuel, 4);
-	return $date_prochain;
-}
+// function filtre_calculer_date_numero_prochain($date_numero_actuel) {
+// 	include_spip('inc/vabonnements_calculer_date');
+// 	$date_actuel = vabonnements_calculer_date_debut($date_numero_actuel);
+// 	$date_prochain = vabonnements_calculer_date_fin($date_actuel, 4);
+// 	return $date_prochain;
+// }
 
 /**
  * Trier un tableau par clé. 
@@ -122,26 +176,50 @@ function filtre_keysort($tableau) {
 
 
 
-function filtre_numero_suivant_calculer_titre_reference($reference, $rang = 0, $titre = false) {
-	$reference_chiffre = substr($reference, 1) + $rang;
-	$titre_numero = 'Vacarme '.str_pad($reference_chiffre, 2, 0, STR_PAD_LEFT);
+// function filtre_numero_suivant_calculer_titre_reference($reference, $rang = 0, $titre = false) {
+// 	$reference_chiffre = substr($reference, 1) + $rang;
+// 	$titre_numero = 'Vacarme '.str_pad($reference_chiffre, 2, 0, STR_PAD_LEFT);
+// 
+// 	if ($titre !== false) {
+// 		$numero_suivant = $titre_numero;
+// 	} else {
+// 		$numero_suivant = filtre_numero_suivant_calculer_titre_reference($titre_numero);
+// 	}
+// 
+// 	return $numero_suivant;
+// }
+
+
+
+// function filtre_numero_titre_convertir_reference($titre) {
+// 	if (preg_match('!\d+!', $titre, $m)) {
+// 		$reference = 'v' . str_pad(intval($m[0]), 4, '0', STR_PAD_LEFT);
+// 	} else {
+// 		$reference = '';
+// 	}
+// 	return $reference;
+// }
+
+
+
+/**
+ * Filtre vacarme_saison_annee
+ *
+ * Le filtre saison_annee de Spip ne modifie pas l'année.
+ * Or, si la date est le 22 décembre 2017 par exemple, le numéro
+ * correspondant n'est pas Hiver 2017, mais Hiver 2018. 
+ * 
+ * @param  date $date
+ * @return date
+ */
+function filtre_vacarme_saison_annee($date) {
+	$date_array = recup_date($date, false);
+	list($annee, $mois, $jour, $heures, $minutes, $secondes) = $date_array;
 	
-	if ($titre !== false) {
-		$numero_suivant = $titre_numero;
-	} else {
-		$numero_suivant = filtre_numero_suivant_calculer_titre_reference($titre_numero);
+	if ($jour >= 21 AND $mois == 12) {
+		$annee_1 = $annee + 1;
+		$date = date("Y-m-d H:i:s", mktime($heures, $minutes, $secondes, $mois, $jour, $annee_1));
 	}
 	
-	return $numero_suivant;
-}
-
-
-
-function filtre_numero_titre_convertir_reference($titre) {
-	if (preg_match('!\d+!', $titre, $m)) {
-		$reference = 'v' . str_pad(intval($m[0]), 4, '0', STR_PAD_LEFT);
-	} else {
-		$reference = '';
-	}
-	return $reference;
+	return affdate_base($date, 'saison_annee');
 }

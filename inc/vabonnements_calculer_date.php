@@ -27,6 +27,7 @@ function vabonnements_calculer_date_debut($date) {
 }
 
 
+
 /**
  * Calcule la date de fin d'abonnement.
  *
@@ -41,19 +42,32 @@ function vabonnements_calculer_date_debut($date) {
  * @param  int $duree Durée de l'abonnement en mois, 12 ou 24
  * @return string
  */
-function vabonnements_calculer_date_fin($date_debut, $duree) {
-	$debut = new DateTime($date_debut);
+function vabonnements_calculer_date_fin($date, $duree) {
+	$date_debut = new DateTime($date);
+	// ajouter la durée de l'abonnement
+	$date_fin = $date_debut->add(vabonnements_ajouter_mois($duree, $date_debut));
+	// le jour précédent (le 20)
+	$date_fin->sub(new DateInterval('P1D'));
 	
-	// Ajouter la durée de l'abonnement
-	$fin = $debut->add(vabonnements_ajouter_mois($duree, $debut));
-
-	// Le jour précédent (le 20)
-	$fin->sub(new DateInterval('P1D'));
-	
-	$date_fin = $fin->format('Y-m-d H:i:s');
-	
-	return $date_fin;
+	return $date_fin->format('Y-m-d H:i:s');
 }
+
+
+
+/**
+ * Calculer une date en fonction d'une date et d'une durée en mois. 
+ * 
+ * @param  date $date Date mysql
+ * @param  int $duree Durée en nombre de mois
+ * @return date
+ */
+function vabonnements_calculer_date_duree($date, $duree) {
+	$date_debut = new DateTime($date);
+	// ajouter la durée
+	$date_fin = $date_debut->add(vabonnements_ajouter_mois($duree, $date_debut));
+	return $date_fin->format('Y-m-d H:i:s');
+}
+
 
 
 /**
@@ -84,6 +98,7 @@ function vabonnements_calculer_mois_saison($jour, $mois) {
 	
 	return $saison;
 }
+
 
 
 /**
