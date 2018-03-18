@@ -44,13 +44,9 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 	
 	cextras_api_upgrade(vabonnements_declarer_champs_extras(), $maj['create']);
 	
-	$maj['1.2.0'][] = array('sql_alter', 'TABLE spip_abonnements_offres CHANGE titre titre text NOT NULL DEFAULT \'\'');
-	
-	$maj['1.3.0'][] = array('sql_alter', 'TABLE spip_abonnements_offres ADD COLUMN reference tinytext NOT NULL DEFAULT \'\' AFTER descriptif');
-	
-	$maj['1.4.0'][] = array('maj_tables', array('spip_commandes_details'));
-	
-	$maj['1.5.0'][] = array('maj_tables', array('spip_rubriques'));
+	// importer les données abonnements_offres
+	include_spip('base/importer_spip_abonnements_offres');
+	$maj['create'][] = array('importer_spip_abonnements_offres');
 
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
@@ -71,8 +67,8 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 **/
 function vabonnements_vider_tables($nom_meta_base_version) {
 	// champs du plugin
-	// sql_drop_table('spip_abonnements_offres');
-	// sql_drop_table('spip_abonnements');
+	sql_drop_table('spip_abonnements_offres');
+	sql_drop_table('spip_abonnements');
 	sql_alter('TABLE spip_commandes_details DROP numero_debut');
 	sql_alter('TABLE spip_commandes_details DROP numero_fin');
 
@@ -80,14 +76,14 @@ function vabonnements_vider_tables($nom_meta_base_version) {
 	cextras_api_vider_tables(vabonnements_declarer_champs_extras());
 
 	# Nettoyer les liens courants (le génie optimiser_base_disparus se chargera de nettoyer toutes les tables de liens)
-	// sql_delete('spip_documents_liens', sql_in('objet', array('abonnements_offre', 'abonnement')));
-	// sql_delete('spip_mots_liens', sql_in('objet', array('abonnements_offre', 'abonnement')));
-	// sql_delete('spip_auteurs_liens', sql_in('objet', array('abonnements_offre', 'abonnement')));
+	sql_delete('spip_documents_liens', sql_in('objet', array('abonnements_offre', 'abonnement')));
+	sql_delete('spip_mots_liens', sql_in('objet', array('abonnements_offre', 'abonnement')));
+	sql_delete('spip_auteurs_liens', sql_in('objet', array('abonnements_offre', 'abonnement')));
 	
 	# Nettoyer les versionnages et forums
-	// sql_delete('spip_versions', sql_in('objet', array('abonnements_offre', 'abonnement')));
-	// sql_delete('spip_versions_fragments', sql_in('objet', array('abonnements_offre', 'abonnement')));
-	// sql_delete('spip_forum', sql_in('objet', array('abonnements_offre', 'abonnement')));
+	sql_delete('spip_versions', sql_in('objet', array('abonnements_offre', 'abonnement')));
+	sql_delete('spip_versions_fragments', sql_in('objet', array('abonnements_offre', 'abonnement')));
+	sql_delete('spip_forum', sql_in('objet', array('abonnements_offre', 'abonnement')));
 
 	effacer_meta($nom_meta_base_version);
 }
