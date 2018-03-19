@@ -70,7 +70,6 @@ function vabonnements_vider_tables($nom_meta_base_version) {
 	sql_drop_table('spip_abonnements_offres');
 	sql_drop_table('spip_abonnements');
 	sql_alter('TABLE spip_commandes_details DROP numero_debut');
-	sql_alter('TABLE spip_commandes_details DROP numero_fin');
 
 	// champs extra du plugin
 	cextras_api_vider_tables(vabonnements_declarer_champs_extras());
