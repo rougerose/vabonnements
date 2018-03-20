@@ -60,11 +60,10 @@ function vabonnements_affiche_auteurs_interventions($flux) {
 
 
 /**
- * Création de la commande. 
- * 
  * Ajouter les options d'abonnement (numéro de départ et cadeau)
- * après la création de la commande 
- * (via appel fonction action_commandes_panier())
+ * au moment de la création de la commande.
+ *
+ * Pipeline déclenché par action_commandes_panier()
  * 
  * @param  array $flux Flux du pipeline
  * @return array       Le flux modifié
@@ -145,18 +144,6 @@ function vabonnements_post_edition($flux) {
 	return $flux;
 }
 
-
-/**
- * Paiement de la commande : création de l'abonnement.
- *
- * @param  [type] $flux [description]
- * @return [type]       [description]
- */
-function vabonnements_bank_traiter_reglement($flux) {
-	// ce pipeline peut être appelé deux fois, verifier si l'abonnement
-	// a déjà été créé. 
-	return $flux;
-}
 
 
 /**
