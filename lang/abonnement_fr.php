@@ -21,6 +21,8 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'abonnement_reference_traduction_A2T1I' => 'abonnement 2 ans, tarif réduit, International',
 	'abonnement_reference_traduction_A2T2I' => 'abonnement 2 ans, tarif standard, International',
 	'abonnement_reference_traduction_A2T3I' => 'abonnement 2 ans, tarif soutien, International',
+	'ajouter_abonnement_message_ok' => 'Abonnement ajouté',
+	'ajouter_abonnement_message_erreur' => "Une erreur est survenue. L'abonnement n'a pas pu être ajouté.",
 	'ajouter_lien_abonnement' => 'Ajouter ce abonnement',
 
 	// C
@@ -36,9 +38,12 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'champ_numero_debut_label' => 'Premier numéro',
 	'champ_numero_fin_label' => 'Dernier numéro',
 	'confirmer_supprimer_abonnement' => 'Confirmez-vous la suppression de cet abonnement ?',
+	
+	// E
+	'editer_abonnement_explication' => "La modification d'un abonnement n'est pas possible.",
 
 	// I
-	'icone_creer_abonnement' => 'Créer un abonnement',
+	'icone_creer_abonnement' => 'Ajouter un abonnement',
 	'icone_modifier_abonnement' => 'Modifier ce abonnement',
 	'info_1_abonnement' => '1 abonnement',
 	'info_abonnements_auteur' => 'Les abonnements de cet auteur',
@@ -55,6 +60,8 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'info_paiement_gratuit' => 'Gratuit',
 	'info_paiement_paypal' => 'Carte bleue - Paypal',
 	'info_paiement_virement' => 'Virement',
+	
+	// M
 	
 	// N
 	'numero_encours_info' => " (Numéro actuel)",
