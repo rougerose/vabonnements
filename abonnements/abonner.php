@@ -29,7 +29,7 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 		$defaut = array(
 			'id_auteur' => 0, // TODO: prévoir workflow sans auteur ?
 			'statut' => 'prepa',
-			'id_commande' => 0, // TODO: prévoir workflow sans commande ?
+			'id_commande' => 0,
 			'prix_ht_initial' => null,
 			'date' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
 			'date_debut' => '',
@@ -89,6 +89,18 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 		$numero_fin = filtre_calculer_numero_futur_reference($numero_debut, $numeros_quantite);
 		
 		$statut = $options['statut'];
+		$titre_offre = supprimer_numero($row['titre']);
+		$duree_en_clair = filtre_periode_en_clair($row['duree']);
+		$paiement_en_clair = filtre_paiement_en_clair($options['mode_paiement']);
+		$id_commande = $options['id_commande'];
+		$commande_en_clair = ($id_commande) ? "Commande n° ".$id_commande : "Sans commande liée";
+		
+		// log
+		include_spip('inc/vabonnements');
+		$log_abos = "Ajout de l'abonnement (offre $titre_offre - $duree_en_clair) ; ";
+		$log_abos .= $commande_en_clair." ; ";
+		$log_abos .= "du numéro $numero_debut au numéro $numero_fin ; paiement $paiement_en_clair.";
+		$log = vabonnements_log($log_abos);
 		
 		// Créer l'abonnement
 		$ins = array(
@@ -104,7 +116,7 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 			// TODO: Ajouter colonne prix_echeance dans la table Abonnements
 			// 'prix_echeance' => $options['prix_ht_initial'],
 			'statut' => $statut,
-			// 'log' => ''
+			'log' => $log
 		);
 		
 		$id_abonnement = sql_insertq('spip_abonnements', $ins);

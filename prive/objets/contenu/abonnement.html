@@ -1,7 +1,7 @@
 <BOUCLE_abonnement(ABONNEMENTS){id_abonnement}{statut?}>
 [<div class="champ contenu_id_commande[ (#ID_COMMANDE*|strlen|?{'',vide})]">
 	<label><:abonnement:champ_id_commande_label:> : </label>
-	<span dir="#LANG_DIR" class="#EDIT{id_commande} id_commande">(#ID_COMMANDE|=={0}|?{<:abonnement:info_aucune_commande:>, #ID_COMMANDE})</span>
+	<span dir="#LANG_DIR" class="#EDIT{id_commande} id_commande">(#ID_COMMANDE|=={0}|?{<:abonnement:info_aucune_commande:>, <a href="[(#ID_COMMANDE|generer_url_entite{commande})]">n° #ID_COMMANDE</a>})</span>
 </div>]
 [<div class="champ contenu_numero_debut[ (#NUMERO_DEBUT*|strlen|?{'',vide})]">
   <label class="label"><:abonnement:champ_numero_debut_label:> : </label>
