@@ -21,6 +21,13 @@ function vabonnements_calculer_date_debut($date) {
 	list($annee, $mois, $jour, $heures, $minutes, $secondes) = $date_array;
 	
 	$mois_debut = vabonnements_calculer_mois_saison($jour, $mois);
+	
+	// ajuster l'année ?
+	// Si la date d'origine est entre le 1er janvier et le 20 mars,
+	// la date est corrigée est modifiée au 21 décembre... de l'année précédente.
+	if ($jour >=1 && $jour <= 20 && $mois >= 1 && $mois <= 3) {
+		$annee = $annee - 1;
+	}
 	$jour_debut = 21;
 	$date_debut = date("Y-m-d H:i:s", mktime($heures, $minutes, $secondes, $mois_debut, $jour_debut, $annee));
 	return $date_debut;
