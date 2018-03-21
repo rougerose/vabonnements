@@ -29,6 +29,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'champ_date_debut_label' => 'Date début',
 	'champ_date_fin_label' => 'Date fin',
 	'champ_date_label' => 'date',
+	'champ_duree_echeance_label' => "Durée de l'abonnement",
 	'champ_id_abonnements_offre_label' => 'Id abonnements offre',
 	'champ_id_auteur_label' => 'Id Auteur',
 	'champ_id_commande_label' => 'Commande',
@@ -37,6 +38,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'champ_numero_debut_explication' => "Le dernier numéro d'abonnement sera calculé automatiquement en fonction de la durée et du premier numéro choisis",
 	'champ_numero_debut_label' => 'Premier numéro',
 	'champ_numero_fin_label' => 'Dernier numéro',
+	'champ_prix_echeance_label' => "Prix HT de l'abonnement",
 	'confirmer_supprimer_abonnement' => 'Confirmez-vous la suppression de cet abonnement ?',
 	
 	// E

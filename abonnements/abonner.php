@@ -18,6 +18,8 @@ if (!defined("_ECRIRE_INC_VERSION")) {
  * 		string 	numero_debut
  * 		string 	numero_fin
  * 		string 	mode_paiement
+ * 		string	duree
+ * 		string	log
  * @return int|bool  id_abonnement ou false
  */
 function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
@@ -36,6 +38,7 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 			'date_fin' => '',
 			'numero_debut' => '',
 			'numero_fin' => '',
+			'duree' => '',
 			'mode_paiement' => '',
 			'log' => ''
 		);
@@ -83,8 +86,9 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 		}
 		
 		// date_fin
-		$duree = explode(" ", $row['duree']); // 12 month ou 24 month
-		$duree_valeur = reset($duree);
+		$duree = $row['duree'];
+		$duree_ = explode(" ", $duree); // 12 month ou 24 month
+		$duree_valeur = reset($duree_);
 		$date_fin = vabonnements_calculer_date_fin($date_debut, $duree_valeur);
 		
 		// numero_fin
@@ -94,16 +98,16 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 		$numeros_quantite = ($duree_valeur / 3) - 1;
 		$numero_fin = filtre_calculer_numero_futur_reference($numero_debut, $numeros_quantite);
 		
-		$statut = $options['statut'];
 		$titre_offre = supprimer_numero($row['titre']);
-		$duree_en_clair = filtre_periode_en_clair($row['duree']);
+		$duree_en_clair = filtre_duree_en_clair($duree);
 		$paiement_en_clair = filtre_paiement_en_clair($options['mode_paiement']);
+		$prix_en_clair = prix_formater($prix_ht_initial);
 		$id_commande = $options['id_commande'];
 		$commande_en_clair = ($id_commande) ? "Commande n° ".$id_commande : "Sans commande liée";
 		
 		// log
 		include_spip('inc/vabonnements');
-		$log_abos = "Ajout de l'abonnement (offre $titre_offre - $duree_en_clair) ; ";
+		$log_abos = "Ajout de l'abonnement (offre $titre_offre - $duree_en_clair - $prix_en_clair) ; ";
 		$log_abos .= $commande_en_clair." ; ";
 		$log_abos .= "du numéro $numero_debut au numéro $numero_fin ; paiement $paiement_en_clair.";
 		$log = vabonnements_log($log_abos);
@@ -119,9 +123,9 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 			'numero_debut' => $numero_debut,
 			'numero_fin' => $numero_fin,
 			'mode_paiement' => $options['mode_paiement'],
-			// TODO: Ajouter colonne prix_echeance dans la table Abonnements
-			// 'prix_echeance' => $options['prix_ht_initial'],
-			'statut' => $statut,
+			'prix_echeance' => $prix_ht_initial,
+			'duree_echeance' => $duree,
+			'statut' => $options['statut'],
 			'log' => $log
 		);
 		

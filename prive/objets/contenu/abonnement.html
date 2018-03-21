@@ -3,27 +3,35 @@
 	<label><:abonnement:champ_id_commande_label:> : </label>
 	<span dir="#LANG_DIR" class="#EDIT{id_commande} id_commande">(#ID_COMMANDE|=={0}|?{<:abonnement:info_aucune_commande:>, <a href="[(#ID_COMMANDE|generer_url_entite{commande})]">n° #ID_COMMANDE</a>})</span>
 </div>]
+[<div class="champ contenu_duree[ (#PRIX_ECHEANCE*|strlen|?{'',vide})]">
+	<label class="label"><:abonnement:champ_prix_echeance_label:> : </label>
+	<span dir='#LANG_DIR' class='prix_echeance'>(#PRIX_ECHEANCE|prix_formater)</span>
+</div>]
+[<div class="champ contenu_duree[ (#DUREE_ECHEANCE*|strlen|?{'',vide})]">
+	<label class="label"><:abonnement:champ_duree_echeance_label:> : </label>
+	<span dir='#LANG_DIR' class='duree_echeance'>(#DUREE_ECHEANCE|duree_en_clair)</span>
+</div>]
 [<div class="champ contenu_numero_debut[ (#NUMERO_DEBUT*|strlen|?{'',vide})]">
-  <label class="label"><:abonnement:champ_numero_debut_label:> : </label>
-  <span dir='#LANG_DIR' class='numero_debut'>
-	  (#NUMERO_DEBUT|oui) [(#VAL{Vacarme }|concat{#NUMERO_DEBUT|replace{'v', ''}|ltrim{0}})]
-	  [\((#DATE_DEBUT|saison)[ (#DATE_DEBUT|annee)]\)]
-  </span>
+	<label class="label"><:abonnement:champ_numero_debut_label:> : </label>
+	<span dir='#LANG_DIR' class='numero_debut'>
+		(#NUMERO_DEBUT|oui) [(#VAL{Vacarme }|concat{#NUMERO_DEBUT|replace{'v', ''}|ltrim{0}})]
+		[\((#DATE_DEBUT|saison)[ (#DATE_DEBUT|annee)]\)]
+	</span>
 </div>]
 [<div class="champ contenu_numero_fin[ (#NUMERO_FIN*|strlen|?{'',vide})]">
-  <label class="label"><:abonnement:champ_numero_fin_label:> : </label>
-  <span dir='#LANG_DIR' class='numero_fin'>
-	  (#NUMERO_FIN|oui)[(#VAL{Vacarme }|concat{#NUMERO_FIN|replace{'v', ''}|ltrim{0}})]
-	  [\((#DATE_FIN|saison)[ (#DATE_FIN|annee)]\)]
-  </span>
+	<label class="label"><:abonnement:champ_numero_fin_label:> : </label>
+	<span dir='#LANG_DIR' class='numero_fin'>
+		(#NUMERO_FIN|oui)[(#VAL{Vacarme }|concat{#NUMERO_FIN|replace{'v', ''}|ltrim{0}})]
+		[\((#DATE_FIN|saison)[ (#DATE_FIN|annee)]\)]
+	</span>
 </div>]
 [<div class="champ contenu_mode_paiement[ (#MODE_PAIEMENT*|strlen|?{'',vide})]">
-  <label class="label"><:abonnement:champ_mode_paiement_label:> : </label>
-  <span dir='#LANG_DIR' class='mode_paiement'>(#MODE_PAIEMENT|paiement_en_clair)</span>
+	<label class="label"><:abonnement:champ_mode_paiement_label:> : </label>
+	<span dir='#LANG_DIR' class='mode_paiement'>(#MODE_PAIEMENT|paiement_en_clair)</span>
 </div>]
 <!-- TODO: Ajouter date de réception du réglement (chèque, virement) + interface de saisie de cette date ? -->
 [<div class="champ contenu_log[ (#LOG*|strlen|?{'',vide})]">
-  <label><:abonnement:champ_log_label:> : </label>
-  <pre dir='#LANG_DIR' class='#EDIT{log} log'>(#LOG)</pre>
+	<label><:abonnement:champ_log_label:> : </label>
+	<pre dir='#LANG_DIR' class='#EDIT{log} log'>(#LOG)</pre>
 </div>]
 </BOUCLE_abonnement>

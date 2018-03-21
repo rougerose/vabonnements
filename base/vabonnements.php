@@ -95,45 +95,48 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 		'principale' => 'oui',
 		'page' => false,
 		'field'=> array(
-			'id_abonnement'      => 'bigint(21) NOT NULL',
+			'id_abonnement'        => 'bigint(21) NOT NULL',
 			'id_abonnements_offre' => 'bigint(21) NOT NULL DEFAULT 0',
-			'id_auteur'          => 'bigint(21) NOT NULL DEFAULT 0',
-			'id_commande'        => 'bigint(21) NOT NULL DEFAULT 0',
-			'date'               => 'datetime NOT NULL DEFAULT "0000-00-00 00:00:00"',
-			'date_debut'         => 'datetime NOT NULL DEFAULT "0000-00-00 00:00:00"',
-			'date_fin'           => 'datetime NOT NULL DEFAULT "0000-00-00 00:00:00"',
-			'numero_debut'       => 'tinytext NOT NULL DEFAULT ""',
-			'numero_fin'         => 'tinytext NOT NULL DEFAULT ""',
-			'mode_paiement'      => 'varchar(25) NOT NULL DEFAULT ""',
-			'log'                => 'text NOT NULL DEFAULT ""',
-			'date'               => 'datetime NOT NULL DEFAULT "0000-00-00 00:00:00"',
-			'statut'             => 'varchar(20)  DEFAULT "0" NOT NULL',
-			'maj'                => 'TIMESTAMP'
+			'id_auteur'            => 'bigint(21) NOT NULL DEFAULT 0',
+			'id_commande'          => 'bigint(21) NOT NULL DEFAULT 0',
+			'date'                 => 'datetime NOT NULL DEFAULT "0000-00-00 00:00:00"',
+			'date_debut'           => 'datetime NOT NULL DEFAULT "0000-00-00 00:00:00"',
+			'date_fin'             => 'datetime NOT NULL DEFAULT "0000-00-00 00:00:00"',
+			'numero_debut'         => 'tinytext NOT NULL DEFAULT ""',
+			'numero_fin'           => 'tinytext NOT NULL DEFAULT ""',
+			'duree_echeance'       => 'varchar(10) NOT NULL DEFAULT ""',
+			'prix_echeance'        => 'varchar(25) NOT NULL DEFAULT ""',
+			'mode_paiement'        => 'varchar(25) NOT NULL DEFAULT ""',
+			'log'                  => 'text NOT NULL DEFAULT ""',
+			// 'relance'              => 'varchar(3) NOT NULL DEFAULT ""',
+			'date'                 => 'datetime NOT NULL DEFAULT "0000-00-00 00:00:00"',
+			'statut'               => 'varchar(20)  DEFAULT "0" NOT NULL',
+			'maj'                  => 'TIMESTAMP'
 		),
 		'key' => array(
-			'PRIMARY KEY'        => 'id_abonnement',
-			'KEY statut'         => 'statut'
+			'PRIMARY KEY' => 'id_abonnement',
+			'KEY statut'  => 'statut'
 		),
 		'titre' => '"" AS titre, "" AS lang',
 		'date' => 'date',
-		'champs_editables'  => array('id_abonnements_offre', 'id_auteur', 'date_debut', 'date_fin', 'numero_debut', 'numero_fin', 'mode_paiement', 'log'),
+		'champs_editables'  => array('id_abonnements_offre', 'id_auteur', 'date_debut', 'date_fin', 'numero_debut', 'numero_fin', 'mode_paiement'),
 		'champs_versionnes' => array('id_abonnements_offre', 'date_debut', 'date_fin', 'numero_debut', 'numero_fin', 'mode_paiement'),
 		'rechercher_champs' => array(),
 		'tables_jointures'  => array(),
 		'statut_textes_instituer' => array(
 			'prepa'    => 'abonnement:texte_statut_prepa',
-			'actif'   => 'abonnement:texte_statut_actif',
-			'resilie'   => 'abonnement:texte_statut_resilie',
+			'actif'    => 'abonnement:texte_statut_actif',
+			'resilie'  => 'abonnement:texte_statut_resilie',
 			'poubelle' => 'texte_statut_poubelle',
 		),
 		'statut_images' => array(
 			'abonnement-16.png',
-			'prepa'=>'puce-preparer-8.png',
-			'actif'=>'puce-publier-8.png',
-			'resilie'=>'puce-refuser-8.png',
-			'poubelle'=>'puce-supprimer-8.png'
+			'prepa'    => 'puce-preparer-8.png',
+			'actif'    => 'puce-publier-8.png',
+			'resilie'  => 'puce-refuser-8.png',
+			'poubelle' => 'puce-supprimer-8.png'
 		),
-		'statut'=> array(
+		'statut' => array(
 			array(
 				'champ'     => 'statut',
 				'publie'    => 'actif',
