@@ -27,7 +27,7 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 	if ($row = sql_fetsel('*', 'spip_abonnements_offres', 'id_abonnements_offre='.$id_abonnements_offre)) {
 		
 		$defaut = array(
-			'id_auteur' => 0, // TODO: prévoir workflow sans auteur ?
+			'id_auteur' => 0,
 			'statut' => 'prepa',
 			'id_commande' => 0,
 			'prix_ht_initial' => null,
@@ -41,6 +41,12 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 		);
 		
 		$options = array_merge($defaut, $options);
+		
+		// Pas d'auteur ?
+		if (!$options['id_auteur']) {
+			spip_log("Impossible de creer l'abonnement en base : aucun auteur " . var_export($options, true), "vabonnements" . _LOG_ERREUR);
+			return false;
+		}
 		
 		$prix_ht_initial = $options['prix_ht_initial'];
 		if (is_null($prix_ht_initial)) {
