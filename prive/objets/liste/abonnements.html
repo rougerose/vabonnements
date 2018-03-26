@@ -21,7 +21,7 @@
 				</tr>
 			</thead>
 			<tbody>
-			<BOUCLE_liste_abonnements(ABONNEMENTS){id_abonnements_offre?}{statut?}{recherche?}{tri #ENV{par,id_abonnement},#GET{defaut_tri}}{pagination #ENV{nb,10}}>
+			<BOUCLE_liste_abonnements(ABONNEMENTS){id_abonnements_offre?}{id_auteur?}{statut?}{recherche?}{tri #ENV{par,id_abonnement},#GET{defaut_tri}}{pagination #ENV{nb,10}}>
 				<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})]">
 					<td class="id"><a href="[(#ID_ABONNEMENT|generer_url_entite{abonnement})]">#ID_ABONNEMENT</a></td>
 					<td class="statut">[(#STATUT|puce_statut{abonnement,#ID_ABONNEMENT})]</td>
