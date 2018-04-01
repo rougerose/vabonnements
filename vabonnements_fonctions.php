@@ -56,7 +56,7 @@ function filtre_duree_en_clair($periodicite) {
  * @param  string $periodicite
  * @return string
  */
-function filtre_numero_en_clair($periodicite) {
+function filtre_numeros_nombre_en_clair($periodicite) {
 	$nombre = intval($periodicite);
 	$nb = $nombre / 3;
 	$numeros = ($nb == 1 ? _T('abonnements_offre:numero') : _T('abonnements_offre:numeros', array('nb' => $nb)));
