@@ -11,16 +11,20 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	// A
 	'abonnement_reference_traduction_A1T1F' => 'abonnement 1 an, tarif réduit, France',
 	'abonnement_reference_traduction_A1T2F' => 'abonnement 1 an, tarif standard, France',
-	'abonnement_reference_traduction_A1T3F' => 'abonnement 1 an, tarif soutien, France',
+	'abonnement_reference_traduction_A1T3' => 'abonnement 1 an, tarif soutien',
+	'abonnement_reference_traduction_A1T3F' => 'abonnement 1 an, tarif soutien',
 	'abonnement_reference_traduction_A2T1F' => 'abonnement 2 ans, tarif réduit, France',
 	'abonnement_reference_traduction_A2T2F' => 'abonnement 2 ans, tarif standard, France',
-	'abonnement_reference_traduction_A2T3F' => 'abonnement 2 ans, tarif soutien, France',
+	'abonnement_reference_traduction_A2T3' => 'abonnement 2 ans, tarif soutien',
+	'abonnement_reference_traduction_A2T3F' => 'abonnement 2 ans, tarif soutien',
 	'abonnement_reference_traduction_A1T1I' => 'abonnement 1 an, tarif réduit, International',
 	'abonnement_reference_traduction_A1T2I' => 'abonnement 1 an, tarif standard, International',
-	'abonnement_reference_traduction_A1T3I' => 'abonnement 1 an, tarif soutien, International',
+	'abonnement_reference_traduction_A1T3' => 'abonnement 1 an, tarif soutien',
+	'abonnement_reference_traduction_A1T3I' => 'abonnement 1 an, tarif soutien',
 	'abonnement_reference_traduction_A2T1I' => 'abonnement 2 ans, tarif réduit, International',
 	'abonnement_reference_traduction_A2T2I' => 'abonnement 2 ans, tarif standard, International',
-	'abonnement_reference_traduction_A2T3I' => 'abonnement 2 ans, tarif soutien, International',
+	'abonnement_reference_traduction_A2T3I' => 'abonnement 2 ans, tarif soutien',
+	'abonnement_reference_traduction_A2T3' => 'abonnement 2 ans, tarif soutien',
 	'ajouter_abonnement_message_ok'         => 'Abonnement ajouté',
 	'ajouter_abonnement_message_erreur'     => "Une erreur est survenue. L'abonnement n'a pas pu être ajouté.",
 	'ajouter_lien_abonnement'               => 'Ajouter ce abonnement',
@@ -71,15 +75,15 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'numero_prochain_info'  => " (Prochain numéro)",
 	
 	// O
-	'offrir' => "Offrir un abonnement",
+	'offrir' => "<span>Offrir</span> un abonnement",
 
 	// R
-	'renouveler' => "Renouveler votre abonnement",
+	'renouveler' => "<span>Renouveler</span> votre abonnement",
 	'retirer_lien_abonnement' => 'Retirer ce abonnement',
 	'retirer_tous_liens_abonnements' => 'Retirer tous les abonnements',
 
 	// S
-	'souscrire' => "Souscrire votre abonnement",
+	'souscrire' => "<span>Souscrire</span> un nouvel abonnement",
 	'supprimer_abonnement' => 'Supprimer cet abonnement',
 
 	// T
