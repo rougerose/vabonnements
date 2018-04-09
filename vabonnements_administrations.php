@@ -52,6 +52,10 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 		array('maj_tables', array('spip_abonnements'))
 	);
 	
+	$maj['1.0.3'] = array(
+		array('maj_tables', array('spip_abonnements'))
+	);
+	
 	cextras_api_upgrade(vabonnements_declarer_champs_extras(), $maj['create']);
 	
 	// importer les données abonnements_offres

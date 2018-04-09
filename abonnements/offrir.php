@@ -5,7 +5,12 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 }
 
 /**
- * Abonner un auteur
+ * Offrir un abonnement
+ *
+ * Il s'agit de la première étape qui suit le paiement : l'abonnement est 
+ * attribué à la personne qui paie. Un numéro de coupon cadeau est attribué.
+ * L'activation de l'abonnement par le bénéficiaire sera la deuxième étape.
+ * 
  * @param  int $id_abonnements_offre
  * @param  array  $options
  * 		int 	id_auteur
@@ -22,7 +27,7 @@ if (!defined("_ECRIRE_INC_VERSION")) {
  * 		string	log
  * @return int|bool  id_abonnement ou false
  */
-function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
+function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 	include_spip('base/abstract_sql');
 	$id_abonnement = 0;
 	
@@ -40,7 +45,8 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 			'numero_fin' => '',
 			'duree' => '',
 			'mode_paiement' => '',
-			'log' => ''
+			'log' => '',
+			'coupon' => ''
 		);
 		
 		$options = array_merge($defaut, $options);
@@ -56,8 +62,13 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 			$prix_ht_initial = $row['prix_ht'];
 		}
 		
-		$numero_debut = $options['numero_debut'];
+		// données vides à cette étape.
+		$numero_debut = '';
+		$numero_fin = '';
+		$date_debut = '';
+		$date_fin = '';
 		
+		/*
 		// Ajouter les données nécessaires à l'abonnement
 		// 
 		// date_debut
@@ -97,7 +108,14 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 		// Total moins 1 car le rang utilisé pour le calcul de la référence démarre à zéro.
 		$numeros_quantite = ($duree_valeur / 3) - 1;
 		$numero_fin = filtre_calculer_numero_futur_reference($numero_debut, $numeros_quantite);
+		*/
 		
+		// Cacul du numéro du bon cadeau
+		
+		// Mode test : 
+		$coupon = 'QOIBAAQAXLyeVg';
+		
+		// Données pour le log
 		$titre_offre = supprimer_numero($row['titre']);
 		$duree_en_clair = filtre_duree_en_clair($duree);
 		$paiement_en_clair = filtre_paiement_en_clair($options['mode_paiement']);
@@ -107,9 +125,9 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 		
 		// log
 		include_spip('inc/vabonnements');
-		$log_abos = "Ajout de l'abonnement (offre $titre_offre - $duree_en_clair - $prix_en_clair) ; ";
+		$log_abos = "Paiement de l'abonnement-cadeau (offre $titre_offre - $duree_en_clair - $prix_en_clair) ; ";
 		$log_abos .= $commande_en_clair." ; ";
-		$log_abos .= "du numéro $numero_debut au numéro $numero_fin ; paiement $paiement_en_clair.";
+		$log_abos .= "paiement $paiement_en_clair.";
 		$log = vabonnements_log($log_abos);
 		
 		// Créer l'abonnement
@@ -126,7 +144,8 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 			'prix_echeance' => $prix_ht_initial,
 			'duree_echeance' => $duree,
 			'statut' => $options['statut'],
-			'log' => $log
+			'log' => $log,
+			'coupon' => $coupon
 		);
 		
 		$id_abonnement = sql_insertq('spip_abonnements', $ins);

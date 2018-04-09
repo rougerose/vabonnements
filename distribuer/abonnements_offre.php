@@ -30,7 +30,6 @@ function distribuer_abonnements_offre_dist($id_abonnements_offre, $detail, $comm
 		// 	}
 		// }
 		
-		$abonner = charger_fonction("abonner", "abonnements");
 		$options = array(
 			'id_commande' => $commande['id_commande'],
 			'id_auteur' => $commande['id_auteur'],
@@ -41,6 +40,20 @@ function distribuer_abonnements_offre_dist($id_abonnements_offre, $detail, $comm
 			'numero_debut' => $detail['numero_debut']
 		);
 		
+		//
+		// 2 options possibles : 
+		// - numero_debut = "coupon", alors l'abonnement est offert. Il s'agit
+		// d'appeler la fonction abonnements/offrir.php
+		// - numero_debut est égal à une chaîne du type v0000, alors
+		// l'abonnement est un "régulier" et souscrit pour l'auteur lui-même.
+		// Il s'agit d'appeler la fonction abonnements/abonner.php
+		
+		if ($detail['numero_debut'] == 'coupon') {
+			$abonnement = charger_fonction("offrir", "abonnements");
+		} else {
+			$abonnement = charger_fonction("abonner", "abonnements");
+		}
+		
 		// // TODO: Paiement récurrent
 		// if (isset($commande['echeances_date_debut']) and intval($commande['echeances_date_debut'])){
 		// 	$options['date_debut'] = $commande['echeances_date_debut'];
@@ -49,7 +62,7 @@ function distribuer_abonnements_offre_dist($id_abonnements_offre, $detail, $comm
 		$nb = $detail['quantite'];
 		
 		while ($nb-->0) {
-			$abonner($id_abonnements_offre, $options);
+			$abonnement($id_abonnements_offre, $options);
 		}
 		
 		return 'envoye';

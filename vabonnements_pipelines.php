@@ -95,7 +95,13 @@ function vabonnements_post_edition($flux) {
 					$id_abonnements_offre = $offre['id_objet'];
 					$options = unserialize($offre['options']);
 					
-					$set = array('numero_debut' => $options['numero']);
+					// coupon cadeau ?
+					if ($options['coupon'] == 'oui') {
+						$set = array('numero_debut' => 'coupon');
+						
+					} else {
+						$set = array('numero_debut' => $options['numero']);
+					}
 					
 					// Récupérer l'offre d'abonnement qui a été 
 					// enregistrée dans la commande
