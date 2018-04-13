@@ -57,6 +57,10 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 			return false;
 		}
 		
+		// statut de l'abonnement en prop
+		// c'est un cadeau, il sera activé plus tard par le bénéficiaire.
+		$statut = 'prop';
+		
 		$prix_ht_initial = $options['prix_ht_initial'];
 		if (is_null($prix_ht_initial)) {
 			$prix_ht_initial = $row['prix_ht'];
@@ -125,7 +129,7 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 		
 		// log
 		include_spip('inc/vabonnements');
-		$log_abos = "Paiement de l'abonnement-cadeau (offre $titre_offre - $duree_en_clair - $prix_en_clair) ; ";
+		$log_abos = "Paiement de l'abonnement (offre $titre_offre - $duree_en_clair - $prix_en_clair) ; Abonnement destiné à être offert ; ";
 		$log_abos .= $commande_en_clair." ; ";
 		$log_abos .= "paiement $paiement_en_clair.";
 		$log = vabonnements_log($log_abos);
@@ -143,7 +147,7 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 			'mode_paiement' => $options['mode_paiement'],
 			'prix_echeance' => $prix_ht_initial,
 			'duree_echeance' => $duree,
-			'statut' => $options['statut'],
+			'statut' => $statut,
 			'log' => $log,
 			'coupon' => $coupon
 		);
@@ -155,8 +159,7 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 			return false;
 		}
 		
-		if ($statut == 'actif') {
-			// TODO: activer notifications
+		if ($statut == 'prop') {
 			//$notifications = charger_fonction("notifications", "inc");
 			//$notifications('activerabonnement', $id_abonnement, array('statut' => $statut, 'statut_ancien' => 'prepa'));
 		}

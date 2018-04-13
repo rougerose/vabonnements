@@ -33,7 +33,7 @@ function distribuer_abonnements_offre_dist($id_abonnements_offre, $detail, $comm
 		$options = array(
 			'id_commande' => $commande['id_commande'],
 			'id_auteur' => $commande['id_auteur'],
-			'statut' => 'actif',
+			'statut' => '',
 			'mode_paiement' => $commande['mode'],
 			// 'abonne_uid' => $abonne_uid, // TODO: paiement récurrent
 			'prix_ht_initial' => $detail['prix_unitaire_ht'], // reprendre le prix qui a ete enregistre dans la commande

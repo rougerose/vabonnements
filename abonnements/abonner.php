@@ -51,6 +51,9 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 			return false;
 		}
 		
+		// statut de l'abonnement
+		$statut = 'actif';
+		
 		$prix_ht_initial = $options['prix_ht_initial'];
 		if (is_null($prix_ht_initial)) {
 			$prix_ht_initial = $row['prix_ht'];
@@ -125,7 +128,7 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 			'mode_paiement' => $options['mode_paiement'],
 			'prix_echeance' => $prix_ht_initial,
 			'duree_echeance' => $duree,
-			'statut' => $options['statut'],
+			'statut' => $statut,
 			'log' => $log
 		);
 		
