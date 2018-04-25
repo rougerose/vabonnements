@@ -6,7 +6,7 @@
 	compatibilite="[3.2.0;3.2.*]"
 	logo="prive/themes/spip/images/vabonnements-64.png"
 	documentation=""
-	schema="1.0.3" 
+	schema="1.0.4" 
 >
 	<nom>Vacarme Abonnements</nom>
 
@@ -18,17 +18,13 @@
 	<necessite nom="bank" compatibilite="[3.5.9;]" />
 
 	<pipeline nom="autoriser" inclure="vabonnements_autorisations.php" />
-
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/vabonnements.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/vabonnements.php" />
 	<pipeline nom="declarer_champs_extras" inclure="base/vabonnements.php" />
-	
 	<pipeline nom="optimiser_base_disparus" inclure="vabonnements_pipelines.php" />
 	<pipeline nom="taches_generales_cron" inclure="vabonnements_pipelines.php" />
-	
 	<pipeline nom="affiche_auteurs_interventions" inclure="vabonnements_pipelines.php" />
 	<pipeline nom="compter_contributions_auteur" inclure="vabonnements_pipelines.php" />
-	
 	<pipeline nom="post_edition" inclure="vabonnements_pipelines.php" />
 	
 	<menu nom="abonnements_offre" titre="abonnements_offre:titre_abonnements_offres" parent="menu_edition" icone="images/abonnements_offre-16.png" action="abonnements_offres" />

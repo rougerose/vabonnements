@@ -127,6 +127,7 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 		'statut_textes_instituer' => array(
 			'prepa'    => 'abonnement:texte_statut_prepa',
 			'prop'    => 'abonnement:texte_statut_prop',
+			'paye'    => 'abonnement:texte_statut_paye',
 			'actif'    => 'abonnement:texte_statut_actif',
 			'resilie'  => 'abonnement:texte_statut_resilie',
 			'poubelle' => 'texte_statut_poubelle',
@@ -135,6 +136,7 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 			'abonnement-16.png',
 			'prepa'    => 'puce-preparer-8.png',
 			'prop'    => 'puce-proposer-8.png',
+			'paye'    => 'puce-abo-paye-8.png',
 			'actif'    => 'puce-publier-8.png',
 			'resilie'  => 'puce-refuser-8.png',
 			'poubelle' => 'puce-supprimer-8.png'
@@ -142,8 +144,8 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 		'statut' => array(
 			array(
 				'champ'     => 'statut',
-				'publie'    => 'actif',
-				'previsu'   => 'actif,prepa,prop',
+				'publie'    => 'paye, actif',
+				'previsu'   => 'actif,prepa,prop,paye',
 				'post_date' => 'date',
 				'exception' => array('statut','tout')
 			)

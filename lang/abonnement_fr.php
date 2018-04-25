@@ -57,6 +57,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'info_aucun_abonnement'     => 'Aucun abonnement',
 	'info_aucune_commande'      => 'Aucune commande liée',
 	'info_filtre_actif'         => "Actifs",
+	'info_filtre_paye'         => "Payés",
 	'info_filtre_prepa'         => "En commande",
 	'info_filtre_prop'         => "En attente",
 	'info_filtre_resilie'       => "Résiliés",
@@ -67,6 +68,12 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'info_paiement_gratuit'     => 'Gratuit',
 	'info_paiement_paypal'      => 'Carte bleue - Paypal',
 	'info_paiement_virement'    => 'Virement',
+	'info_explication_statut_' => "Les abonnements, tous statuts confondus.",
+	'info_explication_statut_actif' => "Les abonnements actuellement en cours",
+	'info_explication_statut_paye' => "Les abonnements payés par un tiers mais qui n'ont pas encore été validés par le bénéficaire.",
+	'info_explication_statut_prepa' => "Les abonnements qui ont été créés, mais non pas été validés.",
+	'info_explication_statut_prop' => "Les abonnements en attente de paiement.",
+	'info_explication_statut_resilie' => "Les abonnements arrivés à échéance",
 	
 	// M
 	
@@ -92,6 +99,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'texte_changer_statut_abonnement'           => 'Ce abonnement est :',
 	'texte_creer_associer_abonnement'           => 'Créer et associer un abonnement',
 	'texte_definir_comme_traduction_abonnement' => 'Ce abonnement est une traduction du abonnement numéro :',
+	'texte_statut_prepa'                        => "Payé",
 	'texte_statut_prepa'                        => "En commande",
 	'texte_statut_prop'                        => "En attente",
 	'texte_statut_actif'                        => "Actif",
