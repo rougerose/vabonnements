@@ -93,44 +93,49 @@ function vabonnements_post_edition($flux) {
 			if (count($offres)) {
 				foreach($offres as $offre) {
 					$id_abonnements_offre = $offre['id_objet'];
+					$commandes_detail = sql_fetsel(
+						'*',
+						'spip_commandes_details',
+						'id_commande=' . $id_commande . ' and id_objet=' . intval($id_abonnements_offre) . ' and objet=' . sql_quote($offre['objet'])
+					);
+						
 					$options = unserialize($offre['options']);
 					
-					// coupon cadeau ?
-					if ($options['coupon'] == 'oui') {
-						$set = array('numero_debut' => 'coupon');
+					if ($id_commandes_detail = $commandes_detail['id_commandes_detail']) {
 						
-					} else {
-						$set = array('numero_debut' => $options['numero']);
-					}
-					
-					// Récupérer l'offre d'abonnement qui a été 
-					// enregistrée dans la commande
-					$id_commandes_detail = sql_getfetsel('id_commandes_detail', 'spip_commandes_details', 'id_commande='.$id_commande.' and id_objet='.$id_abonnements_offre.' and objet='.sql_quote($offre['objet']));
-					
-					if ($id_commandes_detail) {
+						// abonnement offert ?
+						if (is_numeric($options['coupon'])) {
+							//$set = array('numero_debut' => 'coupon');
+							$commandes_detail['descriptif'] .= ' offert@' . $options['coupon'];
+							$set = array('descriptif' => $commandes_detail['descriptif']);
+							
+						} else {
+							$set = array('numero_debut' => $options['numero']);
+						}
+						
 						objet_modifier('commandes_detail', $id_commandes_detail, $set);
-					}
-					
-					// Si le cadeau existe dans le panier,
-					// ajouter le produit correspondant dans la commande.
-					$id_produit = intval($options['cadeau']);
-					
-					if ($id_produit > 0 AND $titre_produit = sql_getfetsel('titre', 'spip_produits', 'id_produit='.$id_produit)) {
-						$set_produit = array(
-							'id_commande' => $id_commande,
-							'objet' => 'produit',
-							'id_objet' => $id_produit,
-							'descriptif' => $titre_produit . ' abonnements_offre#' . $id_abonnements_offre . '-' . $id_commandes_detail,
-							'quantite' => 1,
-							'prix_unitaire_ht' => 0, // c'est un cadeau, le prix "réel" n'est pas utilisé.
-							'taxe' => $taxe,
-							'reduction' => 0,
-							'statut' => 'attente'
-						);
 						
-						// ajouter le cadeau dans la commande
-						$id_commandes_detail = objet_inserer('commandes_detail');
-						objet_modifier('commandes_detail', $id_commandes_detail, $set_produit);
+						// Si le cadeau existe dans le panier,
+						// ajouter le produit correspondant dans la commande.
+						$id_produit = intval($options['cadeau']);
+						
+						if ($id_produit > 0 AND $titre_produit = sql_getfetsel('titre', 'spip_produits', 'id_produit='.$id_produit)) {
+							$set_produit = array(
+								'id_commande' => $id_commande,
+								'objet' => 'produit',
+								'id_objet' => $id_produit,
+								'descriptif' => $titre_produit . ' abonnements_offre#' . $id_abonnements_offre . '-' . $id_commandes_detail,
+								'quantite' => 1,
+								'prix_unitaire_ht' => 0, // c'est un cadeau, le prix "réel" n'est pas utilisé.
+								'taxe' => $taxe,
+								'reduction' => 0,
+								'statut' => 'attente'
+							);
+							
+							// ajouter le cadeau dans la commande
+							$id_commandes_detail = objet_inserer('commandes_detail');
+							objet_modifier('commandes_detail', $id_commandes_detail, $set_produit);
+						}
 					}
 				}
 			}
