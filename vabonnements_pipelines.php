@@ -120,7 +120,7 @@ function vabonnements_post_edition($flux) {
 							'id_commande' => $id_commande,
 							'objet' => 'produit',
 							'id_objet' => $id_produit,
-							'descriptif' => $titre_produit . ' abonnements_offre#' . $id_abonnements_offre,
+							'descriptif' => $titre_produit . ' abonnements_offre#' . $id_abonnements_offre . '-' . $id_commandes_detail,
 							'quantite' => 1,
 							'prix_unitaire_ht' => 0, // c'est un cadeau, le prix "réel" n'est pas utilisé.
 							'taxe' => $taxe,
@@ -128,20 +128,9 @@ function vabonnements_post_edition($flux) {
 							'statut' => 'attente'
 						);
 						
-						// Le produit n'a pas déjà été ajouté à la commande ?
-						$where = array();
-						foreach ($set_produit as $k => $w) {
-							if (in_array($k, array('id_commande', 'objet', 'id_objet'))) {
-								$where[] = "$k=" . sql_quote($w);
-							}
-						}
-						
-						if (!$id_commandes_detail = sql_getfetsel('id_commandes_detail', 'spip_commandes_details', $where)) {
-							// créer la ligne relative au cadeau
-							$id_commandes_detail = objet_inserer('commandes_detail');
-							// ajouter toutes les données du produit
-							objet_modifier('commandes_detail', $id_commandes_detail, $set_produit);
-						}
+						// ajouter le cadeau dans la commande
+						$id_commandes_detail = objet_inserer('commandes_detail');
+						objet_modifier('commandes_detail', $id_commandes_detail, $set_produit);
 					}
 				}
 			}
