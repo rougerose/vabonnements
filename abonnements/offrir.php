@@ -29,6 +29,7 @@ if (!defined("_ECRIRE_INC_VERSION")) {
  */
 function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 	include_spip('base/abstract_sql');
+	
 	$id_abonnement = 0;
 	
 	if ($row = sql_fetsel('*', 'spip_abonnements_offres', 'id_abonnements_offre='.$id_abonnements_offre)) {
@@ -38,6 +39,7 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 			'statut' => 'prepa',
 			'id_commande' => 0,
 			'prix_ht_initial' => null,
+			'taxe' => $row['taxe'],
 			'date' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
 			'date_debut' => '',
 			'date_fin' => '',
@@ -51,93 +53,118 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 		
 		$options = array_merge($defaut, $options);
 		
+		
+		// 
 		// Pas d'auteur ?
+		// 
 		if (!$options['id_auteur']) {
 			spip_log("Impossible de créer l'abonnement en base : aucun auteur " . var_export($options, true), "vabonnements" . _LOG_ERREUR);
 			return false;
 		}
 		
-		// statut de l'abonnement en prop
-		// c'est un cadeau, il sera activé plus tard par le bénéficiaire.
-		$statut = 'prop';
+		
+		// 
+		// C'est un cadeau, l'abonnement sera activé directement par le 
+		// bénéficiaire. Son statut est payé pour le moment.
+		// 
+		$statut = 'paye';
 		
 		$prix_ht_initial = $options['prix_ht_initial'];
+		
 		if (is_null($prix_ht_initial)) {
 			$prix_ht_initial = $row['prix_ht'];
 		}
 		
-		// données vides à cette étape.
+		
+		// 
+		// Abonnement offert, les données relatives au numéro de début, de fin,
+		// ainsi que la date de fin d'abonnement restent vides.
+		// Elles seront modifiées lors de l'activation du bénéficiaire. 
+		// 
+		// La seule information que l'on garde est la date d'envoi du message 
+		// souhaitée par le payeur. Elle sera utilisée à cet effet dans un 
+		// premier temps, puis modifiée selon ce que souhaite effectivement
+		// le bénéficiaire. 
+		// 
 		$numero_debut = '';
 		$numero_fin = '';
 		$date_debut = '';
 		$date_fin = '';
 		
-		/*
-		// Ajouter les données nécessaires à l'abonnement
-		// 
-		// date_debut
-		// 
-		// La date_debut correspond à la date de sortie du numéro (date_numero)
-		$numero_depart = sql_fetsel('date_numero', 'spip_rubriques', 'reference='.sql_quote($numero_debut));
 		
-		include_spip('inc/vabonnements_calculer_date');
+		// 
+		// Identifier le bénéficiaire qui est enregistré dans le descriptif
+		// de la commande d'abonnement
+		// 
+		$descriptif = sql_getfetsel(
+			'descriptif',
+			'spip_commandes_details',
+			'id_commandes_detail=' . $options['id_commandes_detail']
+		);
+		// 'offert@id_auteur'
+		$beneficiaire = substr(strstr($descriptif, '@'), 1);
+		$id_auteur = intval($beneficiaire);
 		
-		if ($numero_depart) {
-			// La date_numero est "normalisée" en début de saison.
-			$date_debut = vabonnements_calculer_date_debut($numero_depart['date_numero']);
+		
+		// 
+		// La date d'envoi du message -- et la date éventuelle de son abonnement --
+		// sont notée dans le champ PGP
+		// 
+		if ($date_message = sql_getfetsel('pgp', 'spip_auteurs', 'id_auteur=' . $id_auteur)) {
+			$date_message = unserialize($date_message);
 			
-		} else {
-			// Si la rubrique n'existe pas, l'abonnement débute 
-			// avec le prochain numéro. La date de ce numéro est 
-			// alors calculée à partir de la date du numéro en cours.
-			$numero_encours = sql_fetsel(
-				"date_numero", 
-				"spip_rubriques", 
-				"statut='publie' AND id_parent=115", 
-				"", 
-				"titre DESC"
-			);
-			$date_debut = filtre_calculer_numero_futur_date($numero_encours['date_numero']);
+			$date_debut = date('Y-m-d H-i-s', $date_message['abonnement_offert_date']);
+			
+			// effacer la date du champ PGP
+			sql_updateq('spip_auteurs', array('pgp' => ''), 'id_auteur=' . $id_auteur);
 		}
 		
-		// date_fin
-		$duree = $row['duree'];
-		$duree_ = explode(" ", $duree); // 12 month ou 24 month
-		$duree_valeur = reset($duree_);
-		$date_fin = vabonnements_calculer_date_fin($date_debut, $duree_valeur);
 		
-		// numero_fin
 		// 
-		// Nombre de numéros à servir pour cet abonnement (1 numéro par trimestre).
-		// Total moins 1 car le rang utilisé pour le calcul de la référence démarre à zéro.
-		$numeros_quantite = ($duree_valeur / 3) - 1;
-		$numero_fin = filtre_calculer_numero_futur_reference($numero_debut, $numeros_quantite);
-		*/
+		// Cacul du numéro du code cadeau qui sera envoyé au bénéficiaire
+		// afin qu'il active son abonnement.
+		// 
+		include_spip('inc/vabonnements_code');
 		
-		// Cacul du numéro du bon cadeau
+		$date_commande = sql_getfetsel('date', 'spip_commandes', 'id_commande=' . $options['id_commande']);
+		$code_action = _ACTION_OFFRIR_ABONNEMENT;
+		$code_cadeau = vabonnements_creer_code($id_auteur, $date_commande, $code_action);
 		
-		// Mode test : 
-		$coupon = 'QOIBAAQAXLyeVg';
 		
-		// Données pour le log
-		$titre_offre = supprimer_numero($row['titre']);
-		$duree_en_clair = filtre_duree_en_clair($duree);
-		$paiement_en_clair = filtre_paiement_en_clair($options['mode_paiement']);
-		$prix_en_clair = prix_formater($prix_ht_initial);
-		$id_commande = $options['id_commande'];
-		$commande_en_clair = ($id_commande) ? "Commande n° ".$id_commande : "Sans commande liée";
-		
-		// log
+		// 
+		// Log
+		// 
 		include_spip('inc/vabonnements');
-		$log_abos = "Paiement de l'abonnement (offre $titre_offre - $duree_en_clair - $prix_en_clair) ; Abonnement destiné à être offert ; ";
-		$log_abos .= $commande_en_clair." ; ";
-		$log_abos .= "paiement $paiement_en_clair.";
+		
+		$titre_offre = supprimer_numero($row['titre']);
+		$duree_en_clair = filtre_duree_en_clair($row['duree']);
+		$prix_en_clair = prix_formater($prix_ht_initial + ($prix_ht_initial * $options['taxe']));
+		$id_commande = $options['id_commande'];
+		$commande_en_clair = "Commande n°$id_commande : ";
+		$date_debut_en_clair = affdate($date_debut);
+		$id_payeur = $options['id_auteur'];
+		$nom_payeur = prenom_nom(generer_info_entite($id_payeur, 'auteur', 'nom'));
+		$message_payeur = sql_countsel(
+			'spip_messages',
+			'id_auteur=' . sql_quote($id_payeur) . ' AND destinataires LIKE ' . sql_quote("%$id_auteur%") . ' AND type=' . sql_quote('kdo') . ' AND statut=' . sql_quote('prepa')
+		);
+		$message_perso_payeur = ($message_payeur) ? "Oui." : "Non.";
+		
+		// Exemple -> Commande n°XX : paiement de l'abonnement X ans, offre tarif... (prix) par Nom prénom (auteur n°) et destiné à Nom Prénom (auteur n°). Code cadeau envoyé au bénéficiaire : . Message personnalité du payeur ? Oui|Non.
+		$log_abos = $commande_en_clair."paiement de l'abonnement $duree_en_clair, offre $titre_offre (prix $prix_en_clair), ";
+		$log_abos .= "par $nom_payeur (auteur n°" . $options['id_auteur'] . "). ";
+		$log_abos .= "Code d'activation destiné au bénéficiaire $code_cadeau. ";
+		$log_abos .= "Le message annonçant le cadeau sera envoyé le $date_debut_en_clair. ";
+		$log_abos .=  "Message personnalisé par le payeur ? $message_perso_payeur";
 		$log = vabonnements_log($log_abos);
 		
+		
+		// 
 		// Créer l'abonnement
+		// 
 		$ins = array(
 			'id_abonnements_offre' => $id_abonnements_offre,
-			'id_auteur' => $options['id_auteur'],
+			'id_auteur' => $id_auteur,
 			'id_commande' => $options['id_commande'],
 			'date' => $options['date'],
 			'date_debut' => $date_debut,
@@ -146,10 +173,10 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 			'numero_fin' => $numero_fin,
 			'mode_paiement' => $options['mode_paiement'],
 			'prix_echeance' => $prix_ht_initial,
-			'duree_echeance' => $duree,
+			'duree_echeance' => $options['duree'],
 			'statut' => $statut,
 			'log' => $log,
-			'coupon' => $coupon
+			'coupon' => $code_cadeau
 		);
 		
 		$id_abonnement = sql_insertq('spip_abonnements', $ins);
@@ -160,6 +187,8 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 		}
 		
 		if ($statut == 'prop') {
+			// TODO: notifier le payeur 
+			// 
 			//$notifications = charger_fonction("notifications", "inc");
 			//$notifications('activerabonnement', $id_abonnement, array('statut' => $statut, 'statut_ancien' => 'prepa'));
 		}

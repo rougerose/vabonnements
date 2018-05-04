@@ -24,6 +24,7 @@ if (!defined("_ECRIRE_INC_VERSION")) {
  */
 function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 	include_spip('base/abstract_sql');
+	
 	$id_abonnement = 0;
 	
 	if ($row = sql_fetsel('*', 'spip_abonnements_offres', 'id_abonnements_offre='.$id_abonnements_offre)) {
@@ -33,6 +34,7 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 			'statut' => 'prepa',
 			'id_commande' => 0,
 			'prix_ht_initial' => null,
+			'taxe' => $row['taxe'],
 			'date' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
 			'date_debut' => '',
 			'date_fin' => '',
@@ -45,14 +47,19 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 		
 		$options = array_merge($defaut, $options);
 		
+		// 
 		// Pas d'auteur ?
+		// 
 		if (!$options['id_auteur']) {
 			spip_log("Impossible de créer l'abonnement en base : aucun auteur " . var_export($options, true), "vabonnements" . _LOG_ERREUR);
 			return false;
 		}
 		
-		// statut de l'abonnement
-		$statut = 'actif';
+		// 
+		// L'abonnement est indiqué comme payé. Il sera activé par le cron
+		// à la date de début d'abonnement.
+		// 
+		$statut = 'paye';
 		
 		$prix_ht_initial = $options['prix_ht_initial'];
 		if (is_null($prix_ht_initial)) {
@@ -61,23 +68,34 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 		
 		$numero_debut = $options['numero_debut'];
 		
+		
+		
+		// 
 		// Ajouter les données nécessaires à l'abonnement
 		// 
-		// date_debut
+		
 		// 
+		// -----------
+		// Date_debut
+		// -----------
 		// La date_debut correspond à la date de sortie du numéro (date_numero)
+		// 
 		$numero_depart = sql_fetsel('date_numero', 'spip_rubriques', 'reference='.sql_quote($numero_debut));
 		
 		include_spip('inc/vabonnements_calculer_date');
 		
 		if ($numero_depart) {
+			// 
 			// La date_numero est "normalisée" en début de saison.
+			// 
 			$date_debut = vabonnements_calculer_date_debut($numero_depart['date_numero']);
 			
 		} else {
+			// 
 			// Si la rubrique n'existe pas, l'abonnement débute 
 			// avec le prochain numéro. La date de ce numéro est 
 			// alors calculée à partir de la date du numéro en cours.
+			// 
 			$numero_encours = sql_fetsel(
 				"date_numero", 
 				"spip_rubriques", 
@@ -88,34 +106,46 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 			$date_debut = filtre_calculer_numero_futur_date($numero_encours['date_numero']);
 		}
 		
-		// date_fin
+		// 
+		// -----------
+		// Date_fin
+		// -----------
+		// 
 		$duree = $row['duree'];
 		$duree_ = explode(" ", $duree); // 12 month ou 24 month
 		$duree_valeur = reset($duree_);
 		$date_fin = vabonnements_calculer_date_fin($date_debut, $duree_valeur);
 		
-		// numero_fin
 		// 
+		// -----------
+		// Numero_fin
+		// -----------
 		// Nombre de numéros à servir pour cet abonnement (1 numéro par trimestre).
 		// Total moins 1 car le rang utilisé pour le calcul de la référence démarre à zéro.
+		// 
 		$numeros_quantite = ($duree_valeur / 3) - 1;
+		
 		$numero_fin = filtre_calculer_numero_futur_reference($numero_debut, $numeros_quantite);
+		
+		// 
+		// Log
+		// 
+		include_spip('inc/vabonnements');
 		
 		$titre_offre = supprimer_numero($row['titre']);
 		$duree_en_clair = filtre_duree_en_clair($duree);
-		$paiement_en_clair = filtre_paiement_en_clair($options['mode_paiement']);
-		$prix_en_clair = prix_formater($prix_ht_initial);
+		$prix_en_clair = prix_formater($prix_ht_initial + ($prix_ht_initial * $options['taxe']));
 		$id_commande = $options['id_commande'];
-		$commande_en_clair = ($id_commande) ? "Commande n° ".$id_commande : "Sans commande liée";
+		$commande_en_clair = ($id_commande) ? "Commande n°$id_commande : " : "Commande réalisée par un administrateur du site : "; 
 		
-		// log
-		include_spip('inc/vabonnements');
-		$log_abos = "Ajout de l'abonnement (offre $titre_offre - $duree_en_clair - $prix_en_clair) ; ";
-		$log_abos .= $commande_en_clair." ; ";
-		$log_abos .= "du numéro $numero_debut au numéro $numero_fin ; paiement $paiement_en_clair.";
+		// Exemple -> Commande n° XX : souscription abonnement 2 ans, offre Tarif réduit, (prix TTC), du numéro xx au numéro yy.
+		$log_abos = $commande_en_clair."souscription de l'abonnement $duree_en_clair, offre $titre_offre (prix $prix_en_clair), ";
+		$log_abos .= "du numéro $numero_debut au numéro $numero_fin.";
 		$log = vabonnements_log($log_abos);
 		
+		// 
 		// Créer l'abonnement
+		// 
 		$ins = array(
 			'id_abonnements_offre' => $id_abonnements_offre,
 			'id_auteur' => $options['id_auteur'],
