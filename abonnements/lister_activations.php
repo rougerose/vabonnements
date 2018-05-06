@@ -29,7 +29,7 @@ function abonnements_lister_activations($date, $jours = null) {
 	);
 	
 	while ($row = sql_fetch($res)) {
-		$abonnements[$row['id_abonnement']] = array('id_auteur' => $row['id_auteur']);
+		$abonnements[$row['id_abonnement']] = array('id_auteur' => $row['id_auteur'], 'log' => $row['log']);
 	}
 	
 	return $abonnements;

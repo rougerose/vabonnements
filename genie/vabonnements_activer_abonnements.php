@@ -27,8 +27,11 @@ function genie_vabonnements_activer_abonnements($time) {
 			autoriser_exception('modifier', 'abonnement', $id_abonnement);
 			autoriser_exception('instituer', 'abonnement', $id_abonnement);
 			
-			//Activation de l'abonnement
-			$erreur = objet_modifier('abonnement', $id_abonnement, array('statut' => 'actif'));
+			$log_activation = "Activation automatique de l'abonnement";
+			$log = $abo['log'];
+			$log .= vabonnements_log($log_activation);
+			
+			$erreur = objet_modifier('abonnement', $id_abonnement, array('statut' => 'actif', 'log' => $log));
 			
 			spip_log("Abonnement n°$id_abonnement est activé", 'vabonnements_activer'._LOG_INFO_IMPORTANTE);
 			
