@@ -91,6 +91,7 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 		$date_debut = '';
 		$date_fin = '';
 		
+		$duree = $row['duree'];
 		
 		// 
 		// Identifier le bénéficiaire qui est enregistré dans le descriptif
@@ -137,7 +138,7 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 		include_spip('inc/vabonnements');
 		
 		$titre_offre = supprimer_numero($row['titre']);
-		$duree_en_clair = filtre_duree_en_clair($row['duree']);
+		$duree_en_clair = filtre_duree_en_clair($duree);
 		$prix_en_clair = prix_formater($prix_ht_initial + ($prix_ht_initial * $options['taxe']));
 		$id_commande = $options['id_commande'];
 		$commande_en_clair = "Commande n°$id_commande : ";
@@ -173,7 +174,7 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 			'numero_fin' => $numero_fin,
 			'mode_paiement' => $options['mode_paiement'],
 			'prix_echeance' => $prix_ht_initial,
-			'duree_echeance' => $options['duree'],
+			'duree_echeance' => $duree,
 			'statut' => $statut,
 			'log' => $log,
 			'coupon' => $code_cadeau
