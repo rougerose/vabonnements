@@ -83,5 +83,9 @@ function vabonnements_optimiser_base_disparus($flux) {
 function vabonnements_taches_generales_cron($taches_generales) {
 	// référencer les rubriques correspondant aux numéros, 1 fois par heure. 
 	$taches_generales['vabonnements_referencer_numeros'] = 3600;
+	
+	// Activer les abonnements payés et dont la date de début est celle du jour
+	$taches_generales['vabonnements_activer_abonnements'] = 3600 * 12;
+	
 	return $taches_generales;
 }
