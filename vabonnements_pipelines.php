@@ -87,5 +87,7 @@ function vabonnements_taches_generales_cron($taches_generales) {
 	// Activer les abonnements payés et dont la date de début est celle du jour
 	$taches_generales['vabonnements_activer_abonnements'] = 3600 * 12;
 	
+	$taches_generales['vabonnements_informer_tiers'] = 3600 * 24;
+	
 	return $taches_generales;
 }

@@ -7,13 +7,15 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 function abonnements_lister_activations($date, $jours = null) {
 	include_spip('base/abstract_sql');
 	
+	// TODO: à vérifier 
+	
 	if (is_null($jours)) {
 		$jours = 2;
 	}
 	
 	$abonnements = array();
 	
-	$debut = date('Y-m-d 00:00:00', strtotime("-$jours day", $date));
+	//$debut = date('Y-m-d 00:00:00', strtotime("-$jours day", $date));
 	$fin = date('Y-m-d H:i:s', $date);
 	
 	$res = sql_select(
