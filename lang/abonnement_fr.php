@@ -68,12 +68,6 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'info_paiement_gratuit'     => 'Gratuit',
 	'info_paiement_paypal'      => 'Carte bleue - Paypal',
 	'info_paiement_virement'    => 'Virement',
-	'info_explication_statut_' => "Les abonnements, tous statuts confondus.",
-	'info_explication_statut_actif' => "Les abonnements actuellement en cours",
-	'info_explication_statut_paye' => "Les abonnements payés par un tiers mais qui n'ont pas encore été validés par le bénéficaire.",
-	'info_explication_statut_prepa' => "Les abonnements qui ont été créés, mais non pas été validés.",
-	'info_explication_statut_prop' => "Les abonnements en attente de paiement.",
-	'info_explication_statut_resilie' => "Les abonnements arrivés à échéance",
 	
 	// M
 	
