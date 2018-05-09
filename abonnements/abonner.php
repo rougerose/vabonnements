@@ -56,8 +56,8 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 		}
 		
 		// 
-		// L'abonnement est indiqué comme payé. Il sera activé par le cron
-		// à la date de début d'abonnement.
+		// L'abonnement est indiqué comme payé. Il sera activé lors du traitement
+		// de la commande et son changement de statut payée -> envoyée. 
 		// 
 		$statut = 'paye';
 		

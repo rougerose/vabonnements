@@ -25,6 +25,7 @@
 	<pipeline nom="taches_generales_cron" inclure="vabonnements_pipelines.php" />
 	<pipeline nom="affiche_auteurs_interventions" inclure="vabonnements_pipelines.php" />
 	<pipeline nom="compter_contributions_auteur" inclure="vabonnements_pipelines.php" />
+	<pipeline nom="post_edition" inclure="vabonnements_pipelines.php" />
 	
 	<menu nom="abonnements_offre" titre="abonnements_offre:titre_abonnements_offres" parent="menu_edition" icone="images/abonnements_offre-16.png" action="abonnements_offres" />
 	<menu nom="abonnement" titre="abonnement:titre_abonnements" parent="menu_activite" icone="images/abonnement-16.png" action="abonnements" />

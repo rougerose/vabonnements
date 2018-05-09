@@ -1,17 +1,81 @@
 <?php
-/**
- * Utilisations de pipelines par Vacarme Abonnements
- *
- * @plugin     Vacarme Abonnements
- * @copyright  2018
- * @author     Le Drean*Christophe
- * @licence    GNU/GPL
- * @package    SPIP\Vabonnements\Pipelines
- */
 
 if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
+
+/**
+ * Activation des abonnements personnels
+ *
+ * Lorsqu'une commande passe du statut "payée" à "envoyée", il s'agit alors
+ * de vérifier si un abonnement est présent dans la commande. Dans cette 
+ * hypothèse, il est également modifié pour passer du statut "payé" à "actif". 
+ *
+ * Attention : ce traitement automatique ne concerne que les abonnements
+ * personnels (pris pour soi). Les abonnements offerts font l'objet
+ * d'un traitement spécifique (via le cron).
+ * 
+ * @param  array $flux
+ * @return array
+ */
+function vabonnements_post_edition($flux) {
+	if ($flux['args']['table'] == 'spip_commandes'
+		&& $flux['args']['action'] == 'instituer'
+		&& $flux['args']['statut_ancien'] == 'paye'
+		&& $flux['data']['statut'] == 'envoye')
+	{
+		include_spip('inc/autoriser');
+		include_spip('action/editer_objet');
+		include_spip('inc/vabonnements');
+		
+		$id_commande = intval($flux['args']['id_objet']);
+		
+		// 
+		// prendre uniquement les abonnements "perso" 
+		// (et non les abonnements offerts)
+		// 
+		$abos = sql_allfetsel('*', 'spip_commandes_details', 
+			'id_commande=' . $id_commande
+			. ' AND objet=' . sql_quote('abonnements_offre')
+			. ' AND numero_debut <> ' . sql_quote('')
+		);
+		
+		foreach ($abos as $abo) {
+			$abonnement = sql_fetsel('*', 'spip_abonnements',
+				'id_abonnements_offre=' . intval($abo['id_objet'])
+				. ' AND id_commande=' . $id_commande
+				. ' AND statut=' . sql_quote('paye')
+				. ' AND coupon=' . sql_quote('')
+			);
+			
+			if ($abonnement) {
+				$id_abonnement = intval($abonnement['id_abonnement']);
+				
+				autoriser_exception('modifier', 'abonnement', $id_abonnement);
+				autoriser_exception('instituer', 'abonnement', $id_abonnement);
+				
+				$log_activation = "La commande n°$id_commande est envoyée : ";
+				$log_activation .= "activation automatique de l'abonnement";
+				$log = $abonnement['log'];
+				$log .= vabonnements_log($log_activation);
+				
+				$erreur = objet_modifier('abonnement', $id_abonnement, array('statut' => 'actif', 'log' => $log));
+				
+				if ($erreur) {
+					spip_log("L'Abonnement n°$id_abonnement n'a pas pu être activé. Message d'erreur : " . $erreur, 'vabonnements_activer'._LOG_ERREUR);
+				} else {
+					spip_log("L'Abonnement n°$id_abonnement est activé", 'vabonnements_activer'._LOG_INFO_IMPORTANTE);
+				}
+				
+				autoriser_exception('instituer', 'abonnement', $id_abonnement, false);
+				autoriser_exception('modifier', 'abonnement', $id_abonnement, false);
+			}
+		}
+	}
+	return $flux;
+}
+
+
 
 /**
  * Compter le nombre d'abonnements d'un auteur
@@ -83,9 +147,6 @@ function vabonnements_optimiser_base_disparus($flux) {
 function vabonnements_taches_generales_cron($taches_generales) {
 	// référencer les rubriques correspondant aux numéros, 1 fois par heure. 
 	$taches_generales['vabonnements_referencer_numeros'] = 3600;
-	
-	// Activer les abonnements payés et dont la date de début est celle du jour
-	$taches_generales['vabonnements_activer_abonnements'] = 3600 * 12;
 	
 	return $taches_generales;
 }
