@@ -5,13 +5,12 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 }
 
 /**
- * Activer les abonnements qui débutent à la date du jour.
+ * Activer les abonnements qui débutent aujourd'hui.
  * 
  * @return [type] [description]
  */
 function genie_vabonnements_activer_abonnements($time) {
-	// TODO: Conserver le déport de la constitution de la liste dans une 
-	// fonction externe ?
+	
 	$lister_activations = charger_fonction('lister_activations', 'abonnements');
 	$abonnements = $lister_activations(time());
 	
@@ -27,8 +26,11 @@ function genie_vabonnements_activer_abonnements($time) {
 			autoriser_exception('modifier', 'abonnement', $id_abonnement);
 			autoriser_exception('instituer', 'abonnement', $id_abonnement);
 			
-			//Activation de l'abonnement
-			$erreur = objet_modifier('abonnement', $id_abonnement, array('statut' => 'actif'));
+			$log_activation = "Activation automatique de l'abonnement";
+			$log = $abo['log'];
+			$log .= vabonnements_log($log_activation);
+			
+			$erreur = objet_modifier('abonnement', $id_abonnement, array('statut' => 'actif', 'log' => $log));
 			
 			spip_log("Abonnement n°$id_abonnement est activé", 'vabonnements_activer'._LOG_INFO_IMPORTANTE);
 			

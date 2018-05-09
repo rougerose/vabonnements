@@ -4,16 +4,11 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 	return;
 }
 
-function abonnements_lister_activations($date, $jours = null) {
+function abonnements_lister_activations($date) {
 	include_spip('base/abstract_sql');
-	
-	if (is_null($jours)) {
-		$jours = 2;
-	}
 	
 	$abonnements = array();
 	
-	$debut = date('Y-m-d 00:00:00', strtotime("-$jours day", $date));
 	$fin = date('Y-m-d H:i:s', $date);
 	
 	$res = sql_select(
@@ -29,7 +24,10 @@ function abonnements_lister_activations($date, $jours = null) {
 	);
 	
 	while ($row = sql_fetch($res)) {
-		$abonnements[$row['id_abonnement']] = array('id_auteur' => $row['id_auteur']);
+		$abonnements[$row['id_abonnement']] = array(
+			'id_auteur' => $row['id_auteur'],
+			'log' => $row['log']
+		);
 	}
 	
 	return $abonnements;
