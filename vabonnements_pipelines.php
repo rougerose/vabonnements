@@ -148,5 +148,12 @@ function vabonnements_taches_generales_cron($taches_generales) {
 	// référencer les rubriques correspondant aux numéros, 1 fois par heure. 
 	$taches_generales['vabonnements_referencer_numeros'] = 3600;
 	
+	// Inviter les bénéficiaires d'un abonnement offert à activer leur abonnement
+	// Action déclenchées toutes les 12 heures.
+	$taches_generales['vabonnements_inviter_tiers'] = 3600 * 12;
+	
+	// Relancer les bénéficaires qui tardent à activer leur abonnement
+	$taches_generales['vabonnements_relancer_tiers'] = 3600 * 12;
+	
 	return $taches_generales;
 }

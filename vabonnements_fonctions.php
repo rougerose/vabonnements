@@ -146,24 +146,6 @@ function calculer_numero_futur($reference, $rang = 1, $titre = false) {
 
 
 /**
- * Calculer la date du prochain numéro à partir de la date de l'actuel.
- *
- * Compte tenu du fait que la date est "normalisée" avec la fonction
- * vabonnements_calculer_date_debut (on obtient donc le premier jour 
- * de la saison concernée), si on ajoute 3 mois on obtient le dernier
- * jour de la même saison. On compte plus large et on ajoute 4 mois.
- * 
- * @param  string $date_numero_actuel
- * @return string
- */
-// function filtre_calculer_date_numero_prochain($date_numero_actuel) {
-// 	include_spip('inc/vabonnements_calculer_date');
-// 	$date_actuel = vabonnements_calculer_date_debut($date_numero_actuel);
-// 	$date_prochain = vabonnements_calculer_date_fin($date_actuel, 4);
-// 	return $date_prochain;
-// }
-
-/**
  * Trier un tableau par clé. 
  * fonction ksort de PHP utilisable dans un squelette SPIP.
  * @param  array $tableau
@@ -173,32 +155,6 @@ function filtre_keysort($tableau) {
 	ksort($tableau);
 	return $tableau;
 }
-
-
-
-// function filtre_numero_suivant_calculer_titre_reference($reference, $rang = 0, $titre = false) {
-// 	$reference_chiffre = substr($reference, 1) + $rang;
-// 	$titre_numero = 'Vacarme '.str_pad($reference_chiffre, 2, 0, STR_PAD_LEFT);
-// 
-// 	if ($titre !== false) {
-// 		$numero_suivant = $titre_numero;
-// 	} else {
-// 		$numero_suivant = filtre_numero_suivant_calculer_titre_reference($titre_numero);
-// 	}
-// 
-// 	return $numero_suivant;
-// }
-
-
-
-// function filtre_numero_titre_convertir_reference($titre) {
-// 	if (preg_match('!\d+!', $titre, $m)) {
-// 		$reference = 'v' . str_pad(intval($m[0]), 4, '0', STR_PAD_LEFT);
-// 	} else {
-// 		$reference = '';
-// 	}
-// 	return $reference;
-// }
 
 
 

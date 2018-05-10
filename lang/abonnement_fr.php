@@ -70,6 +70,10 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'info_paiement_virement'    => 'Virement',
 	
 	// M
+	'mail_cher_chere_madame' => "Chère",
+	'mail_cher_chere_monsieur' => "Cher", 
+	'mail_il_elle_madame' => "elle",
+	'mail_il_elle_monsieur' => "il",
 	
 	// N
 	'numero_encours_info'   => " (Numéro actuel)",
