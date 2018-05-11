@@ -49,6 +49,12 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 	// importer les données abonnements_offres
 	include_spip('base/importer_spip_abonnements_offres');
   	$maj['create'][] = array('importer_spip_abonnements_offres');
+	
+	// prix en decimal, ce serait quand même mieux !
+	$maj['1.0.5'] = array(
+		array('sql_alter', 'TABLE spip_abonnements_offres CHANGE prix_ht prix_ht DECIMAL(20,6) NOT NULL DEFAULT 0'),
+		array('sql_alter', 'TABLE spip_abonnements CHANGE prix_echeance prix_echeance DECIMAL(20,6) NOT NULL DEFAULT 0')
+	);
 
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);

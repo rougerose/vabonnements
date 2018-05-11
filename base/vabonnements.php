@@ -50,14 +50,14 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 		'table_objet_surnoms' => array('abonnementsoffre'), // table_objet('abonnements_offre') => 'abonnements_offres' 
 		'field'=> array(
 			'id_abonnements_offre' => 'bigint(21) NOT NULL',
-			'titre'              => 'text NOT NULL DEFAULT ""',
-			'descriptif'         => 'text NOT NULL DEFAULT ""',
-			'reference' => 'tinytext NOT NULL DEFAULT ""',
-			'duree'              => 'varchar(10) NOT NULL DEFAULT ""',
-			'prix_ht'            => 'varchar(25) NOT NULL DEFAULT ""',
-			'taxe'               => 'decimal(4,3) default null',
-			'statut'             => 'varchar(20)  DEFAULT "0" NOT NULL',
-			'maj'                => 'TIMESTAMP'
+			'titre'                => 'text NOT NULL DEFAULT ""',
+			'descriptif'           => 'text NOT NULL DEFAULT ""',
+			'reference'            => 'tinytext NOT NULL DEFAULT ""',
+			'duree'                => 'varchar(10) NOT NULL DEFAULT ""',
+			'prix_ht'              => 'decimal(20,6) NOT NULL DEFAULT 0',
+			'taxe'                 => 'decimal(4,3) default null',
+			'statut'               => 'varchar(20)  DEFAULT "0" NOT NULL',
+			'maj'                  => 'TIMESTAMP'
 		),
 		'key' => array(
 			'PRIMARY KEY'        => 'id_abonnements_offre',
@@ -105,7 +105,7 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 			'numero_debut'         => 'tinytext NOT NULL DEFAULT ""',
 			'numero_fin'           => 'tinytext NOT NULL DEFAULT ""',
 			'duree_echeance'       => 'varchar(10) NOT NULL DEFAULT ""',
-			'prix_echeance'        => 'varchar(25) NOT NULL DEFAULT ""',
+			'prix_echeance'        => 'decimal(20,6) NOT NULL DEFAULT 0',
 			'mode_paiement'        => 'varchar(25) NOT NULL DEFAULT ""',
 			'log'                  => 'text NOT NULL DEFAULT ""',
 			'coupon'               => 'varchar(25) NOT NULL DEFAULT ""',
