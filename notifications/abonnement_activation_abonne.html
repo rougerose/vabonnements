@@ -1,0 +1,29 @@
+<BOUCLE_abonnement(ABONNEMENTS){id_abonnement}>
+	<BOUCLE_contact_auteur(CONTACTS){id_auteur}>
+		#SET{auteur_civilite, #CIVILITE}
+		#SET{auteur_prenom, #PRENOM}
+		#SET{auteur_nom, #NOM}
+	</BOUCLE_contact_auteur>
+	<BOUCLE_commande(COMMANDES){id_commande}>
+		#SET{id_payeur, #ID_AUTEUR}
+	</BOUCLE_commande>
+	<BOUCLE_offre(ABONNEMENTS_OFFRES){id_abonnements_offre}>
+	#SET{duree, #DUREE}
+	#SET{titre, #TITRE}
+	</BOUCLE_offre>
+	<BOUCLE_numero(RUBRIQUES){reference=#NUMERO_DEBUT}>
+	#SET{titre_numero_encours, #TITRE}
+	</BOUCLE_numero>
+	[(#SET{titre_numero_prochain, #NUMERO_DEBUT|calculer_numero_futur_titre{0}})]
+	<//B_numero>
+
+<title>[(#NOM_SITE_SPIP)] : votre abonnement est maintenant en cours</title>
+<body>
+	<p><:abonnement:mail_cher_chere_{=#GET{auteur_civilite}}:>[ (#GET{auteur_prenom})][ (#GET{auteur_nom})],</p>
+	<p>Votre abonnement est maintenant en cours.</p>
+	<p>Vous recevrez votre exemplaire de[ <em>(#GET{titre_numero_debut})</em>, le numéro que vous avez choisi pour débuter votre abonnement, dans quelques jours.][ <em>(#GET{titre_numero_prochain})</em>, le numéro que vous avez choisi pour débuter votre abonnement, dès qu'il sera disponible.]</p>
+	<p>Nous vous souhaitons par avance une bonne lecture.</p>
+	<p>Cordialement,</p>
+</body>
+#FILTRE{facteur_email_wrap_to_html}
+</BOUCLE_abonnement>

@@ -22,7 +22,7 @@ function vabonnements_creer_code($id_auteur, $date = '', $code_action = '') {
 	}
 	
 	if (!$date) {
-		$date = date('y-m-d');
+		$date = date('Y-m-d');
 	}
 	
 	@list($annee, $mois, $jour) = explode('-', $date);
@@ -46,21 +46,21 @@ function vabonnements_creer_code($id_auteur, $date = '', $code_action = '') {
  */
 function vabonnements_lire_code($token) {
 	if (!$token) {
-	    // erreur: pas de jeton fourni
+		return false;
 	}
 
 	// retrouver la version binaire du jeton
 	$binary_token = base64url_decode($token);
 
 	if (!$binary_token) {
-	    // erreur: mal encodé
+		return false;
 	}
 
 	// extraire les informations du bitfield
 	$data = @unpack('Iid/Scode_action/Sdate/Sentropy', $binary_token);
 
 	if (!$data) {
-	    // erreur: bitfield mal formé
+		return false;
 	}
 
 	list($year, $month, $day) = date16_decode($data['date']);
@@ -72,8 +72,8 @@ function vabonnements_lire_code($token) {
 	$entropy     = $data['entropy'];
 	
 	return $res = array(
-		'id_auteur' => $id,
-		'code' => $code_action,
+		'id' => $id,
+		'code_action' => $code_action,
 		'date' => $date
 	);
 }
