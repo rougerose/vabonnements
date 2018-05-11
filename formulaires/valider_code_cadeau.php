@@ -57,6 +57,9 @@ function formulaires_valider_code_cadeau_traiter_dist($retour = '') {
 			&& $date_commande == $code['date']
 			&& $offrir == 'abonnement'
 		) {
+			// 
+			// L'abonné est identifié automatiquement
+			// 
 			include_spip('inc/auth');
 			$auteur = sql_fetsel('*', 'spip_auteurs', 'id_auteur='.intval($abonnement['id_auteur']));
 			auth_loger($auteur);
@@ -65,7 +68,7 @@ function formulaires_valider_code_cadeau_traiter_dist($retour = '') {
 			
 			if ($retour) {
 				$hash = vabonnements_calcul_hash_abonnement($abonnement['id_auteur'], $abonnement['id_abonnement'], $abonnement['date']);
-				$res['redirect'] = parametre_url($retour, 'hash', $hash);
+				$res['redirect'] = parametre_url($retour, 'cadeau_hash', $hash);
 			}
 			
 			return $res;

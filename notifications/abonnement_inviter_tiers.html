@@ -11,7 +11,7 @@
 	</BOUCLE_contact_auteur>
 	<BOUCLE_abonnement(ABONNEMENTS){id_abonnement=#ENV{id_abonnement}}>
 		#SET{coupon, #COUPON}
-		[(#SET{url_cadeau, #URL_PAGE{cadeau}|parametre_url{code, #GET{coupon}}})]
+		[(#SET{url_cadeau, #URL_PAGE{cadeau}|parametre_url{offrir, abonnement}|parametre_url{code, #GET{coupon}}})]
 		<BOUCLE_offre(ABONNEMENTS_OFFRES){id_abonnements_offre}>
 			#SET{offre_titre, #TITRE}
 			[(#SET{offre_duree, #DUREE|duree_en_clair})]

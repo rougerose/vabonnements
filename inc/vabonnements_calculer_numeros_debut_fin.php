@@ -7,6 +7,8 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 
 
 function vabonnements_calculer_numeros_debut_fin($id_abonnements_offre, $numero_debut) {
+	include_spip('inc/vabonnements_calculer_date');
+	include_spip('vabonnements_fonctions');
 	
 	$duree = sql_getfetsel('duree', 'spip_abonnements_offres', 'id_abonnements_offre='.intval($id_abonnements_offre));
 	
@@ -17,8 +19,6 @@ function vabonnements_calculer_numeros_debut_fin($id_abonnements_offre, $numero_
 	// La date_debut correspond à la date de sortie du numéro (date_numero)
 	// 
 	$date_numero_depart = sql_getfetsel('date_numero', 'spip_rubriques', 'reference='.sql_quote($numero_debut));
-	
-	include_spip('inc/vabonnements_calculer_date');
 	
 	if ($date_numero_depart) {
 		// 
