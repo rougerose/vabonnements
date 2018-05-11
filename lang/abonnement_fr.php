@@ -30,6 +30,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'ajouter_lien_abonnement'               => 'Ajouter ce abonnement',
 
 	// C
+	'champ_code_cadeau_label' => "Votre code cadeau",
 	'champ_date_debut_label'           => 'Date début',
 	'champ_date_fin_label'             => 'Date fin',
 	'champ_date_label'                 => 'date',
@@ -47,6 +48,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	
 	// E
 	'editer_abonnement_explication' => "La modification d'un abonnement n'est pas possible.",
+	'erreur_code_cadeau_obligatoire' => 'Un code cadeau est obligatoire',
 
 	// I
 	'icone_creer_abonnement'    => 'Ajouter un abonnement',
@@ -74,6 +76,9 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'mail_cher_chere_monsieur' => "Cher", 
 	'mail_il_elle_madame' => "elle",
 	'mail_il_elle_monsieur' => "il",
+	'message_erreur_valider_code_cadeau' => "Des informations sont erronées ou manquantes, il n'est pas possbile de poursuivre.",
+	'message_echec_valider_code_cadeau' => "Nous sommes désolés, mais le code est incorrect",
+	'message_succes_valider_code_cadeau' => "Le code est correct",
 	
 	// N
 	'numero_encours_info'   => " (Numéro actuel)",

@@ -16,6 +16,7 @@ if (!defined("_ECRIRE_INC_VERSION")) return;
  * @return string
  */
 function vabonnements_calculer_date_debut($date) {
+	include_spip('inc/filtres_dates');
 	$date_array = recup_date($date, false);
 	
 	list($annee, $mois, $jour, $heures, $minutes, $secondes) = $date_array;

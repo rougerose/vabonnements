@@ -179,3 +179,17 @@ function filtre_vacarme_saison_annee($date) {
 	
 	return affdate_base($date, 'saison_annee');
 }
+
+
+/**
+ * Calculer un hash de sécurité pour l'abonnement offert 
+ * 
+ * @param  int $id_auteur
+ * @param  int $id_abonnement
+ * @param  int $date_abonnement
+ * @return string
+ */
+function vabonnements_calcul_hash_abonnement($id_auteur, $id_abonnement, $date_abonnement) {
+	$donnees = array($id_auteur, $id_abonnement, $date_abonnement);
+	return md5(implode(';', array_values($donnees)));
+}

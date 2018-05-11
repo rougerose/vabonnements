@@ -21,7 +21,7 @@
 	<BOUCLE_message_payeur(MESSAGES){id_message=#ENV{id_message}}{statut=prepa}>
 		#SET{payeur_message, #TEXTE}
 	</BOUCLE_message_payeur>
-<title>De la part de [(#GET{payeur_prenom})][ (#GET{payeur_nom})]</title>
+<title>[(#NOM_SITE_SPIP)] : De la part de [(#GET{payeur_prenom})][ (#GET{payeur_nom})]</title>
 <body>
 	<p><:abonnement:mail_cher_chere_{=#GET{auteur_civilite}}:>[ (#GET{auteur_prenom})][ (#GET{auteur_nom})],</p>
 	<p>[(#GET{payeur_prenom})][ (#GET{payeur_nom})] nous charge de vous informer qu'<:abonnement:mail_il_elle_{=#GET{payeur_civilite}}:> vous offre un abonnement à la revue Vacarme pour [(#GET{offre_duree})][ \((#GET{offre_nombre_numeros})\)].</p>
