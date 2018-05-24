@@ -39,6 +39,7 @@ function action_ajouter_numero_abonnement_dist($arg = null) {
 		include_spip('inc/autoriser');
 		include_spip('action/editer_objet');
 		
+		// autoriser les modifications
 		autoriser_exception('modifier', 'abonnement', $id_abonnement);
 		autoriser_exception('instituer', 'abonnement', $id_abonnement);
 		
@@ -59,6 +60,7 @@ function action_ajouter_numero_abonnement_dist($arg = null) {
 			spip_log("L'Abonnement n°$id_abonnement est activé", 'vabonnements_activer'._LOG_INFO_IMPORTANTE);
 		}
 		
+		// lever les autorisations
 		autoriser_exception('instituer', 'abonnement', $id_abonnement, false);
 		autoriser_exception('modifier', 'abonnement', $id_abonnement, false);
 		

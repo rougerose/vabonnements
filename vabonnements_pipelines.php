@@ -31,8 +31,8 @@ function vabonnements_post_edition($flux) {
 		$id_commande = intval($flux['args']['id_objet']);
 		
 		// 
-		// prendre uniquement les abonnements "perso" 
-		// (et non les abonnements offerts)
+		// prendre uniquement les abonnements "perso" (champ numero_debut est
+		// vide) et non les abonnements offerts
 		// 
 		$abos = sql_allfetsel('*', 'spip_commandes_details', 
 			'id_commande=' . $id_commande

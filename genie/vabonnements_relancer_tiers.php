@@ -10,7 +10,7 @@ if (!defined("_ECRIRE_INC_VERSION")) {
  *
  * Le rythme des relances est défini dans le configuration du plugin.
  *
- * La fonction est copiée du plugin Abos de Nursit et en particulier
+ * La fonction est copiée depuis le plugin Abos de Nursit et en particulier
  * https://github.com/nursit/abos/blob/master/genie/abos_relancer.php
  * 
  * @param  int $timestamp
