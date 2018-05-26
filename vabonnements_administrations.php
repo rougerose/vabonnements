@@ -39,21 +39,22 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 		array('maj_tables', array(
 			'spip_abonnements_offres',
 			'spip_abonnements',
-			'spip_commandes_details',
-			'spip_rubriques')
+			'spip_commandes_details')
 		)
 	);
 	
-	cextras_api_upgrade(vabonnements_declarer_champs_extras(), $maj['create']);
-	
 	// importer les données abonnements_offres
 	include_spip('base/importer_spip_abonnements_offres');
-  	$maj['create'][] = array('importer_spip_abonnements_offres');
+	$maj['create'][] = array('importer_spip_abonnements_offres');
 	
 	// prix en decimal, ce serait quand même mieux !
 	$maj['1.0.5'] = array(
-		array('sql_alter', 'TABLE spip_abonnements_offres CHANGE prix_ht prix_ht DECIMAL(20,6) NOT NULL DEFAULT 0'),
-		array('sql_alter', 'TABLE spip_abonnements CHANGE prix_echeance prix_echeance DECIMAL(20,6) NOT NULL DEFAULT 0')
+		array('sql_alter', 'TABLE spip_abonnements_offres CHANGE prix_ht prix_ht DECIMAL(10,2) NOT NULL DEFAULT 0'),
+		array('sql_alter', 'TABLE spip_abonnements CHANGE prix_echeance prix_echeance DECIMAL(10,2) NOT NULL DEFAULT 0')
+	);
+	
+	$maj['1.0.6'] = array(
+		array('sql_alter', 'TABLE spip_abonnements_offres CHANGE prix_ht prix_ht DECIMAL(10,2) NOT NULL DEFAULT 0')
 	);
 
 	include_spip('base/upgrade');
@@ -78,9 +79,6 @@ function vabonnements_vider_tables($nom_meta_base_version) {
 	sql_drop_table('spip_abonnements_offres');
 	sql_drop_table('spip_abonnements');
 	sql_alter('TABLE spip_commandes_details DROP numero_debut');
-
-	// champs extra du plugin
-	cextras_api_vider_tables(vabonnements_declarer_champs_extras());
 
 	# Nettoyer les liens courants (le génie optimiser_base_disparus se chargera de nettoyer toutes les tables de liens)
 	sql_delete('spip_documents_liens', sql_in('objet', array('abonnements_offre', 'abonnement')));

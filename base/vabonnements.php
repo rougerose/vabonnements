@@ -54,7 +54,7 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 			'descriptif'           => 'text NOT NULL DEFAULT ""',
 			'reference'            => 'tinytext NOT NULL DEFAULT ""',
 			'duree'                => 'varchar(10) NOT NULL DEFAULT ""',
-			'prix_ht'              => 'decimal(20,6) NOT NULL DEFAULT 0',
+			'prix_ht'              => 'decimal(10,2) NOT NULL DEFAULT 0',
 			'taxe'                 => 'decimal(4,3) default null',
 			'statut'               => 'varchar(20)  DEFAULT "0" NOT NULL',
 			'maj'                  => 'TIMESTAMP'
@@ -105,7 +105,7 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 			'numero_debut'         => 'tinytext NOT NULL DEFAULT ""',
 			'numero_fin'           => 'tinytext NOT NULL DEFAULT ""',
 			'duree_echeance'       => 'varchar(10) NOT NULL DEFAULT ""',
-			'prix_echeance'        => 'decimal(20,6) NOT NULL DEFAULT 0',
+			'prix_echeance'        => 'decimal(10,2) NOT NULL DEFAULT 0',
 			'mode_paiement'        => 'varchar(25) NOT NULL DEFAULT ""',
 			'log'                  => 'text NOT NULL DEFAULT ""',
 			'coupon'               => 'varchar(25) NOT NULL DEFAULT ""',
@@ -159,26 +159,4 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 	$tables['spip_commandes_details']['champs_versionnes'][] = 'numero_debut';
 
 	return $tables;
-}
-
-
-function vabonnements_declarer_champs_extras($champs = array()) {
-	$champs['spip_rubriques']['reference'] = array(
-		'saisie' => 'input',
-		'options' => array(
-			'nom' => 'reference',
-			'label' => _T('vabonnements:reference_label'),
-			'type' => 'text',
-			'sql' => "tinytext NOT NULL DEFAULT ''",
-			'restrictions' => array(
-				'secteur' => '115'
-			)
-		),
-		'verifier' => array(
-			'type' => 'regex',
-			'options' => array('modele' => '!v\d{4}!')
-		)
-	);
-	
-	return $champs;
 }

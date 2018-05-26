@@ -5,19 +5,3 @@
 <div class="ajax">
 	#FORMULAIRE_CONFIGURER_VABONNEMENTS
 </div>
-
-<h3 class=""><:vabonnements:titre_config_reference_update:></h3>
-</B_numeros>
-[(#SET{references, #ARRAY})]
-<BOUCLE_numeros(RUBRIQUES){id_secteur=115}{profondeur=1}{par titre}{reference !==^v}>
-	[(#SET{references, #GET{references}|push{#ID_RUBRIQUE}})]
-</BOUCLE_numeros>
-	[(#GET{references}|count|oui)
-		[(#SET{references_json, #GET{references}|json_encode})]
-		[(#BOUTON_ACTION{<:vabonnements:update_bouton_label:>, #URL_ACTION_AUTEUR{update_reference_numero,#GET{references_json}, #SELF}, ajax})]
-	]
-</B_numeros>
-	<div class="box success">
-		<p class="bd inner">Aucune mise à jour à faire</p>
-	</div>
-<//B_numeros>
