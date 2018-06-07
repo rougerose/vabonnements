@@ -25,9 +25,11 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'abonnement_reference_traduction_A2T2I' => 'abonnement 2 ans, tarif standard, International',
 	'abonnement_reference_traduction_A2T3I' => 'abonnement 2 ans, tarif soutien',
 	'abonnement_reference_traduction_A2T3' => 'abonnement 2 ans, tarif soutien',
+	'abonnement_formules' => "Voir les formules d'abonnement",
+	'abonner' => "S'abonner",
 	'ajouter_abonnement_message_ok'         => 'Abonnement ajouté',
 	'ajouter_abonnement_message_erreur'     => "Une erreur est survenue. L'abonnement n'a pas pu être ajouté.",
-	'ajouter_lien_abonnement'               => 'Ajouter ce abonnement',
+	'ajouter_lien_abonnement'               => 'Ajouter cet abonnement',
 
 	// C
 	'champ_code_cadeau_label' => "Votre code cadeau",
@@ -52,7 +54,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 
 	// I
 	'icone_creer_abonnement'    => 'Ajouter un abonnement',
-	'icone_modifier_abonnement' => 'Modifier ce abonnement',
+	'icone_modifier_abonnement' => 'Modifier cet abonnement',
 	'info_1_abonnement'         => '1 abonnement',
 	'info_abonnements_auteur'   => 'Les abonnements de cet auteur',
 	'info_afficher'             => 'Voir',
