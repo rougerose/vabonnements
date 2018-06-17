@@ -22,6 +22,7 @@
 	<BOUCLE_message_payeur(MESSAGES){id_message=#ENV{id_message}}{statut=prepa}>
 		#SET{payeur_message, #TEXTE}
 	</BOUCLE_message_payeur>
+
 <title>[(#NOM_SITE_SPIP)] Rappel : Votre abonnement à Vacarme n'est toujours pas activé</title>
 <body>
 	<p><:abonnement:mail_cher_chere_{=#GET{auteur_civilite}}:>[ (#GET{auteur_prenom})][ (#GET{auteur_nom})],</p>
@@ -29,20 +30,7 @@
 	[<p><center>
 		(#INCLURE{fond=emails/inc-button, url=[(#GET{url_cadeau}|url_absolue)], label=Activer votre abonnement, width=250px})
 	</center></p>]
-	<p>Vous trouverez ci-dessous la copie de notre premier message</p>
-	<p>Cordialement,</p>
-	<hr>
-	<p><:abonnement:mail_cher_chere_{=#GET{auteur_civilite}}:>[ (#GET{auteur_prenom})][ (#GET{auteur_nom})],</p>
-	<p>[(#GET{payeur_prenom})][ (#GET{payeur_nom})] nous charge de vous informer qu'<:abonnement:mail_il_elle_{=#GET{payeur_civilite}}:> vous offre un abonnement à la revue Vacarme pour [(#GET{offre_duree})][ \((#GET{offre_nombre_numeros})\)].</p>
-	[<p>[ (#GET{auteur_prenom})][ (#GET{auteur_nom})] joint également à son cadeau ce message :</p>
-	<blockquote>
-		(#GET{payeur_message})
-	</blockquote>]
-	<p>Pour profiter de votre abonnement, il vous suffit de l'activer grâce au lien ci-dessous et de valider votre code cadeau personnel[ : (#GET{coupon})].</p>
-	[<p><center>
-		(#INCLURE{fond=emails/inc-button, url=[(#GET{url_cadeau}|url_absolue)], label=Activer votre abonnement, width=250px})
-	</center></p>]
-	<p>[Ajouter une phrase de conclusion]</p>
+	<p><:email:politesse_signature:></p>
 </body>
 </BOUCLE_auteur>
 #FILTRE{facteur_email_wrap_to_html}

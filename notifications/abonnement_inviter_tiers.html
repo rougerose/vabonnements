@@ -21,6 +21,7 @@
 	<BOUCLE_message_payeur(MESSAGES){id_message=#ENV{id_message}}{statut=prepa}>
 		#SET{payeur_message, #TEXTE}
 	</BOUCLE_message_payeur>
+
 <title>[(#NOM_SITE_SPIP)] : De la part de [(#GET{payeur_prenom})][ (#GET{payeur_nom})]</title>
 <body>
 	<p><:abonnement:mail_cher_chere_{=#GET{auteur_civilite}}:>[ (#GET{auteur_prenom})][ (#GET{auteur_nom})],</p>
@@ -33,7 +34,7 @@
 	[<p><center>
 		(#INCLURE{fond=emails/inc-button, url=[(#GET{url_cadeau}|url_absolue)], label=Activer votre abonnement, width=250px})
 	</center></p>]
-	<p>[Ajouter une phrase de conclusion]</p>
+	<p><:email:politesse_signature:></p>
 </body>
 </BOUCLE_auteur>
 #FILTRE{facteur_email_wrap_to_html}

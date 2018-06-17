@@ -65,10 +65,10 @@ function action_ajouter_numero_abonnement_dist($arg = null) {
 		autoriser_exception('modifier', 'abonnement', $id_abonnement, false);
 		
 		// 
-		// Notifications abonné et Vacarme
+		// Notifications vers l'abonné et vers Vacarme
 		// 
 		$notifications = charger_fonction('notifications', 'inc');
-		$notifications('abonnement_activation_vacarme', $id_abonnement);
-		$notifications('abonnement_activation_abonne', $id_abonnement);
+		$notifications('abonnement_client_confirmation_activation', $id_abonnement);
+		$notifications('abonnement_vendeur_confirmation_activation', $id_abonnement);
 	}
 }
