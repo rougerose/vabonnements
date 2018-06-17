@@ -1,14 +1,14 @@
 <BOUCLE_auteur(AUTEURS){id_auteur}{tout}>
-	<BOUCLE_contact_payeur(CONTACTS){id_auteur=#ENV{id_payeur}}>
-		#SET{payeur_civilite, #CIVILITE}
-		#SET{payeur_prenom, #PRENOM}
-		#SET{payeur_nom, #NOM}
-	</BOUCLE_contact_payeur>
 	<BOUCLE_contact_auteur(CONTACTS){id_auteur}>
 		#SET{auteur_civilite, #CIVILITE}
 		#SET{auteur_prenom, #PRENOM}
 		#SET{auteur_nom, #NOM}
 	</BOUCLE_contact_auteur>
+	<BOUCLE_contact_payeur(CONTACTS){id_auteur=#ENV{id_payeur}}>
+		#SET{payeur_civilite, #CIVILITE}
+		#SET{payeur_prenom, #PRENOM}
+		#SET{payeur_nom, #NOM}
+	</BOUCLE_contact_payeur>
 	<BOUCLE_abonnement(ABONNEMENTS){id_abonnement=#ENV{id_abonnement}}>
 		#SET{coupon, #COUPON}
 		[(#SET{url_cadeau, #URL_PAGE{cadeau}|parametre_url{offrir, abonnement}|parametre_url{code, #GET{coupon}}})]
@@ -24,17 +24,17 @@
 
 <title>[(#NOM_SITE_SPIP)] : De la part de [(#GET{payeur_prenom})][ (#GET{payeur_nom})]</title>
 <body>
-	<p><:abonnement:mail_cher_chere_{=#GET{auteur_civilite}}:>[ (#GET{auteur_prenom})][ (#GET{auteur_nom})],</p>
-	<p>[(#GET{payeur_prenom})][ (#GET{payeur_nom})] nous charge de vous informer qu'<:abonnement:mail_il_elle_{=#GET{payeur_civilite}}:> vous offre un abonnement à la revue Vacarme pour [(#GET{offre_duree})][ \((#GET{offre_nombre_numeros})\)].</p>
-	[<p>[ (#GET{auteur_prenom})][ (#GET{auteur_nom})] joint également à son cadeau ce message :</p>
+	<p><:email:cher_chere_{=#GET{auteur_civilite}}:>[ (#GET{auteur_prenom})][ (#GET{auteur_nom})],</p>
+	<p>[(#GET{payeur_prenom})][ (#GET{payeur_nom})] nous charge de vous informer qu'<:email:il_elle_{=#GET{payeur_civilite}}:> vous offre un abonnement à la revue Vacarme pour [(#GET{offre_duree})][ \((#GET{offre_nombre_numeros})\)].</p>
+	[<p>[ (#GET{payeur_prenom})][ (#GET{payeur_nom})] joint également ce message :</p>
 	<blockquote>
 		(#GET{payeur_message})
 	</blockquote>]
-	<p>Pour profiter de votre abonnement, il vous suffit de l'activer grâce au lien ci-dessous et de valider votre code cadeau personnel[ : (#GET{coupon})].</p>
+	<p>Pour profiter de votre abonnement, il vous suffit de l'activer grâce au lien ci-dessous et au code suivant[ : (#GET{coupon})].</p>
 	[<p><center>
 		(#INCLURE{fond=emails/inc-button, url=[(#GET{url_cadeau}|url_absolue)], label=Activer votre abonnement, width=250px})
 	</center></p>]
 	<p><:email:politesse_signature:></p>
 </body>
-</BOUCLE_auteur>
 #FILTRE{facteur_email_wrap_to_html}
+</BOUCLE_auteur>

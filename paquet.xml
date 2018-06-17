@@ -18,6 +18,7 @@
 	<necessite nom="bank" compatibilite="[3.5.9;]" />
 	
 	<utilise nom="facteur" />
+	<utilise nom="prix" />
 
 	<pipeline nom="autoriser" inclure="vabonnements_autorisations.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/vabonnements.php" />
