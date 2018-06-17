@@ -52,6 +52,7 @@ function filtre_duree_en_clair($periodicite) {
 
 /**
  * Traduire la durée d'abonnement en nombre de numéros
+ * La fonction retourne également la chaîne "numéro(s)".
  * 
  * @param  string $periodicite
  * @return string
@@ -179,6 +180,7 @@ function filtre_vacarme_saison_annee($date) {
 	
 	return affdate_base($date, 'saison_annee');
 }
+
 
 
 /**

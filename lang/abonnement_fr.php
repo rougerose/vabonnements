@@ -74,10 +74,6 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'info_paiement_virement'    => 'Virement',
 	
 	// M
-	'mail_cher_chere_madame' => "Chère",
-	'mail_cher_chere_monsieur' => "Cher", 
-	'mail_il_elle_madame' => "elle",
-	'mail_il_elle_monsieur' => "il",
 	'message_erreur_valider_code_cadeau' => "Des informations sont erronées ou manquantes, il n'est pas possbile de poursuivre.",
 	'message_echec_valider_code_cadeau' => "Nous sommes désolés, mais le code est incorrect",
 	'message_succes_valider_code_cadeau' => "Le code est correct",
