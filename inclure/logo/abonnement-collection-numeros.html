@@ -1,0 +1,12 @@
+#SET{nombre_numeros, #ENV{nombre_numeros}}
+#SET{reference_numero_debut, #ENV{reference_numero_debut}}
+<BOUCLE_enumerer_nombre_numeros(DATA){enum 1, #GET{nombre_numeros}}>
+	[(#SET{couverture_thumbnail_pack, #CHEMIN{#VAL{images/vacarme-couverture-pack-}|concat{#VALEUR}|concat{.jpg}}})]
+	[(#INCLURE{fond=inclure/logo/numero-couverture-thumbnail, image=#GET{couverture_thumbnail_pack}, largeur=#ENV{largeur}})]
+</BOUCLE_enumerer_nombre_numeros>
+<BOUCLE_premier_numero(RUBRIQUES){reference=#GET{reference_numero_debut}}>
+	[(#LOGO_RUBRIQUE|oui)[(#INCLURE{fond=inclure/logo/numero-couverture-thumbnail, largeur=#ENV{largeur}, image=#LOGO_RUBRIQUE|extraire_attribut{src}})]]
+</BOUCLE_premier_numero>
+	[(#SET{image_prochain, #CHEMIN{images/vacarme-couverture-prochain.jpg}})]
+	[(#INCLURE{fond=inclure/logo/numero-couverture-thumbnail, image=#GET{image_prochain}, largeur=#ENV{largeur}})]
+<//B_premier_numero>

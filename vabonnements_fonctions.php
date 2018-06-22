@@ -107,7 +107,7 @@ function filtre_calculer_numero_futur_date($date, $rang = 1) {
 	$date_numero_actuel = vabonnements_calculer_date_debut($date);
 	// le numéro souhaité en nombre de mois : 
 	// - le numéro actuel + 1 est dans 3 mois
-	// - le numéro actuel + 2 est dans 6 $mois
+	// - le numéro actuel + 2 est dans 6 mois
 	// - etc.
 	$decalage = $rang * 3;
 	$date_numero_futur = vabonnements_calculer_date_duree($date_numero_actuel, $decalage);
