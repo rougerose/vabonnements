@@ -152,11 +152,19 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 		),
 		'texte_changer_statut' => 'abonnement:texte_changer_statut_abonnement'
 	);
-	
-	// Commandes_details : colonne numero_debut
-	$tables['spip_commandes_details']['field']['numero_debut'] = 'tinytext NOT NULL DEFAULT ""';
-	$tables['spip_commandes_details']['champs_editables'][] = 'numero_debut';
-	$tables['spip_commandes_details']['champs_versionnes'][] = 'numero_debut';
 
 	return $tables;
+}
+
+function vabonnements_declarer_champs_extras($champs = array()) {
+	$champs['spip_commandes_details']['numero_debut'] = array(
+		'saisie' => 'input',
+		'options' => array(
+			'nom' => 'numero_debut',
+			'label' => "Numéro debut",
+			'type' => 'text',
+			'sql' => "tinytext NOT NULL DEFAULT ''",
+		)
+	);
+	return $champs;
 }
