@@ -1,10 +1,10 @@
 <div class='onglets_simple clearfix'>
 	<ul>
 		<li>[(#SELF|parametre_url{statut|id_abonnement,'XXX'}|replace{XXX,''}|lien_ou_expose{<:abonnement:info_filtre_tous:>, [(#ENV{statut}|non|et{#ENV{id_abonnement,''}|non})], ajax})]</li>
-		<li>[(#SELF|parametre_url{statut,'actif'}|lien_ou_expose{<:abonnement:info_filtre_actif:>, #ENV{statut}|=={actif}, ajax})]</li>
 		<li>[(#SELF|parametre_url{statut,'prepa'}|lien_ou_expose{<:abonnement:info_filtre_prepa:>,#ENV{statut}|=={prepa},ajax})]</li>
-		<li>[(#SELF|parametre_url{statut,'prop'}|lien_ou_expose{<:abonnement:info_filtre_prop:>,#ENV{statut}|=={prop},ajax})]</li>
+		<!-- <li>[(#SELF|parametre_url{statut,'prop'}|lien_ou_expose{<:abonnement:info_filtre_prop:>,#ENV{statut}|=={prop},ajax})]</li> -->
 		<li>[(#SELF|parametre_url{statut,'paye'}|lien_ou_expose{<:abonnement:info_filtre_paye:>,#ENV{statut}|=={paye},ajax})]</li>
+		<li>[(#SELF|parametre_url{statut,'actif'}|lien_ou_expose{<:abonnement:info_filtre_actif:>, #ENV{statut}|=={actif}, ajax})]</li>
 		<li>[(#SELF|parametre_url{statut,'resilie'}|lien_ou_expose{<:abonnement:info_filtre_resilie:>,#ENV{statut}|=={resilie},ajax})]</li>
 	</ul>
 </div>

@@ -1,4 +1,4 @@
-<h1><:abonnement:titre_abonnements:></h1>
+[(#AUTORISER{menu,_vabonnements}|sinon_interdire_acces)]
 <BOUCLE_has_offre(ABONNEMENTS_OFFRES){0,1}>
 	<INCLURE{fond=prive/squelettes/inclure/abonnements-filtres, statut=#ENV{statut}, env, ajax} />
 </BOUCLE_has_offre>
