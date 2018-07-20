@@ -114,7 +114,7 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 		if ($date_message = sql_getfetsel('pgp', 'spip_auteurs', 'id_auteur=' . $id_auteur)) {
 			$date_message = unserialize($date_message);
 			
-			$date_debut = date('Y-m-d H-i-s', $date_message['abonnement_offert_date']);
+			$date_envoi = date('Y-m-d H-i-s', $date_message['abonnement_offert_date']);
 			
 			// effacer la date du champ PGP
 			sql_updateq('spip_auteurs', array('pgp' => ''), 'id_auteur=' . $id_auteur);
@@ -142,7 +142,7 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 		$prix_en_clair = prix_formater($prix_ht_initial + ($prix_ht_initial * $options['taxe']));
 		$id_commande = $options['id_commande'];
 		$commande_en_clair = "Commande n°$id_commande : ";
-		$date_debut_en_clair = affdate($date_debut);
+		$date_envoi_en_clair = affdate($date_envoi);
 		$id_payeur = $options['id_auteur'];
 		$nom_payeur = prenom_nom(generer_info_entite($id_payeur, 'auteur', 'nom'));
 		$message_payeur = sql_countsel(
@@ -155,7 +155,7 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 		$log_abos = $commande_en_clair."paiement de l'abonnement $duree_en_clair, offre $titre_offre (prix $prix_en_clair), ";
 		$log_abos .= "par $nom_payeur (auteur n°" . $options['id_auteur'] . "). ";
 		$log_abos .= "Code d'activation destiné au bénéficiaire $code_cadeau. ";
-		$log_abos .= "Le message annonçant le cadeau sera envoyé le $date_debut_en_clair. ";
+		$log_abos .= "Le message annonçant le cadeau sera envoyé le $date_envoi_en_clair. ";
 		$log_abos .=  "Message personnalisé par le payeur ? $message_perso_payeur";
 		$log = vabonnements_log($log_abos);
 		
