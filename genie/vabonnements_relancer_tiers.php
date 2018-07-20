@@ -19,14 +19,18 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 function genie_vabonnements_relancer_tiers_dist($timestamp) {
 	include_spip('inc/vabonnements_relance');
 	
-	$timestamp = strtotime('+3 days');
-	//$check = date('Y-m-d', $timestamp);
+	//$timestamp = strtotime('+3 days');
+	$check = date('Y-m-d', $timestamp);
 	
 	$relances = vabonnements_get_relances();
 	$premiere_relance = reset($relances);
-	$date_debut = vabonnements_date_relance($premiere_relance, $timestamp);
+	$date = vabonnements_date_relance($premiere_relance, $timestamp);
 	
-	$rappels = sql_allfetsel('DISTINCT relance', 'spip_abonnements', 'statut=' . sql_quote('paye') . ' AND relance <> ' . sql_quote('off') . ' AND relance <> ' . sql_quote(''));
+	// marquer en première relance les abonnements offerts dont la date 
+	// est antérieure à la date calculée et qui été marqués à relance = 0
+	sql_updateq("spip_abonnements", array('relance' => $premiere_relance), 'statut=' . sql_quote('paye') . ' AND relance=' . sql_quote('0') . ' AND date<=' . sql_quote($date) . ' AND coupon <> ' .sql_quote(''));
+	
+	$rappels = sql_allfetsel('DISTINCT relance', 'spip_abonnements', 'statut=' . sql_quote('paye') . ' AND relance <> ' . sql_quote('off') . ' AND relance <> ' . sql_quote('') . ' AND relance > ' .sql_quote('0'));
 	
 	if (count($rappels)) {
 		$rappels = array_map('reset', $rappels);
@@ -35,7 +39,7 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 		
 		foreach ($rappels as $rappel) {
 			$where[] = '(relance=' . sql_quote($rappel, '', 'text') 
-				. ' AND date_debut < ' . sql_quote(vabonnements_date_relance($rappel, $timestamp)) . ')';
+				. ' AND date < ' . sql_quote(vabonnements_date_relance($rappel, $timestamp)) . ')';
 		}
 		
 		$where = "(" . implode(") OR (", $where) . ")";
@@ -49,8 +53,8 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 		include_spip('action/editer_objet');
 		
 		while ($nb--){
-			if ($row = sql_fetsel('id_abonnement, id_commande, id_auteur, date_debut, relance, log', 'spip_abonnements', $where, '', 'date_debut', '0,1')) {
-				$relance = vabonnements_prochaine_relance($row['date_debut'], $timestamp);
+			if ($row = sql_fetsel('id_abonnement, id_commande, id_auteur, date, relance, log', 'spip_abonnements', $where, '', 'date', '0,1')) {
+				$relance = vabonnements_prochaine_relance($row['date'], $timestamp);
 				
 				$id_payeur = sql_getfetsel('id_auteur', 'spip_commandes', 'id_commande=' . intval($row['id_commande']));
 				$id_abonnement = intval($row['id_abonnement']);
@@ -72,9 +76,9 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 				// 
 				// Ajouter log et noter que le rappel est fait 
 				// 
-				$erreur = objet_modifier('abonnement', $id_abonnement, array('log' => $log, 'relance' => vabonnements_prochaine_relance($row['date_debut'], $timestamp)));
+				$erreur = objet_modifier('abonnement', $id_abonnement, array('log' => $log, 'relance' => $relance));
 				
-				spip_log("genie_vabonnements_relancer id_abonnement : " . $id_abonnement . ", date_debut : " . $row['date_debut'] . ", relance : " . $row['relance'], 'vabonnements_relancer_tiers'._LOG_INFO_IMPORTANTE);
+				spip_log("genie_vabonnements_relancer id_abonnement : " . $id_abonnement . ", date : " . $row['date'] . ", relance : " . $row['relance'], 'vabonnements_relancer_tiers'._LOG_INFO_IMPORTANTE);
 				
 				if ($erreur) {
 					spip_log("genie_abonnements_relancer_tiers abonnement #$id_abonnement. Message d'erreur à l'enregistrement de la relance suivante : ".$erreur, 'vabonnements_relancer_tiers'._LOG_ERREUR);

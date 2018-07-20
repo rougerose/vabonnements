@@ -50,22 +50,23 @@ function vabonnements_date_relance($relance, $now){
  * Fonction reprise du plugin Abos de Nursit et en particulier
  * https://github.com/nursit/abos/blob/master/genie/abos_relancer.php
  * 
- * @param  string $date_fin Date d'échéance
+ * @param  string $date_debut Date début d'abonnement
  * @param  int $now     Timestamp
  * @return string
  */
-function vabonnements_prochaine_relance($date_fin, $now = null){
+function vabonnements_prochaine_relance($date, $now = null){
 	if (!$now){
 		$now = time();
 	}
 
 	$relances = vabonnements_get_relances();
-	rsort($relances);
+	//rsort($relances);
 
 	$next = 'off';
 	while (count($relances)){
 		$jours = array_shift($relances);
-		if ($date_fin < vabonnements_date_relance($jours, $now)){
+		$date_relance = vabonnements_date_relance($jours, $now);
+		if (date('Y-m-d', strtotime($date_relance)) == date('Y-m-d', strtotime($date))){
 			return $next;
 		}
 		$next = $jours;

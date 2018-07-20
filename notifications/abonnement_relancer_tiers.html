@@ -25,7 +25,7 @@
 
 <title>[(#NOM_SITE_SPIP)] Rappel : Votre abonnement à Vacarme n'est toujours pas activé</title>
 <body>
-	<p><:abonnement:mail_cher_chere_{=#GET{auteur_civilite}}:>[ (#GET{auteur_prenom})][ (#GET{auteur_nom})],</p>
+	<p><:email:cher_chere_{=#GET{auteur_civilite}}:>[ (#GET{auteur_prenom})][ (#GET{auteur_nom})],</p>
 	<p>Votre abonnement à Vacarme, offert par[ (#GET{payeur_prenom})][ (#GET{payeur_nom})], est toujours en attente d'activation de votre part.</p>
 	[<p><center>
 		(#INCLURE{fond=emails/inc-button, url=[(#GET{url_cadeau}|url_absolue)], label=Activer votre abonnement, width=250px})
