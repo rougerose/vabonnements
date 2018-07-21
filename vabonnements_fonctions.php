@@ -168,7 +168,6 @@ function filtre_vacarme_saison_annee($date) {
 }
 
 
-
 /**
  * Calculer un hash de sécurité pour l'abonnement offert 
  * 

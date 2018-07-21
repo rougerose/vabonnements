@@ -60,7 +60,7 @@ function vabonnements_prochaine_relance($date, $now = null){
 	}
 
 	$relances = vabonnements_get_relances();
-	//rsort($relances);
+	rsort($relances);
 
 	$next = 'off';
 	while (count($relances)){

@@ -58,7 +58,11 @@ function genie_vabonnements_inviter_tiers_dist($timestamp) {
 			spip_log("genie_abonnements_inviter_tiers id_abonnement = ".$id_abonnement, 'vabonnements_inviter_tiers'._LOG_INFO_IMPORTANTE);
 			
 			// Ajouter log et marquer les relances à 0 (= invitation envoyée)
-			$erreur = objet_modifier('abonnement', $id_abonnement, array('log' => $log, 'relance' => sql_quote('0')));
+			$erreur = objet_modifier(
+				'abonnement', 
+				$id_abonnement, 
+				array('log' => $log, 'relance' => sql_quote('0'))
+			);
 			
 			if ($erreur) {
 				spip_log("genie_abonnements_inviter_tiers abonnement #$id_abonnement. Message d'erreur à l'enregistrement de la première relance : ".$erreur, 'vabonnements_inviter_tiers'._LOG_ERREUR);
