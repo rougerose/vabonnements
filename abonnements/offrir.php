@@ -82,8 +82,8 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 		// Elles seront modifiées lors de l'activation du bénéficiaire. 
 		// 
 		// La seule information que l'on garde est la date d'envoi du message 
-		// souhaitée par le payeur. Elle sera utilisée à cet effet dans un 
-		// premier temps, puis modifiée selon ce que souhaite effectivement
+		// souhaitée par le payeur. Elle sera utilisée dans un premier temps
+		// pour la date_debut, puis modifiée selon ce que souhaite effectivement
 		// le bénéficiaire. 
 		// 
 		$numero_debut = '';
@@ -108,13 +108,13 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 		
 		
 		// 
-		// La date d'envoi du message -- et la date éventuelle de son abonnement --
-		// sont notée dans le champ PGP
+		// La date d'envoi du message est notée dans le champ PGP
 		// 
 		if ($date_message = sql_getfetsel('pgp', 'spip_auteurs', 'id_auteur=' . $id_auteur)) {
 			$date_message = unserialize($date_message);
 			
 			$date_envoi = date('Y-m-d H-i-s', $date_message['abonnement_offert_date']);
+			$date_debut = $date_envoi;
 			
 			// effacer la date du champ PGP
 			sql_updateq('spip_auteurs', array('pgp' => ''), 'id_auteur=' . $id_auteur);
