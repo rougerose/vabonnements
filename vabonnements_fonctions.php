@@ -145,20 +145,6 @@ function calculer_numero_futur($reference, $rang = 1, $titre = false) {
 }
 
 
-
-/**
- * Trier un tableau par clé. 
- * fonction ksort de PHP utilisable dans un squelette SPIP.
- * @param  array $tableau
- * @return array
- */
-function filtre_keysort($tableau) {
-	ksort($tableau);
-	return $tableau;
-}
-
-
-
 /**
  * Filtre vacarme_saison_annee
  *

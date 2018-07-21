@@ -54,9 +54,9 @@ function formulaires_editer_abonnement_saisies_dist($id_abonnement='new', $retou
 					'label' => _T('abonnement:champ_mode_paiement_label'),
 					'obligatoire' => 'oui',
 					'datas' => array(
-						'gratuit' => _T('abonnement:texte_paiement_gratuit'),
-						'cheque' => _T('abonnement:texte_paiement_cheque'),
-						'virement' => _T('abonnement:texte_paiement_virement')
+						'gratuit' => _T('abonnement:info_paiement_gratuit'),
+						'cheque' => _T('abonnement:info_paiement_cheque'),
+						'virement' => _T('abonnement:info_paiement_virement')
 					)
 				)
 			)

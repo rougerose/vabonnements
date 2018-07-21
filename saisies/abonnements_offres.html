@@ -1,6 +1,6 @@
 #SET{data, #ARRAY}
 <BOUCLE_abonnements_offres(ABONNEMENTS_OFFRES){par num titre, id_abonnements_offre}>
-	[(#SET{libelle, #TITRE|concat{' '}|concat{\(#REFERENCE\)} })]
+	[(#SET{libelle, <:abonnement:{=abonnement_reference_traduction_#REFERENCE}:>})]
 	[(#SET{data,#GET{data}|plus{#ARRAY{#ID_ABONNEMENTS_OFFRE, #GET{libelle}}}})]
 </BOUCLE_abonnements_offres>
 
