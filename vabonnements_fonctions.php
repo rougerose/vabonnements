@@ -28,7 +28,13 @@ function filtre_periode_en_clair($periodicite){
  * @return string
  */
 function filtre_paiement_en_clair($mode_paiement) {
-	$texte_paiement = _T('abonnement:info_paiement_'.$mode_paiement);
+	if ($mode_paiement == 'gratuit') {
+		$mode = $mode_paiement;
+	} else {
+		$mode = strstr($mode_paiement, '/', true);
+	}
+	
+	$texte_paiement = _T('abonnement:info_paiement_'.$mode);
 	return $texte_paiement;
 }
 
