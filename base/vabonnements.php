@@ -67,7 +67,10 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 		 #'date' => '',
 		'champs_editables'  => array('titre', 'descriptif', 'reference', 'duree', 'prix_ht', 'taxe'),
 		'champs_versionnes' => array('titre', 'descriptif', 'reference', 'duree', 'prix_ht'),
-		'rechercher_champs' => array("titre" => 10, "descriptif" => 5, "reference" => 10),
+		'rechercher_champs' => array(
+			"titre" => 10,
+			"descriptif" => 5, 
+			"reference" => 10),
 		'tables_jointures'  => array(),
 		'statut_textes_instituer' => array(
 			'prepa'    => 'texte_statut_en_cours_redaction',
@@ -122,7 +125,11 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 		'date' => 'date',
 		'champs_editables'  => array('id_abonnements_offre', 'id_auteur', 'date_debut', 'date_fin', 'numero_debut', 'numero_fin', 'mode_paiement'),
 		'champs_versionnes' => array('id_abonnements_offre', 'date_debut', 'date_fin', 'numero_debut', 'numero_fin', 'mode_paiement'),
-		'rechercher_champs' => array(),
+		'rechercher_champs' => array(
+			'id_abonnements_offre' => 1,
+			'id_auteur' => 1,
+			'log' => 10
+		),
 		'tables_jointures'  => array(),
 		'statut_textes_instituer' => array(
 			'prepa'    => 'abonnement:texte_statut_prepa',
