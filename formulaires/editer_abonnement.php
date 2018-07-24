@@ -137,7 +137,7 @@ function formulaires_editer_abonnement_identifier_dist($id_abonnement = 'new', $
  */
 function formulaires_editer_abonnement_charger_dist($id_abonnement = 'new', $retour = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
 	$valeurs = formulaires_editer_objet_charger('abonnement', $id_abonnement, '', $lier_trad, $retour, $config_fonc, $row, $hidden);
-
+	
 	return $valeurs;
 }
 
@@ -206,16 +206,80 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 	$id_auteur = _request('id_auteur');
 	$mode_paiement = _request('mode_paiement');
 	
+	// prix 
+	if (!$fonction_prix OR !$fonction_prix_ht){
+		$fonction_prix = charger_fonction('prix', 'inc/');
+		$fonction_prix_ht = charger_fonction('ht', 'inc/prix');
+	}
+	
+	$prix_ht = $fonction_prix_ht('abonnements_offre', $id_abonnements_offre, 6);
+	$prix = $fonction_prix('abonnements_offre', $id_abonnements_offre, 6);
+	
+	if ($mode_paiement == 'gratuit') {
+		$prix = 0;
+		$prix_ht = 0;
+	}
+	
 	if ($id_abonnement == 0) {
-		$abonner = charger_fonction("abonner", "abonnements");
-		$options = array(
-			'id_auteur' => $id_auteur,
-			'statut' => 'prepa',
-			'numero_debut' => $numero_debut,
-			'mode_paiement' => $mode_paiement
+		
+		// créer la commande
+		include_spip('inc/commandes');
+		$id_commande = creer_commande_encours(intval($id_auteur));
+		$emplette = array(
+			'objet' => 'abonnements_offre',
+			'id_objet' => $id_abonnements_offre,
+			'quantite' => 1
 		);
 		
-		$id_abonnement = $abonner($id_abonnements_offre, $options);
+		// créer la ligne de détail de commande
+		if ($id_commande) {
+			$id_commandes_detail = commandes_ajouter_detail($id_commande, $emplette);
+			
+			// ajouter au détail de commande : 
+			// - numéro début
+			// - le prix unitaire, si gratuit
+			$set = array(
+				'numero_debut' => $numero_debut,
+				'prix_unitaire_ht' => $prix_ht
+			);
+			include_spip('action/editer_objet');
+			objet_modifier('commandes_detail', $id_commandes_detail, $set);
+		}
+		
+		// créer la transaction
+		$options_transaction = array(
+			'montant_ht' => $prix_ht,
+			'id_auteur' => $id_auteur,
+			'champs' => array(
+				'id_commande' => $id_commande
+			)
+		);
+		$inserer_transaction = charger_fonction('inserer_transaction', 'bank');
+		$id_transaction = $inserer_transaction($prix, $options_transaction);
+		
+		// paiement de la transaction
+		$transaction_hash = sql_getfetsel('transaction_hash', 'spip_transactions', 'id_transaction='.$id_transaction);
+		
+		// config du mode de paiement
+		include_spip('inc/bank');
+		$config = bank_config($mode_paiement);
+		
+		$contexte = array(
+			'id_transaction' => $id_transaction,
+			'transaction_hash' => $transaction_hash
+		);
+		
+		// paiement chèque ou virement
+		if (preg_match("/virement|cheque/", $mode_paiement)) {
+			$contexte['autorisation_id'] = 'wait';
+		}
+		
+		$paiement = charger_fonction("response", "presta/$mode_paiement/call");
+		$reponse = $paiement($config, $contexte);
+		
+		// L'abonnement a été ajouté après l'enregistrement de la transaction
+		// et via le pipeline pre_edition.
+		$id_abonnement = sql_getfetsel('id_abonnement', 'spip_abonnements', 'id_commande='.$id_commande.' AND id_auteur='.$id_auteur);
 		
 		if (intval($id_abonnement)) {
 			return array(

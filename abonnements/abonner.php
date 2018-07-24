@@ -31,7 +31,7 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 		
 		$defaut = array(
 			'id_auteur' => 0,
-			'statut' => 'prepa',
+			'statut' => 'prop', // en commande. Le statut sera modifié lorsque le paiement sera effectif.
 			'id_commande' => 0,
 			'prix_ht_initial' => null,
 			'taxe' => $row['taxe'],
@@ -55,11 +55,7 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 			return false;
 		}
 		
-		// 
-		// L'abonnement est indiqué comme payé. Il sera activé lors du traitement
-		// de la commande et son changement de statut payée -> envoyée. 
-		// 
-		$statut = 'paye';
+		$statut = 'prop';
 		
 		$prix_ht_initial = $options['prix_ht_initial'];
 		if (is_null($prix_ht_initial)) {
@@ -88,11 +84,12 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 		$duree_en_clair = filtre_duree_en_clair($duree);
 		$prix_en_clair = prix_formater($prix_ht_initial + ($prix_ht_initial * $options['taxe']));
 		$id_commande = $options['id_commande'];
-		$commande_en_clair = ($id_commande) ? "Commande n°$id_commande : " : "Commande réalisée par un administrateur du site : "; 
+		$commande_en_clair = "Commande n°$id_commande : "; 
 		
 		// Exemple -> Commande n° XX : souscription abonnement 2 ans, offre Tarif réduit, (prix TTC), du numéro xx au numéro yy.
-		$log_abos = $commande_en_clair."souscription de l'abonnement $duree_en_clair, offre $titre_offre (prix $prix_en_clair), ";
-		$log_abos .= "du numéro $numero_debut au numéro $numero_fin.";
+		$log_abos = $commande_en_clair."ajout de l'abonnement $duree_en_clair, offre $titre_offre (prix $prix_en_clair), ";
+		$log_abos .= "du numéro $numero_debut au numéro $numero_fin. ";
+		$log_abos .= "Mode de paiement : ".$options['mode_paiement'].".";
 		$log = vabonnements_log($log_abos);
 		
 		// 
@@ -121,11 +118,11 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 			return false;
 		}
 		
-		if ($statut == 'actif') {
+		//if ($statut == 'actif') {
 			// TODO: activer notifications ?
 			//$notifications = charger_fonction("notifications", "inc");
 			//$notifications('activerabonnement', $id_abonnement, array('statut' => $statut, 'statut_ancien' => 'prepa'));
-		}
+		//}
 	}
 	
 	return $id_abonnement;

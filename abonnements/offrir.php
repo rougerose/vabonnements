@@ -36,7 +36,7 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 		
 		$defaut = array(
 			'id_auteur' => 0,
-			'statut' => 'prepa',
+			'statut' => 'prop', // en commande
 			'id_commande' => 0,
 			'prix_ht_initial' => null,
 			'taxe' => $row['taxe'],
@@ -62,19 +62,13 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 			return false;
 		}
 		
-		
-		// 
-		// C'est un cadeau, l'abonnement sera activé directement par le 
-		// bénéficiaire. Son statut est payé pour le moment.
-		// 
-		$statut = 'paye';
+		$statut = 'prop';
 		
 		$prix_ht_initial = $options['prix_ht_initial'];
 		
 		if (is_null($prix_ht_initial)) {
 			$prix_ht_initial = $row['prix_ht'];
 		}
-		
 		
 		// 
 		// Abonnement offert, les données relatives au numéro de début, de fin,
@@ -109,7 +103,8 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 		
 		// 
 		// La date d'envoi du message est notée dans le champ PGP
-		// 
+		// TODO: créer un champ date_envoi dans la table d'abonnement ? Ce serait
+		// plus simple...
 		if ($date_message = sql_getfetsel('pgp', 'spip_auteurs', 'id_auteur=' . $id_auteur)) {
 			$date_message = unserialize($date_message);
 			
@@ -151,9 +146,10 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 		);
 		$message_perso_payeur = ($message_payeur) ? "Oui." : "Non.";
 		
-		// Exemple -> Commande n°XX : paiement de l'abonnement X ans, offre tarif... (prix) par Nom prénom (auteur n°) et destiné à Nom Prénom (auteur n°). Code cadeau envoyé au bénéficiaire : . Message personnalité du payeur ? Oui|Non.
+		// Exemple -> Commande n°[XX] : paiement de l'abonnement X ans, offre tarif... (prix) par Nom prénom (auteur n°) et destiné à Nom Prénom (auteur n°). Mode de paiement : [xxx]. Code cadeau envoyé au bénéficiaire : [xxx] . Message personnalité du payeur ? [oui|non].
 		$log_abos = $commande_en_clair."paiement de l'abonnement $duree_en_clair, offre $titre_offre (prix $prix_en_clair), ";
 		$log_abos .= "par $nom_payeur (auteur n°" . $options['id_auteur'] . "). ";
+		$log_abos .= "Mode de paiement : ".$options['mode_paiement'].". ";
 		$log_abos .= "Code d'activation destiné au bénéficiaire $code_cadeau. ";
 		$log_abos .= "Le message annonçant le cadeau sera envoyé le $date_envoi_en_clair. ";
 		$log_abos .=  "Message personnalisé par le payeur ? $message_perso_payeur";
@@ -187,12 +183,12 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 			return false;
 		}
 		
-		if ($statut == 'prop') {
+		//if ($statut == 'prop') {
 			// TODO: notifier le payeur 
 			// 
 			//$notifications = charger_fonction("notifications", "inc");
 			//$notifications('activerabonnement', $id_abonnement, array('statut' => $statut, 'statut_ancien' => 'prepa'));
-		}
+		//}
 	}
 	
 	return $id_abonnement;

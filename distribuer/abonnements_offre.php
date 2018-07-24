@@ -6,21 +6,18 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 
 
 /**
- * Abonner un auteur
+ * Modifier le statut d'un abonnement prop => paye
  *
  * La fonction est appelée par le plugin Commandes -- fonction instituer -- 
  * lorsque la commande est passée avec un statut payée. 
  * 
- * Attention : il n'y a pas de vérification du statut ancien de la commande.
+ * Il n'y a pas de vérification du statut ancien de la commande.
  * Par contre, on s'assure ici que chaque ligne détails de la commande est 
  * bien en attente, donc une commande nouvelle.
  *
- * A l'issue de la distribution de l'abonnement, le statut de la ligne détails
- * est passé en 'envoyé', choix par défaut, car il n'existe pas de statut
- * intermédiaire. Ce statut ne confirme pas que l'abonnement est activé.
- * Il le sera plus tard, soit lorsque le bénéficiaire de l'abonnement offert
- * aura fait la démarche, soit à la date du début de l'abonnement.
- * 
+ * Dans un premier temps, le statut de la ligne de détail de commande n'est 
+ * pas modifié et laissé en attente (contrairement à ce que prévoit 
+ * le workflow des commandes).
  * 
  * @param  int $id_abonnements_offre
  * @param  array $detail contenu commandes_details
@@ -30,7 +27,9 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 function distribuer_abonnements_offre_dist($id_abonnements_offre, $detail, $commande) {
 	
 	if ($detail['statut'] == 'attente') {
-		
+		include_spip('inc/autoriser');
+		include_spip('action/editer_objet');
+		include_spip('inc/vabonnements');
 		// 
 		// TODO: Ce qui suit est nécessaire pour un abonnement en paiement récurrent. 
 		// Le code est laissé ici pour mémoire, quand ce sera utile. 
@@ -45,42 +44,29 @@ function distribuer_abonnements_offre_dist($id_abonnements_offre, $detail, $comm
 		// 		$abonne_uid = $transaction['id_transaction'];
 		// 	}
 		// }
+		// 
+		$id_commande = $commande['id_commande'];
+		$mode = $commande['mode'];
 		
-		$options = array(
-			'id_commande' => $commande['id_commande'],
-			'id_commandes_detail' => $detail['id_commandes_detail'],
-			'id_auteur' => $commande['id_auteur'],
-			'statut' => '',
-			'mode_paiement' => $commande['mode'],
-			'prix_ht_initial' => $detail['prix_unitaire_ht'], // reprendre le prix qui a ete enregistre dans la commande
-			'numero_debut' => $detail['numero_debut']
-			// 'abonne_uid' => $abonne_uid, // TODO: paiement récurrent
+		$abonnement = sql_fetsel(
+			'id_abonnement, log', 
+			'spip_abonnements', 
+			'id_commande='.$id_commande.' AND id_auteur='.$commande['id_auteur']
 		);
 		
+		$id_abonnement = $abonnement['id_abonnement'];
 		
-		//
-		// Si numero_debut contient la référence au premier numéro,
-		// il s'agit alors d'un abonnement "courant".
-		// Sinon c'est un abonnement offert.
-		// 
-		if ($detail['numero_debut']) {
-			$abonnement = charger_fonction("abonner", "abonnements");
-		} else {
-			$abonnement = charger_fonction("offrir", "abonnements");
-		}
+		$log_paiement = "Paiement de la commande n°$id_commande (mode de paiement : $mode). Le statut de l'abonnement est modifié également";
+		$log = $abonnement['log'];
+		$log .= vabonnements_log($log_paiement);
 		
-		// // TODO: Paiement récurrent
-		// if (isset($commande['echeances_date_debut']) and intval($commande['echeances_date_debut'])){
-		// 	$options['date_debut'] = $commande['echeances_date_debut'];
-		// }
+		autoriser_exception('modifier', 'abonnement', $id_abonnement);
 		
-		$nb = $detail['quantite'];
+		$set = array('statut' => 'paye', 'log' => $log);
+		$res = objet_modifier('abonnement', $id_abonnement, $set);
 		
-		while ($nb-->0) {
-			$id_abonnement = $abonnement($id_abonnements_offre, $options);
-		}
-		// Statut "envoyé", à défaut d'être plus précis : "payé" aurait été préférable. 
-		if ($id_abonnement) return 'envoye';
+		autoriser_exception('modifier', 'abonnement', $id_abonnement, false);
+		
+		return 'attente';
 	}
-	return false;
 }
