@@ -56,7 +56,7 @@ function distribuer_abonnements_offre_dist($id_abonnements_offre, $detail, $comm
 		
 		$id_abonnement = $abonnement['id_abonnement'];
 		
-		$log_paiement = "Paiement de la commande n°$id_commande (mode de paiement : $mode). Le statut de l'abonnement est modifié également";
+		$log_paiement = "L'abonnement est maintenant en statut «payé» après le paiement de la commande n°$id_commande (mode de paiement : $mode).";
 		$log = $abonnement['log'];
 		$log .= vabonnements_log($log_paiement);
 		
