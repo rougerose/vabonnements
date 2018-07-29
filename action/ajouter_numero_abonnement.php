@@ -55,20 +55,27 @@ function action_ajouter_numero_abonnement_dist($arg = null) {
 		));
 		
 		if ($erreur) {
-			spip_log("L'Abonnement n°$id_abonnement n'a pas pu être activé. Message d'erreur : " . $erreur, 'vabonnements_activer'._LOG_ERREUR);
+			spip_log("L'abonnement n°$id_abonnement n'a pas pu être activé. Message d'erreur : " . $erreur, 'vabonnements_activer_erreur'._LOG_ERREUR);
 		} else {
-			spip_log("L'Abonnement n°$id_abonnement est activé", 'vabonnements_activer'._LOG_INFO_IMPORTANTE);
+			spip_log("L'abonnement n°$id_abonnement est activé", 'vabonnements_activer'._LOG_INFO_IMPORTANTE);
+			
+			$noter_envoi = charger_fonction('noter_envoi', 'action');
+			$noter_envoi(
+				$abonnement['id_commande'],
+				'abonnements_offre',
+				$abonnement['id_abonnements_offre']
+			);
+			
+			// 
+			// Notifications vers l'abonné et vers Vacarme
+			// 
+			$notifications = charger_fonction('notifications', 'inc');
+			$notifications('abonnement_client_confirmation_activation', $id_abonnement);
+			$notifications('abonnement_vendeur_confirmation_activation', $id_abonnement);
 		}
 		
 		// lever les autorisations
 		autoriser_exception('instituer', 'abonnement', $id_abonnement, false);
 		autoriser_exception('modifier', 'abonnement', $id_abonnement, false);
-		
-		// 
-		// Notifications vers l'abonné et vers Vacarme
-		// 
-		$notifications = charger_fonction('notifications', 'inc');
-		$notifications('abonnement_client_confirmation_activation', $id_abonnement);
-		$notifications('abonnement_vendeur_confirmation_activation', $id_abonnement);
 	}
 }
