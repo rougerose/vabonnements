@@ -6,18 +6,28 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 
 
 /**
- * Modifier le statut d'un abonnement prop => paye
+ * Distribution d'un abonnement
  *
  * La fonction est appelée par le plugin Commandes -- fonction instituer -- 
  * lorsque la commande est passée avec un statut payée. 
+ *
+ * Si l'abonnement est personnel, le paiement de la commande entraîne 
+ * l'activation de l'abonnement. 
+ *
+ * Si l'abonnement est offert, le statut de l'abonnement est modifié en "payé".
+ * C'est le bénéficiaire qui déclenchera l'activation.
+ *
+ * Ensuite, les numéros qu'il est possible d'envoyer immédiatement, car 
+ * déjà disponibles (précédent numéro ? numéro en cours ?)
+ * sont notés dans la table envois_commandes.
  * 
  * Il n'y a pas de vérification du statut ancien de la commande.
  * Par contre, on s'assure ici que chaque ligne détails de la commande est 
  * bien en attente, donc une commande nouvelle.
  *
- * Dans un premier temps, le statut de la ligne de détail de commande n'est 
- * pas modifié et laissé en attente (contrairement à ce que prévoit 
- * le workflow des commandes).
+ * Contraitement à ce que prévoit le workflow Commandes,
+ * le statut de la ligne de détail de commande n'est pas modifié 
+ * et laissé en attente. Ce statut sera modifié par le plugin Envois.
  * 
  * @param  int $id_abonnements_offre
  * @param  array $detail contenu commandes_details
@@ -47,6 +57,7 @@ function distribuer_abonnements_offre_dist($id_abonnements_offre, $detail, $comm
 		// 
 		$id_commande = $commande['id_commande'];
 		$mode = $commande['mode'];
+		$envoi = false;
 		
 		$abonnement = sql_fetsel(
 			'id_abonnement, log', 
@@ -56,14 +67,29 @@ function distribuer_abonnements_offre_dist($id_abonnements_offre, $detail, $comm
 		
 		$id_abonnement = $abonnement['id_abonnement'];
 		
-		$log_paiement = "L'abonnement est maintenant en statut «payé» après le paiement de la commande n°$id_commande (mode de paiement : $mode).";
-		$log = $abonnement['log'];
-		$log .= vabonnements_log($log_paiement);
+		// Abonnement personnel ou offert ?
+		if ($detail['numero_debut']) {
+			$log_distribution = "L'abonnement est maintenant en statut «actif» après le paiement de la commande n°$id_commande (mode de paiement : $mode).";
+			$statut = 'actif';
+			$envoi = true;
+		} else {
+			$log_distribution = "L'abonnement est maintenant en statut «payé» après le paiement de la commande n°$id_commande (mode de paiement : $mode). Il est en attente d'activation par son bénéficiaire.";
+			$statut = 'paye';
+		}
 		
 		autoriser_exception('modifier', 'abonnement', $id_abonnement);
+		$log = $abonnement['log'];
+		$log .= vabonnements_log($log_distribution);
 		
-		$set = array('statut' => 'paye', 'log' => $log);
+		$set = array('statut' => $statut, 'log' => $log);
+		
 		$res = objet_modifier('abonnement', $id_abonnement, $set);
+		
+		// noter les envois à faire
+		if ($envoi) {
+			$noter_envoi = charger_fonction('noter_envoi', 'action');
+			$noter_envoi($id_commande, 'abonnements_offre', $id_abonnements_offre);
+		}
 		
 		autoriser_exception('modifier', 'abonnement', $id_abonnement, false);
 		

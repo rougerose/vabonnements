@@ -19,6 +19,7 @@
 	
 	<utilise nom="facteur" />
 	<utilise nom="prix" />
+	<utilise nom="venvois" />
 
 	<pipeline nom="autoriser" inclure="vabonnements_autorisations.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/vabonnements.php" />
