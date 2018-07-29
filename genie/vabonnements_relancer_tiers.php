@@ -19,7 +19,7 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 function genie_vabonnements_relancer_tiers_dist($timestamp) {
 	include_spip('inc/vabonnements_relance');
 	
-	//$timestamp = strtotime('+3 days');
+	//$timestamp = strtotime('+3 day');
 	$check = date('Y-m-d', $timestamp);
 	
 	$relances = vabonnements_get_relances();
@@ -28,9 +28,28 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 	
 	// marquer en première relance les abonnements offerts dont la date_debut 
 	// est antérieure à la date calculée et qui ont été marqués à relance = 0
-	sql_updateq("spip_abonnements", array('relance' => $premiere_relance), 'statut=' . sql_quote('paye') . ' AND relance=' . sql_quote('0') . ' AND date_debut <' . sql_quote($date) . ' AND coupon <> ' .sql_quote(''));
+	$abonnements_relances = sql_allfetsel(
+		'*',
+		'spip_abonnements',
+		'statut='.sql_quote('paye')
+			.' AND relance='.sql_quote('0')
+			.' AND relance <>'.sql_quote('off')
+			.' AND date_debut <'.sql_quote($date)
+			.' AND coupon <> '.sql_quote('')
+	);
 	
-	$rappels = sql_allfetsel('DISTINCT relance', 'spip_abonnements', 'statut=' . sql_quote('paye') . ' AND relance <> ' . sql_quote('off') . ' AND relance <> ' . sql_quote('') . ' AND relance > ' .sql_quote('0'));
+	foreach ($abonnements_relances as $abonnement) {
+		sql_updateq('spip_abonnements', array('relance' => $premiere_relance), 'id_abonnement='.intval($abonnement['id_abonnement']));
+	}
+
+	$rappels = sql_allfetsel(
+		'DISTINCT relance', 
+		'spip_abonnements', 
+		'statut='.sql_quote('paye')
+			.' AND relance <> '.sql_quote('off')
+			.' AND relance <> '.sql_quote('')
+			.' AND relance > ' .sql_quote('0')
+		);
 	
 	if (count($rappels)) {
 		$rappels = array_map('reset', $rappels);
@@ -38,12 +57,12 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 		$where = array();
 		
 		foreach ($rappels as $rappel) {
-			$where[] = '(relance=' . sql_quote($rappel, '', 'text') 
-				. ' AND date_debut < ' . sql_quote(vabonnements_date_relance($rappel, $timestamp)) . ')';
+			$where[] = '(relance='.sql_quote($rappel, '', 'text') 
+				.' AND date_debut < '.sql_quote(vabonnements_date_relance($rappel, $timestamp)).')';
 		}
 		
-		$where = "(" . implode(") OR (", $where) . ")";
-		$where = "(($where) AND (statut=" . sql_quote('paye') . "))";
+		$where = "(".implode(") OR (", $where).")";
+		$where = "(($where) AND (statut=".sql_quote('paye')."))";
 		
 		$nb = _ABONNEMENTS_RELANCE_POOL;
 		
@@ -62,9 +81,9 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 					'id_message', 
 					'spip_messages', 
 					'id_auteur=' . intval($id_payeur)
-					. ' AND destinataires=' . intval($row['id_auteur'])
-					. ' AND statut=' . sql_quote('prepa')
-					. ' AND type=' . sql_quote('kdo')
+						.' AND destinataires='.intval($row['id_auteur'])
+						.' AND statut='.sql_quote('prepa')
+						.' AND type='.sql_quote('kdo')
 				);
 				
 				autoriser_exception('modifier', 'abonnement', $id_abonnement);
@@ -106,5 +125,6 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 			return -($timestamp-3600);
 		}
 	}
+
 	return 0;
 }

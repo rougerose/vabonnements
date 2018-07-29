@@ -62,7 +62,7 @@ function distribuer_abonnements_offre_dist($id_abonnements_offre, $detail, $comm
 		$abonnement = sql_fetsel(
 			'id_abonnement, log', 
 			'spip_abonnements', 
-			'id_commande='.$id_commande.' AND id_auteur='.$commande['id_auteur']
+			'id_commande='.$id_commande
 		);
 		
 		$id_abonnement = $abonnement['id_abonnement'];
