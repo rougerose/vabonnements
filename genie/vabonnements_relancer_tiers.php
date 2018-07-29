@@ -20,7 +20,7 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 	include_spip('inc/vabonnements_relance');
 	
 	//$timestamp = strtotime('+3 day');
-	$check = date('Y-m-d', $timestamp);
+	//$check = date('Y-m-d', $timestamp);
 	
 	$relances = vabonnements_get_relances();
 	$premiere_relance = reset($relances);
