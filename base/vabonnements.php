@@ -140,7 +140,6 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 			'poubelle' => 'texte_statut_poubelle',
 		),
 		'statut_images' => array(
-			'abonnement-16.png',
 			'prepa'    => 'puce-preparer-8.png',
 			'prop'    => 'puce-proposer-8.png',
 			'paye'    => 'puce-abo-paye-8.png',
