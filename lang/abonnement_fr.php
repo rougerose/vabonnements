@@ -75,6 +75,9 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	
 	// M
 	'message_erreur_valider_code_cadeau' => "Des informations sont erronées ou manquantes, il n'est pas possbile de poursuivre.",
+	'message_erreur_contact_adresse' => "Cet auteur doit être lié à un contact et à une adresse postale avant de pouvoir lui ajouter un abonnement",
+	'message_erreur_contact' => "Cet auteur doit être lié à un contact avant de pouvoir lui ajouter un abonnement",
+	'message_erreur_adresse' => "Cet auteur doit être lié à une adresse postale avant de pouvoir lui ajouter un abonnement",
 	'message_echec_valider_code_cadeau' => "Nous sommes désolés, mais le code est incorrect",
 	'message_succes_valider_code_cadeau' => "Le code est correct",
 	
