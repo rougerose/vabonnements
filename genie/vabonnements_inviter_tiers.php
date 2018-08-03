@@ -15,7 +15,7 @@ function genie_vabonnements_inviter_tiers_dist($timestamp) {
 	
 	include_spip('inc/vabonnements_relance');
 	
-	$date_jour = date('Y-m-d H:i:s', $timestamp);
+	$date_jour = date('Y-m-d H:i:s');
 	
 	// 
 	// Prendre les abonnements offerts pour lesquels le mail d'invitation

@@ -21,10 +21,10 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 	
 	//$timestamp = strtotime('+3 day');
 	//$check = date('Y-m-d', $timestamp);
-	
+	$now = date('U');
 	$relances = vabonnements_get_relances();
 	$premiere_relance = reset($relances);
-	$date = vabonnements_date_relance($premiere_relance, $timestamp);
+	$date = vabonnements_date_relance($premiere_relance, $now);
 	
 	// marquer en première relance les abonnements offerts dont la date_debut 
 	// est antérieure à la date calculée et qui ont été marqués à relance = 0
@@ -58,7 +58,7 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 		
 		foreach ($rappels as $rappel) {
 			$where[] = '(relance='.sql_quote($rappel, '', 'text') 
-				.' AND date_debut < '.sql_quote(vabonnements_date_relance($rappel, $timestamp)).')';
+				.' AND date_debut < '.sql_quote(vabonnements_date_relance($rappel, $now)).')';
 		}
 		
 		$where = "(".implode(") OR (", $where).")";
@@ -73,7 +73,7 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 		
 		while ($nb--){
 			if ($row = sql_fetsel('id_abonnement, id_commande, id_auteur, date_debut, relance, log', 'spip_abonnements', $where, '', 'date_debut', '0,1')) {
-				$relance = vabonnements_prochaine_relance($row['date_debut'], $timestamp);
+				$relance = vabonnements_prochaine_relance($row['date_debut'], $now);
 				
 				$id_payeur = sql_getfetsel('id_auteur', 'spip_commandes', 'id_commande=' . intval($row['id_commande']));
 				$id_abonnement = intval($row['id_abonnement']);
@@ -122,7 +122,7 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 		// Si trop de relances, demander la main a nouveau
 		// 
 		if (($n = sql_countsel('spip_abonnements', $where)) > 2 * _ABONNEMENTS_RELANCE_POOL) {
-			return -($timestamp-3600);
+			return -($now-3600);
 		}
 	}
 

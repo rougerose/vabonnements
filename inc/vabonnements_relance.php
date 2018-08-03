@@ -66,7 +66,7 @@ function vabonnements_prochaine_relance($date, $now = null){
 	while (count($relances)){
 		$jours = array_shift($relances);
 		$date_relance = vabonnements_date_relance($jours, $now);
-		if (date('Y-m-d', strtotime($date_relance)) == date('Y-m-d', strtotime($date))){
+		if (date('Y-m-d', strtotime($date_relance)) > date('Y-m-d', strtotime($date))){
 			return $next;
 		}
 		$next = $jours;
