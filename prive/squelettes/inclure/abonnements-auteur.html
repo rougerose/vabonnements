@@ -9,7 +9,7 @@
 		[(#SET{erreur, #GET{erreur}|concat{_adresse}})]
 	<//B_adresse>
 	[(#GET{erreur}|oui)
-		#BOITE_OUVRIR{'Message d&#39;erreur','error'}
+		#BOITE_OUVRIR{'','notice'}
 			<p><:abonnement:message_erreur{=#GET{erreur}}:></p>
 		#BOITE_FERMER
 	][(#GET{erreur}|non)
