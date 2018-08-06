@@ -10,6 +10,5 @@ if (!defined('_ABONNEMENTS_RELANCE_POOL')){
 	define('_ABONNEMENTS_RELANCE_POOL', 10);
 }
 
-
 // simulation pour Bank
 define('_SIMU_BANK_ALLOWED',true);

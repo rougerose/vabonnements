@@ -26,3 +26,23 @@ function vabonnements_log($abo_log) {
 	
 	return $abo_log;
 }
+
+
+/**
+ * Récupérer dans la configuration du plugin les identifiants des offres
+ * d'abonnement permanent et obligatoire.
+ *
+ * Ces offres ne font pas l'objet de notification client lors de la souscription
+ * et de la relance. 
+ * @return array
+ */
+function vabonnements_offres_obligatoires() {
+	include_spip('inc/config');
+	$offres_obligatoires = lire_config('vabonnements/abonnements_obligatoires_permanents', '');
+	$offres_obligatoires = explode(",", $offres_obligatoires);
+	$offres_obligatoires = array_map("trim", $offres_obligatoires);
+	$offres_obligatoires = array_map("intval", $offres_obligatoires);
+	$offres_obligatoires = array_unique($offres_obligatoires);
+	
+	return $offres_obligatoires;
+}

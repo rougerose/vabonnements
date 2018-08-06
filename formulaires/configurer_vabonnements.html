@@ -15,9 +15,13 @@
 				obligatoire=oui,
 				explication=<:vabonnements:cfg_taxe_defaut_explication:>})]
 			
-			[(#SAISIE{input, relances_tiers, obligatoire=non,
+			[(#SAISIE{input, relances_tiers, obligatoire=oui,
 				label=<:vabonnements:cfg_relance_tiers_label:>,
 				explication=<:vabonnements:cfg_relance_tiers_explication:>})]
+			
+			[(#SAISIE{input, abonnements_obligatoires_permanents, obligatoire=oui,
+				label=<:vabonnements:cfg_abonnements_obligatoires_label:>,
+				explication=<:vabonnements:cfg_abonnements_obligatoires_explication:>})]
 		</div>
 
 		<input type="hidden" name="_meta_casier" value="vabonnements" />

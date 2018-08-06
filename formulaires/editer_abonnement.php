@@ -169,10 +169,15 @@ function formulaires_editer_abonnement_verifier_dist($id_abonnement = 'new', $re
 	
 	if ($id_abonnement == 0) {
 		$erreurs += formulaires_editer_objet_verifier('abonnement', $id_abonnement, array('id_abonnements_offre', 'id_auteur', 'numero_debut', 'mode_paiement'));
+	}
+	include_spip('inc/vabonnements');
+	$offres_obligatoires = vabonnements_offres_obligatoires();
+	$offre = _request('id_abonnements_offre');
+	$mode = _request('mode_paiement');
 	
-	} // else {
-	// 	$erreurs += formulaires_editer_objet_verifier('abonnement', $id_abonnement, array('numero_debut'));
-	// }
+	if (in_array($offre, $offres_obligatoires) and $mode != 'gratuit') {
+		$erreurs['message_erreur'] .= _T('abonnement:message_erreur_abonnement_obligatoire_paiement_gratuit');
+	}
 	
 	return $erreurs;
 }
@@ -292,7 +297,7 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 			);
 		}
 	} else {
-		$retours = formulaires_editer_objet_traiter('abonnements', $id_abonnement, '', $lier_trad, $retour, $config_fonc, $row, $hidden);
-		return $retours;
+		$res = formulaires_editer_objet_traiter('abonnements', $id_abonnement, '', $lier_trad, $retour, $config_fonc, $row, $hidden);
+		return $res;
 	} 
 }

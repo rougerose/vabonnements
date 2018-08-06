@@ -25,6 +25,8 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'abonnement_reference_traduction_A2T2I' => 'abonnement 2 ans, tarif standard, International',
 	'abonnement_reference_traduction_A2T3I' => 'abonnement 2 ans, tarif soutien International',
 	'abonnement_reference_traduction_A2T3' => 'abonnement 2 ans, tarif soutien',
+	'abonnement_reference_traduction_A3' => 'abonnement permanent',
+	'abonnement_reference_traduction_A4' => 'abonnement obligatoire',
 	'abonnement_formules' => "Voir les formules d'abonnement",
 	'abonner' => "S'abonner",
 	'ajouter_abonnement_message_ok'         => 'Abonnement ajouté',
@@ -71,9 +73,11 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'info_paiement_cheque'      => 'Chèque',
 	'info_paiement_gratuit'     => 'Gratuit',
 	'info_paiement_paypal'      => 'Carte bleue - Paypal',
+	'info_paiement_simu'    => 'Simulation - Développement',
 	'info_paiement_virement'    => 'Virement',
 	
 	// M
+	'message_erreur_abonnement_obligatoire_paiement_gratuit' => "Un abonnement obligatoire ou gratuit est nécessairement en paiement gratuit",
 	'message_erreur_valider_code_cadeau' => "Des informations sont erronées ou manquantes, il n'est pas possbile de poursuivre.",
 	'message_erreur_contact_adresse' => "Cet auteur doit être lié à un contact et à une adresse postale avant de pouvoir lui ajouter un abonnement",
 	'message_erreur_contact' => "Cet auteur doit être lié à un contact avant de pouvoir lui ajouter un abonnement",
