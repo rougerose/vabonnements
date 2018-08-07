@@ -42,7 +42,8 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 			'numero_fin' => '',
 			'duree' => '',
 			'mode_paiement' => '',
-			'log' => ''
+			'log' => '',
+			'offert' => 'non'
 		);
 		
 		$options = array_merge($defaut, $options);

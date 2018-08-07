@@ -48,7 +48,8 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 			'duree' => '',
 			'mode_paiement' => '',
 			'log' => '',
-			'coupon' => ''
+			'coupon' => '',
+			'offert' => 'oui'
 		);
 		
 		$options = array_merge($defaut, $options);
@@ -173,7 +174,8 @@ function abonnements_offrir_dist($id_abonnements_offre, $options = array()) {
 			'duree_echeance' => $duree,
 			'statut' => $statut,
 			'log' => $log,
-			'coupon' => $code_cadeau
+			'coupon' => $code_cadeau,
+			'offert' => $options['offert']
 		);
 		
 		$id_abonnement = sql_insertq('spip_abonnements', $ins);
