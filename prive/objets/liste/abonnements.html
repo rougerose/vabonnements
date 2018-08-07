@@ -10,7 +10,7 @@
 			<thead>
 				<tr class="first_row">
 					<th class="id">[(#TRI{id_abonnement, <:info_numero_abbreviation:>, ajax})]</th>
-					<th class="statut">[(#TRI{statut, <span title="<:lien_trier_statut|attribut_html:>">#</span>, ajax})]</th>
+					<th class="">[(#TRI{statut, <span title="<:lien_trier_statut|attribut_html:>">#</span>, ajax})]</th>
 					<th class="titre">[(#TRI{id_abonnements_offre, <:abonnements_offre:titre_abonnements_offre:>, ajax})]</th>
 					<th class="nom"><:abonnement:info_nom_auteur:></th>
 					<th class="duree">[(#TRI{duree_echeance, <:abonnements_offre:champ_duree_label:>, ajax})]</th>
@@ -24,7 +24,7 @@
 			<BOUCLE_liste_abonnements(ABONNEMENTS){id_abonnements_offre?}{id_auteur?}{statut?}{recherche?}{tri #ENV{par,id_abonnement},#GET{defaut_tri}}{pagination #ENV{nb,10}}>
 				<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})]">
 					<td class="id"><a href="[(#ID_ABONNEMENT|generer_url_entite{abonnement})]">#ID_ABONNEMENT</a></td>
-					<td class="statut">[(#STATUT|puce_statut{abonnement,#ID_ABONNEMENT})]</td>
+					<td class=""><:abonnement:texte_statut_{=#STATUT}:></td>
 					<td class="titre">[(#INFO_TITRE{abonnements_offre, #ID_ABONNEMENTS_OFFRE})]</td>
 					<td class="nom"><a href="[(#ID_AUTEUR|generer_url_entite{auteur})]">[(#INFO_NOM{auteur, #ID_AUTEUR})]</a></td>
 					<td class="duree">[(#INFO_DUREE{abonnements_offre, #ID_ABONNEMENTS_OFFRE}|duree_en_clair)]</td>

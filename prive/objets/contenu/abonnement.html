@@ -11,6 +11,14 @@
 	<label class="label"><:abonnement:champ_duree_echeance_label:> : </label>
 	<span dir='#LANG_DIR' class='duree_echeance'>(#DUREE_ECHEANCE|duree_en_clair)</span>
 </div>]
+[<div class="champ contenu_date_debut[ (#DATE_DEBUT*|strlen|?{'',vide})]">
+	<label class="label"><:abonnement:champ_date_debut_label:> : </label>
+	<span dir='#LANG_DIR' class='date_debut'>(#DATE_DEBUT|affdate)</span>
+</div>]
+[<div class="champ contenu_date_fin[ (#DATE_FIN*|strlen|?{'',vide})]">
+	<label class="label"><:abonnement:champ_date_fin_label:> : </label>
+	<span dir='#LANG_DIR' class='date_fin'>(#DATE_FIN|affdate)</span>
+</div>]
 [<div class="champ contenu_numero_debut[ (#NUMERO_DEBUT*|strlen|?{'',vide})]">
 	<label class="label"><:abonnement:champ_numero_debut_label:> : </label>
 	<span dir='#LANG_DIR' class='numero_debut'>
@@ -29,7 +37,6 @@
 	<label class="label"><:abonnement:champ_mode_paiement_label:> : </label>
 	<span dir='#LANG_DIR' class='mode_paiement'>(#MODE_PAIEMENT|paiement_en_clair)</span>
 </div>]
-<!-- TODO: Ajouter date de réception du réglement (chèque, virement) + interface de saisie de cette date ? -->
 [<div class="champ contenu_log[ (#LOG*|strlen|?{'',vide})]">
 	<label><:abonnement:champ_log_label:> : </label>
 	<pre dir='#LANG_DIR' class='#EDIT{log} log'>(#LOG)</pre>

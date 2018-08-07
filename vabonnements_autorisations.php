@@ -188,3 +188,16 @@ function autoriser_abonnement_supprimer_dist($faire, $type, $id, $qui, $opt) {
 function autoriser_vabonnements_configurer($faire, $type, $id, $qui, $opt) {
 	return autoriser('webmestre');
 }
+
+/**
+ * Autorisation liée au logo de l'abonnement
+ * @param  [type] $faire [description]
+ * @param  [type] $type  [description]
+ * @param  [type] $id    [description]
+ * @param  [type] $qui   [description]
+ * @param  [type] $opt   [description]
+ * @return [type]        [description]
+ */
+function autoriser_abonnement_iconifier_dist($faire, $type, $id, $qui, $opt){
+	return false;
+}

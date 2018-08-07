@@ -35,8 +35,8 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 
 	// C
 	'champ_code_cadeau_label' => "Votre code cadeau",
-	'champ_date_debut_label'           => 'Date début',
-	'champ_date_fin_label'             => 'Date fin',
+	'champ_date_debut_label'           => 'Date de début',
+	'champ_date_fin_label'             => 'Date de fin',
 	'champ_date_label'                 => 'date',
 	'champ_duree_echeance_label'       => "Durée de l'abonnement",
 	'champ_id_abonnements_offre_label' => 'Id abonnements offre',
