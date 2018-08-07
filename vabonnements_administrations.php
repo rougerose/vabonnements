@@ -68,6 +68,10 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 	$maj['1.1.0'] = array(
 		array('sql_alter', 'TABLE spip_abonnements ADD offert varchar(3) default "non" not null')
 	);
+	
+	$maj['1.1.1'] = array(
+		array('sql_alter', 'TABLE spip_abonnements_stats ADD nb_abonnements bigint(21) default "0" not null')
+	);
 
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);

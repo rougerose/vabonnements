@@ -6,9 +6,11 @@
 	compatibilite="[3.2.0;3.2.*]"
 	logo="prive/themes/spip/images/vabonnements-64.png"
 	documentation=""
-	schema="1.1.0" 
+	schema="1.1.1" 
 >
 	<nom>Vacarme Abonnements</nom>
+	<auteur lien="http://rouge-rose.net">Christophe Le Drean</auteur>
+	<credit lien="https://github.com/nursit/abos">Fortement inspiré du plugin "Abos" de Nursit</credit>
 
 	<necessite nom="saisies" compatibilite="[2.4.0;]" /> 
 	<necessite nom="verifier" compatibilite="[1.0.6;]" /> 

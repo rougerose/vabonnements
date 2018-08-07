@@ -176,6 +176,7 @@ function vabonnements_declarer_tables_auxiliaires($tables) {
 		'field' => array(
 			'date' => "DATE NOT NULL DEFAULT '0000-00-00'", // date du jour
 			'nb_abonnes' => "bigint(21) DEFAULT '0' NOT NULL", // nombre d'abonnés uniques
+			'nb_abonnements' => "bigint(21) DEFAULT '0' NOT NULL", // nombre d'abonnements actifs
 			'nb_abonnements_new' => "bigint(21) DEFAULT '0' NOT NULL", // nombre d'abonnements souscrits par de nouveaux abonnés
 			'nb_abonnements_plus' => "bigint(21) DEFAULT '0' NOT NULL", // nombre d'abonnements souscrits
 			'nb_abonnements_moins' => "bigint(21) DEFAULT '0' NOT NULL", // nombre d'abonnements finis
