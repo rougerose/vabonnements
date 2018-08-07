@@ -162,6 +162,43 @@ function vabonnements_declarer_tables_objets_sql($tables) {
 	return $tables;
 }
 
+
+/**
+ * Déclaration des tables secondaires
+ * 
+ * @pipeline declarer_tables_auxiliaires
+ * @param  array $tables
+ * @return array
+ */
+function vabonnements_declarer_tables_auxiliaires($tables) {
+	$tables['spip_abonnements_stats'] = array(
+		'field' => array(
+			'date' => "DATE NOT NULL DEFAULT '0000-00-00'", // date du jour
+			'nb_abonnes' => "bigint(21) DEFAULT '0' NOT NULL", // nombre d'abonnés uniques
+			'nb_abonnements_new' => "bigint(21) DEFAULT '0' NOT NULL", // nombre d'abonnements souscrits par de nouveaux abonnés
+			'nb_abonnements_plus' => "bigint(21) DEFAULT '0' NOT NULL", // nombre d'abonnements souscrits
+			'nb_abonnements_moins' => "bigint(21) DEFAULT '0' NOT NULL", // nombre d'abonnements finis
+			'ventil_abonnements' => "text NOT NULL DEFAULT ''", // par offre : nombre d'abonnements actifs
+			'ventil_abonnements_new'    => "text NOT NULL DEFAULT ''", // par offre : nombre d'abonnements souscrits par de nouveaux abonnés
+			'ventil_abonnements_plus'   => "text NOT NULL DEFAULT ''", // par offre : nombre d'abonnements souscrits
+			'ventil_abonnements_moins'  => "text NOT NULL DEFAULT ''", // par offre : nombre d'abonnements finis
+		),
+		'key' => array(
+			'PRIMARY KEY' => 'date',
+		)
+	);
+	
+	return $tables;
+}
+
+
+/**
+ * Champs extra numero_debut dans les détails de commandes
+ *
+ * @pipeline declarer_champs_extras
+ * @param  array  $stables
+ * @return array
+ */
 function vabonnements_declarer_champs_extras($champs = array()) {
 	$champs['spip_commandes_details']['numero_debut'] = array(
 		'saisie' => 'input',

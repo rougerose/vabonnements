@@ -38,7 +38,8 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 	$maj['create'] = array(
 		array('maj_tables', array(
 			'spip_abonnements_offres',
-			'spip_abonnements')
+			'spip_abonnements',
+			'spip_abonnements_stats')
 		)
 	);
 	
@@ -57,6 +58,11 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 	
 	$maj['1.0.6'] = array(
 		array('sql_alter', 'TABLE spip_abonnements_offres CHANGE prix_ht prix_ht DECIMAL(10,2) NOT NULL DEFAULT 0')
+	);
+	
+	// ajout des statistiques
+	$maj['1.0.7'] = array(
+		array('maj_tables', array('spip_abonnements_stats'))
 	);
 
 	include_spip('base/upgrade');
@@ -80,6 +86,7 @@ function vabonnements_vider_tables($nom_meta_base_version) {
 	// champs du plugin
 	//sql_drop_table('spip_abonnements_offres');
 	//sql_drop_table('spip_abonnements');
+	sql_drop_table('spip_abonnements_stats');
 	
 	cextras_api_vider_tables(vabonnements_declarer_champs_extras());
 
