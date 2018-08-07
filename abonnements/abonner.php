@@ -111,6 +111,8 @@ function abonnements_abonner_dist($id_abonnements_offre, $options = array()) {
 			'log' => $log
 		);
 		
+		// TODO: utiliser plutôt l'API de SPIP pour l'ajout de l'abonnement ?
+		// cela permettrait notamment d'envoyer les données aux pipelines standard.
 		$id_abonnement = sql_insertq('spip_abonnements', $ins);
 		
 		if (!$id_abonnement){
