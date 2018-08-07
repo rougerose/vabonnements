@@ -17,12 +17,15 @@ if (!defined("_ECRIRE_INC_VERSION")) {
  * @return int
  */
 function genie_vabonnements_relancer_tiers_dist($timestamp) {
-	include_spip('inc/vabonnements_relance');
-	
-	//$timestamp = strtotime('+3 day');
-	//$check = date('Y-m-d', $timestamp);
 	$now = date('U');
-	$relances = vabonnements_get_relances();
+	
+	include_spip('inc/vabonnements_relance');
+	$relances = vabonnements_get_relances('tiers');
+	
+	if (!$relances) {
+		return 0;
+	}
+	
 	$premiere_relance = reset($relances);
 	$date = vabonnements_date_relance($premiere_relance, $now);
 	
@@ -73,7 +76,7 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 		
 		while ($nb--){
 			if ($row = sql_fetsel('id_abonnement, id_commande, id_auteur, date_debut, relance, log', 'spip_abonnements', $where, '', 'date_debut', '0,1')) {
-				$relance = vabonnements_prochaine_relance($row['date_debut'], $now);
+				$relance = vabonnements_prochaine_relance('tiers', $row['date_debut'], $now);
 				
 				$id_payeur = sql_getfetsel('id_auteur', 'spip_commandes', 'id_commande=' . intval($row['id_commande']));
 				$id_abonnement = intval($row['id_abonnement']);

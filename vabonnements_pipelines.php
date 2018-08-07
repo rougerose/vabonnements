@@ -188,5 +188,8 @@ function vabonnements_taches_generales_cron($taches_generales) {
 	// Relancer les bénéficaires qui tardent à activer leur abonnement
 	$taches_generales['vabonnements_relancer_tiers'] = 3600 * 12;
 	
+	// Relance des abonnements à échéance
+	$taches_generales['vabonnements_relancer_echeances'] = 3600 * 12;
+	
 	return $taches_generales;
 }

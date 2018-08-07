@@ -12,12 +12,10 @@ if (!defined("_ECRIRE_INC_VERSION")) {
  * 
  * @return array
  */
-function vabonnements_get_relances() {
+function vabonnements_get_relances($type = 'tiers') {
 	include_spip('inc/config');
 	
-	// TODO: Différencier relances tiers et relance fin d'abonnement ?
-	
-	$relances = lire_config('vabonnements/relances_tiers', '');
+	$relances = lire_config('vabonnements/relances_'.$type, '');
 	$relances = explode(",", $relances);
 	$relances = array_map("trim", $relances);
 	$relances = array_map("intval", $relances);
@@ -54,21 +52,29 @@ function vabonnements_date_relance($relance, $now){
  * @param  int $now     Timestamp
  * @return string
  */
-function vabonnements_prochaine_relance($date, $now = null){
+function vabonnements_prochaine_relance($type = 'tiers', $date, $now = null){
 	if (!$now){
 		$now = time();
 	}
 
-	$relances = vabonnements_get_relances();
+	$relances = vabonnements_get_relances($type);
 	rsort($relances);
 
 	$next = 'off';
 	while (count($relances)){
 		$jours = array_shift($relances);
 		$date_relance = vabonnements_date_relance($jours, $now);
-		if (date('Y-m-d', strtotime($date_relance)) > date('Y-m-d', strtotime($date))){
-			return $next;
+		if (
+			$type == 'tiers' and date('Y-m-d', strtotime($date_relance)) > date('Y-m-d', strtotime($date)) 
+			or $type == 'echeances' and $date < $date_relance) {
+				return $next;
 		}
+		// if ($date_fin<abos_date_fin($jours, $now)){
+		// 	return $next;
+		// }
+		// if (date('Y-m-d', strtotime($date_relance)) > date('Y-m-d', strtotime($date))){
+		// 	return $next;
+		// }
 		$next = $jours;
 	}
 
