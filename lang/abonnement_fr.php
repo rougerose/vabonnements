@@ -130,6 +130,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'titre_abonnements'                         => 'Abonnements',
 	'titre_abonnements_rubrique'                => 'Abonnements de la rubrique',
 	'titre_abonnements_statistiques' => "Statistiques des abonnements",
+	'titre_menu_abonnements_statistiques' => "Abonnements : statistiques",
 	'titre_derniers_jours_nb' => "@nb@ derniers jours",
 	'titre_derniers_mois_nb' => "@nb@ derniers mois",
 	'titre_dernieres_semaines_nb' => "@nb@ dernières semaines",
