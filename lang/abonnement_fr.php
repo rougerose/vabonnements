@@ -9,6 +9,9 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 $GLOBALS[$GLOBALS['idx_lang']] = array(
 
 	// A
+	'abonnements_actifs' => "Actifs",
+	'abonnements_nouveaux' => "Nouveaux",
+	'abonnements_resilies' => "Résiliés",
 	'abonnement_reference_traduction_A1T1F' => 'abonnement 1 an, tarif réduit, France',
 	'abonnement_reference_traduction_A1T2F' => 'abonnement 1 an, tarif standard, France',
 	'abonnement_reference_traduction_A1T3' => 'abonnement 1 an, tarif soutien',
@@ -57,8 +60,12 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	// I
 	'icone_creer_abonnement'    => 'Ajouter un abonnement',
 	'icone_modifier_abonnement' => 'Modifier cet abonnement',
+	'info_abonnes' => "Abonnés",
+	'info_abonnements' => "Abonnements",
 	'info_1_abonnement'         => '1 abonnement',
+	'info_nb_abonnements'       => '@nb@ abonnements',
 	'info_1_abonnement_actif'         => '1 abonnement actif',
+	'info_nb_abonnements_actifs'       => '@nb@ abonnements actifs',
 	'info_abonnements_auteur'   => 'Les abonnements de cet auteur',
 	'info_afficher'             => 'Voir',
 	'info_aucun_abonnement'     => 'Aucun abonnement',
@@ -69,9 +76,13 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'info_filtre_prop'         => "En attente",
 	'info_filtre_resilie'       => "Résiliés",
 	'info_filtre_tous'          => "Tous",
-	'info_nb_abonnements'       => '@nb@ abonnements',
-	'info_nb_abonnements_actifs'       => '@nb@ abonnements actifs',
+	'info_1_gratuit' => "1 gratuit",
+	'info_nb_gratuit' => "@nb@ gratuits",
+	'info_dont' => "dont",
+	
 	'info_nom_auteur'           => "Nom",
+	'info_nouveaux_dont' => "Dont 1<sup>er</sup> abonnement",
+	'info_total' => "Total",
 	'info_paiement_cheque'      => 'Chèque',
 	'info_paiement_gratuit'     => 'Gratuit',
 	'info_paiement_paypal'      => 'Carte bleue - Paypal',
@@ -105,6 +116,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'supprimer_abonnement' => 'Supprimer cet abonnement',
 
 	// T
+	'texte_abonnements_en_cours' => "Abonnements en cours",
 	'texte_ajouter_abonnement'                  => 'Ajouter un abonnement',
 	'texte_changer_statut_abonnement'           => 'Ce abonnement est :',
 	'texte_creer_associer_abonnement'           => 'Créer et associer un abonnement',
@@ -117,7 +129,13 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'titre_abonnement'                          => 'Abonnement',
 	'titre_abonnements'                         => 'Abonnements',
 	'titre_abonnements_rubrique'                => 'Abonnements de la rubrique',
+	'titre_abonnements_statistiques' => "Statistiques des abonnements",
+	'titre_derniers_jours_nb' => "@nb@ derniers jours",
+	'titre_derniers_mois_nb' => "@nb@ derniers mois",
+	'titre_dernieres_semaines_nb' => "@nb@ dernières semaines",
 	'titre_langue_abonnement'                   => 'Langue de ce abonnement',
 	'titre_logo_abonnement'                     => 'Logo de ce abonnement',
+	'titre_nombre' => "Nombre",
 	'titre_objets_lies_abonnement'              => 'Liés à ce abonnement',
+	'titre_repartition_des_offres' => "Répartition des offres d'abonnement",
 );

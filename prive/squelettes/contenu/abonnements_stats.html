@@ -1,0 +1,65 @@
+<h1 class="grostitre"><:abonnement:titre_abonnements_statistiques:></h1>
+[(#REM|abonnements_reporting_decompte)]
+
+<BOUCLE_total_abonnements(ABONNEMENTS){statut=actif} />#SET{total,#TOTAL_BOUCLE}<//B_total_abonnements>
+
+<B_offres>
+	<h2><:abonnement:titre_repartition_des_offres:></h2>
+	<p><:abonnement:texte_abonnements_en_cours:></p>
+	<table class="spip">
+		<thead>
+			<tr>
+				<th><:abonnements_offre:titre_abonnements_offre:></th>
+				<th class='center'><:abonnement:titre_nombre:></th>
+				<th class='center'>%</th>
+			</tr>
+		</thead>
+		<tbody>
+			<BOUCLE_offres(abonnements_offres){par id_abonnements_offre}>
+				<BOUCLE_totaloffre(ABONNEMENTS){statut=actif}{id_abonnements_offre} />#SET{totaloffre,#TOTAL_BOUCLE}<//B_totaloffre>
+				<tr>
+					<td><:abonnement:abonnement_reference_traduction_{=#REFERENCE}:>
+						<B_gratuit>
+							[ <em><:abonnement:info_dont:>
+								(#TOTAL_BOUCLE|singulier_ou_pluriel{abonnement:info_1_gratuit,abonnement:info_nb_gratuit})
+							</em>]
+							<BOUCLE_gratuit(ABONNEMENTS){id_abonnements_offre}{mode_paiement=gratuit}> </BOUCLE_gratuit>
+						</B_gratuit>
+					</td>
+					<td class='numeric'>#GET{totaloffre}</td>
+					<td class='numeric'>[(#GET{totaloffre}|div{#GET{total}}|mult{1000}|round|div{10})%]</td>
+				</tr>
+			</BOUCLE_offres>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td><:abonnement:info_total:></td>
+				<td class='numeric'>#GET{total}</td>
+				<td class='numeric'></td>
+			</tr>
+		</tfoot>
+	</table>
+</B_offres>
+
+<BOUCLE_paroffre(ABONNEMENTS_OFFRES){par id_abonnements_offre}>
+	<h3>#TITRE #DUREE</h3>
+	<B_mois>
+		<p><:abonnement:texte_abonnements_finis_selon_mois:></p>
+		<table class="spip">
+			<thead>
+			<tr>
+				<th><:abonnement:label_mois_de_fin:></th>
+				<th class='center'><:abonnement:label_nombre:></th>
+				<th colspan="2" class='center'><:abonnement:label_renouveles:></th>
+				<th colspan="2" class='center'><:abonnement:label_non_renouveles:></th></tr>
+			</thead>
+			<tbody>
+			<BOUCLE_mois(POUR){tableau #LISTE{-2,-1,0,1,2,3,4,5,6}}>
+				[(#VALEUR|afficher_stats_echeances_offre{#ID_ABONNEMENTS_OFFRE})]
+			</BOUCLE_mois>
+			</tbody>
+		</table>
+	</B_mois>
+		<p><:abonnement:texte_aucune_fin_abonnement_nb_mois{nb=6}:></p>
+	<//B_mois>
+</BOUCLE_paroffre>

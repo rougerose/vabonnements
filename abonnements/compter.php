@@ -165,3 +165,208 @@ function abonnements_compte_ventilation($quoi, &$set, $rows){
 	
 	$set['ventil_abonnements' . $_quoi] = json_encode($set['ventil_abonnements' . $_quoi]);
 }
+
+
+/**
+ * Page de rapport
+ * @param  integer $nb_mois [description]
+ * @return string html du rapport
+ */
+function abonnements_reporting_decompte($nb_mois = 6) {
+	$now = $_SERVER['REQUEST_TIME'];
+	$offres_vues = array();
+
+	$texte = "";
+	
+	// 
+	// Statistiques de la dernière semaine
+	// 
+	$j = date('Y-m-d', $now);
+	$jm7 = date('Y-m-d', strtotime("-7 day", $now));
+	
+	
+	$thead = "<thead>"
+				."<tr>"
+					."<th>"._T('public:date')."</th>"
+					."<th colspan='2'>"._T('abonnement:abonnements_actifs')."</th>"
+					."<th colspan='2'>"._T('abonnement:abonnements_nouveaux')."</th>"
+					."<th>"._T('abonnement:abonnements_resilies')."</th>"
+				."</tr><tr>"
+					."<th></th>"
+					."<th>"._T('abonnement:info_abonnes')."</th>"
+					."<th>"._T('abonnement:info_abonnements')."</th>"
+					."<th>"._T('abonnement:info_total')."</th>"
+					."<th>"._T('abonnement:info_nouveaux_dont')."</th>"
+					."<th></th>"
+				."</tr>"
+			."</thead>";
+
+	$jours = sql_allfetsel('*', 'spip_abonnements_stats', 'date >='. sql_quote($jm7).' AND date <'.sql_quote($j), '', 'date DESC');
+	
+	$lignes = "";
+	
+	foreach ($jours as $jour) {
+		$date = affdate_jourcourt($jour['date']);
+		$lignes .= abonnements_une_ligne($date, $jour, $offres_vues);
+	}
+	
+	$texte .= '<h2>'._T('abonnement:titre_derniers_jours_nb', array('nb' => 7)).'</h2>';
+	
+	$texte .= '<table class="spip">';
+	$texte .= $thead;
+	$texte .= $lignes;
+	$texte .= '</table>';
+	
+	//
+	// Statistiques des 4 dernières semaines
+	// 
+	$off = -date('w', strtotime('-1 day', $now));
+	$lignes = '';
+	
+	for ($i = 0; $i < 4; $i++) {
+		$j = date('Y-m-d', strtotime($off . ' day', $now));
+		$off -= 7;
+		$jm7 = date('Y-m-d', strtotime($off . ' day', $now));
+		
+		$jours = sql_allfetsel('*', 'spip_abonnements_stats', 'date >='.sql_quote($jm7).' AND date <'.sql_quote($j), '', 'date DESC');
+		
+		$total = abonnements_somme_lignes($jours);
+		
+		$lignes .= abonnements_une_ligne("Semaine du " . date('d/m', strtotime($jm7)), $total, $offres_vues);
+	}
+	
+	$texte .= '<h2>'._T('abonnement:titre_dernieres_semaines_nb', array('nb' => 4)).'</h2>';
+	$texte .= '<table class="spip">';
+	$texte .= $thead;
+	$texte .= $lignes;
+	$texte .= '</table>';
+	
+	// 
+	// Statistiques des $nb_mois derniers mois
+	// 
+	$lignes = "";
+	$jm1 = date('Y-m-01', $now);
+	
+	for ($i = 0; $i<$nb_mois; $i++){
+		$jm1 = date('Y-m-01', strtotime('-15 day', strtotime($jm1)));
+		$jm31 = date('Y-m-31', strtotime($jm1));
+		
+		$jours = sql_allfetsel('*', 'spip_abonnements_stats', 'date >=' . sql_quote($jm1) . ' AND date <=' . sql_quote($jm31), '', 'date DESC');
+		
+		$total = abonnements_somme_lignes($jours);
+		
+		$lignes .= abonnements_une_ligne(ucfirst(affdate_mois_annee($jm1)), $total, $offres_vues);
+	}
+	
+	$texte .= '<h2>'._T('abonnement:titre_derniers_mois_nb', array('nb' => $nb_mois)).'</h2>';
+	$texte .= '<table class="spip">';
+	$texte .= $thead;
+	$texte .= $lignes;
+	$texte .= '</table>';
+
+	$t = '';
+	ksort($offres_vues);
+	
+	foreach (array_keys($offres_vues) as $id_abonnements_offre){
+		$reference = sql_getfetsel('reference', 'spip_abonnements_offres', 'id_abonnements_offre='.$id_abonnements_offre);
+		$t .= "Offre n<sup>o</sup> $id_abonnements_offre&nbsp;: "._T('abonnement:abonnement_reference_traduction_'.$reference)."<br />";
+	}
+	
+	if ($t){
+		$t = "<p>$t</p>";
+	}
+
+	return $t . $texte;
+}
+
+
+
+function abonnements_une_ligne($titre, $row, &$seen) {
+	$ligne = '<tr>'."\n"
+				.'<td>'.$titre.'</td>'."\n"
+				.'<td>'.(intval($row['nb_abonnes']) ? $row['nb_abonnes'] : '0').'</td>'."\n"
+				.'<td>'.(intval($row['nb_abonnements']) ? $row['nb_abonnements'] : '0').'</td>'."\n";
+	
+	//
+	$ventil = json_decode($row['ventil_abonnements_plus'], true);
+	ksort($ventil);
+	$t = '';
+	
+	foreach ($ventil as $id => $nb) {
+		$t .= "<br />Offre n<sup>o</sup> $id&nbsp;: $nb";
+		$seen[$id] = true;
+	}
+	
+	$ligne .= '<td>'.(intval($row['nb_abonnements_plus']) ? '+'.$row['nb_abonnements_plus']."<small>$t</small>" : '0').'</td>'."\n";
+	
+	//
+	$ventil = json_decode($row['ventil_abonnements_new'], true);
+	ksort($ventil);
+	$t = '';
+	
+	foreach ($ventil as $id => $nb) {
+		$t .= "<br />Offre n<sup>o</sup> $id&nbsp;: $nb";
+		$seen[$id] = true;
+	}
+	
+	$ligne .= '<td>'.(intval($row['nb_abonnements_new']) ? '+ '.$row['nb_abonnements_new']."<small>$t</small>" : '0').'</td>'."\n";
+	
+	//
+	$ventil = json_decode($row['ventil_abonnements_moins'], true);
+	ksort($ventil);
+	$t = '';
+	
+	foreach ($ventil as $id => $nb) {
+		$t .= "<br />Offre n<sup>o</sup> $id&nbsp;: $nb";
+		$seen[$id] = true;
+	}
+	
+	$ligne .= '<td>'.(intval($row['nb_abonnements_moins']) ? '- '.$row['nb_abonnements_moins']."<small>$t</small>" : '0').'</td>'."\n";
+	$ligne .= '</tr>'."\n";
+	
+	return $ligne;
+}
+
+
+
+function abonnements_somme_lignes($rows){
+	$total = array(
+		'nb_abonnes' => 0,
+		'nb_abonnements' => 0,
+		'nb_abonnements_new' => 0,
+		'nb_abonnements_plus' => 0,
+		'nb_abonnements_moins' => 0,
+		'ventil_abonnements' => array(),
+		'ventil_abonnements_new' => array(),
+		'ventil_abonnements_plus' => array(),
+		'ventil_abonnements_moins' => array(),
+	);
+	
+	$first = reset($rows);
+	$total['nb_abonnes'] = $first['nb_abonnes'];
+	$total['nb_abonnements'] = $first['nb_abonnements'];
+	$total['ventil_abonnements'] = $first['ventil_abonnements'];
+	
+	foreach ($rows as $row){
+		foreach (array('abonnements_new', 'abonnements_plus', 'abonnements_moins') as $quoi){
+			$total['nb_' . $quoi] += $row['nb_' . $quoi];
+			
+			if ($ventil = json_decode($row['ventil_' . $quoi], true)){
+				foreach ($ventil as $id => $nb){
+					
+					if (!isset($total['ventil_' . $quoi])){
+						$total['ventil_' . $quoi] = 0;
+					}
+					
+					$total['ventil_' . $quoi][$id] += $nb;
+				}
+			}
+		}
+	}
+	
+	foreach (array('abonnements_new', 'abonnements_plus', 'abonnements_moins') as $quoi){
+		$total['ventil_' . $quoi] = json_encode($total['ventil_' . $quoi]);
+	}
+	
+	return $total;
+}
