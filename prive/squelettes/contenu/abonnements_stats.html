@@ -40,26 +40,3 @@
 		</tfoot>
 	</table>
 </B_offres>
-
-<BOUCLE_paroffre(ABONNEMENTS_OFFRES){par id_abonnements_offre}>
-	<h3>#TITRE #DUREE</h3>
-	<B_mois>
-		<p><:abonnement:texte_abonnements_finis_selon_mois:></p>
-		<table class="spip">
-			<thead>
-			<tr>
-				<th><:abonnement:label_mois_de_fin:></th>
-				<th class='center'><:abonnement:label_nombre:></th>
-				<th colspan="2" class='center'><:abonnement:label_renouveles:></th>
-				<th colspan="2" class='center'><:abonnement:label_non_renouveles:></th></tr>
-			</thead>
-			<tbody>
-			<BOUCLE_mois(POUR){tableau #LISTE{-2,-1,0,1,2,3,4,5,6}}>
-				[(#VALEUR|afficher_stats_echeances_offre{#ID_ABONNEMENTS_OFFRE})]
-			</BOUCLE_mois>
-			</tbody>
-		</table>
-	</B_mois>
-		<p><:abonnement:texte_aucune_fin_abonnement_nb_mois{nb=6}:></p>
-	<//B_mois>
-</BOUCLE_paroffre>
