@@ -4,7 +4,7 @@
 }})]
 <B_liste_abonnements>
 	#ANCRE_PAGINATION
-	<div class="liste-objets abonnements">
+	<div class="liste-objets vacarme abonnements">
 		<table class="spip liste">
 			[<caption><strong class="caption">(#ENV*{titre, #GRAND_TOTAL|singulier_ou_pluriel{abonnement:info_1_abonnement, abonnement:info_nb_abonnements}})</strong></caption>]
 			<thead>
@@ -24,13 +24,13 @@
 			<BOUCLE_liste_abonnements(ABONNEMENTS){id_abonnements_offre?}{id_auteur?}{statut?}{recherche?}{tri #ENV{par,id_abonnement},#GET{defaut_tri}}{pagination #ENV{nb,10}}>
 				<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})]">
 					<td class="id"><a href="[(#ID_ABONNEMENT|generer_url_entite{abonnement})]">#ID_ABONNEMENT</a></td>
-					<td class=""><:abonnement:texte_statut_{=#STATUT}:></td>
+					<td class="[statut_(#STATUT)]"><:abonnement:texte_statut_{=#STATUT}:></td>
 					<td class="titre">[(#INFO_TITRE{abonnements_offre, #ID_ABONNEMENTS_OFFRE})]</td>
 					<td class="nom"><a href="[(#ID_AUTEUR|generer_url_entite{auteur})]">[(#INFO_NOM{auteur, #ID_AUTEUR})]</a></td>
 					<td class="duree">[(#INFO_DUREE{abonnements_offre, #ID_ABONNEMENTS_OFFRE}|duree_en_clair)]</td>
 					<td class="numero_debut">[(#NUMERO_DEBUT|replace{'v', ''}|ltrim{'0'})]</td>
 					<td class="numero_fin">[(#NUMERO_FIN|replace{'v', ''}|ltrim{'0'})]</td>
-					<td class="numero_fin">[(#MODE_PAIEMENT|paiement_en_clair)]</td>
+					<td class="paiement">[(#MODE_PAIEMENT|paiement_en_clair)]</td>
 					<td class="lien_voir"><a href="[(#ID_ABONNEMENT|generer_url_entite{abonnement})]"><:abonnement:info_afficher:></a></td>
 				</tr>
 			</BOUCLE_liste_abonnements>

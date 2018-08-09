@@ -186,10 +186,3 @@ function vabonnements_calcul_hash_abonnement($id_auteur, $id_abonnement, $date_a
 	$donnees = array($id_auteur, $id_abonnement, $date_abonnement);
 	return md5(implode(';', array_values($donnees)));
 }
-
-
-
-function filtre_abonnements_reporting() {
-	include_spip('abonnements/compter');
-	abonnements_compter_dist();
-}
