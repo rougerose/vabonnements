@@ -185,7 +185,7 @@ function autoriser_abonnement_supprimer_dist($faire, $type, $id, $qui, $opt) {
  * @param  [type] $opt   [description]
  * @return [type]        [description]
  */
-function autoriser_vabonnements_configurer($faire, $type, $id, $qui, $opt) {
+function autoriser_vabonnements_configurer_dist($faire, $type, $id, $qui, $opt) {
 	return autoriser('webmestre');
 }
 
