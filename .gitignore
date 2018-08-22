@@ -1,5 +1,9 @@
 # fichiers systemes
 .DS_Store
 
+node_modules/
+bower_components/
+yarn.lock
+
 # spip fabrique
 fabrique_*

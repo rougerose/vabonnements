@@ -55,11 +55,30 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	
 	// E
 	'editer_abonnement_explication' => "La modification d'un abonnement n'est pas possible.",
-	'erreur_code_cadeau_obligatoire' => 'Un code cadeau est obligatoire',
+	'erreur_code_cadeau_obligatoire' => "Un code cadeau est obligatoire",
+	'erreur_abonnements_offre_obligatoire' => "Veuillez choisir une offre d’abonnement",
+	'erreur_numero_debut_obligatoire' => "Veuillez choisir le premier numéro de votre abonnement",
+	'erreur_cadeau_obligatoire' => "Veuillez préciser quel cadeau vous souhaitez recevoir",
+	
+	// F
+	'formulaire_souscrire_cadeau_titre' => "Votre cadeau",
+	'formulaire_souscrire_cadeau_desc' => "Pour vous remercier de votre abonnement, Vacarme vous offre un cadeau.",
+	'formulaire_souscrire_localisation_choix_france' => "En France (Métropole et Outre-mer)",
+	'formulaire_souscrire_localisation_choix_international' => "À l'étranger",
+	'formulaire_souscrire_localisation_titre' => "Vous êtes domicilié-e",
+	'formulaire_souscrire_duree_12' => "1 an / 4 numéros",
+	'formulaire_souscrire_duree_24' => "2 ans / 8 numéros",
+	'formulaire_souscrire_duree_titre' => "La durée de votre abonnement",
+	'formulaire_souscrire_offre_soutien_prix_client' => "Saisissez votre prix en euros",
+	'formulaire_souscrire_offres_abonnements_titre' => "Votre offre d’abonnement",
+	'formulaire_souscrire_numero_debut_titre' => "Le premier numéro de votre abonnement",
+	'formulaire_souscrire_abonnement_sans_cadeau_titre' => "Aucun cadeau",
+	'formulaire_souscrire_panier_ajouter' => "Ajouter cet abonnement au panier",
 
 	// I
 	'icone_creer_abonnement'    => 'Ajouter un abonnement',
 	'icone_modifier_abonnement' => 'Modifier cet abonnement',
+	'info_abonnement_sans_cadeau' => "Si aucun de ces cadeaux ne vous intéressent, veuillez choisir cette option",
 	'info_abonnes' => "Abonnés",
 	'info_abonnements' => "Abonnements",
 	'info_1_abonnement'         => '1 abonnement',
@@ -82,6 +101,10 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	
 	'info_nom_auteur'           => "Nom",
 	'info_nouveaux_dont' => "Dont 1<sup>er</sup> abonnement",
+	'info_numero_debut_rang_1' => "Précédent numéro",
+	'info_numero_debut_rang_2' => "Numéro actuel",
+	'info_numero_debut_rang_3' => "Prochain numéro",
+	
 	'info_total' => "Total",
 	'info_paiement_cheque'      => 'Chèque',
 	'info_paiement_gratuit'     => 'Gratuit',

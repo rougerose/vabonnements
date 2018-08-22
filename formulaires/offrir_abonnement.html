@@ -1,0 +1,15 @@
+#ENV<div class="formulaire_spip formulaire_#FORM">
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	
+	<form method="post" action="#ENV{action}">
+	<div>
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<div class="editer-groupe">
+			#GENERER_SAISIES{#ENV{_saisies}}
+		</div>
+		<p class="boutons"><span class="image_loading">&nbsp;</span><input type="submit" class="submit" value="<:abonnement:formulaire_souscrire_panier_ajouter:>" /></p>
+	</div>
+	</form>
+</div>
+[<script src="(#CHEMIN{js/vabonnements_init.min.js})" charset="utf-8"></script>]

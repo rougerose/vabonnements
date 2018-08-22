@@ -6,7 +6,7 @@
 	compatibilite="[3.2.0;3.2.*]"
 	logo="prive/themes/spip/images/vabonnements-64.png"
 	documentation=""
-	schema="1.1.1" 
+	schema="1.1.2" 
 >
 	<nom>Vacarme Abonnements</nom>
 	<auteur lien="http://rouge-rose.net">Christophe Le Drean</auteur>
@@ -40,5 +40,6 @@
 	
 	<spip compatibilite="[3.2.0;3.2.*]">
 		<style type="prive" source="css/vabonnements.css" />
+		<script type="public" source="js/vabonnements.min.js" />
 	</spip>
 </paquet>

@@ -50,7 +50,7 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 	// champs extra commandes_details
 	cextras_api_upgrade(vabonnements_declarer_champs_extras(), $maj['create']);
 	
-	// prix en decimal, ce serait quand même mieux !
+	// prix en decimal
 	$maj['1.0.5'] = array(
 		array('sql_alter', 'TABLE spip_abonnements_offres CHANGE prix_ht prix_ht DECIMAL(10,2) NOT NULL DEFAULT 0'),
 		array('sql_alter', 'TABLE spip_abonnements CHANGE prix_echeance prix_echeance DECIMAL(10,2) NOT NULL DEFAULT 0')
@@ -71,6 +71,11 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 	
 	$maj['1.1.1'] = array(
 		array('sql_alter', 'TABLE spip_abonnements_stats ADD nb_abonnements bigint(21) default "0" not null')
+	);
+	
+	$maj['1.1.2'] = array(
+		array('sql_alter', 'TABLE spip_abonnements_offres CHANGE prix_ht prix_ht DECIMAL(10,3) NOT NULL DEFAULT 0'),
+		array('sql_alter', 'TABLE spip_abonnements CHANGE prix_echeance prix_echeance DECIMAL(10,3) NOT NULL DEFAULT 0')
 	);
 
 	include_spip('base/upgrade');
