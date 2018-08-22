@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	var $souscrire = $('.formulaire_souscrire_abonnement');
+	var $souscrire = $('.formulaire_abonnement');
 	if ($souscrire.length) {
 		vabonnements($souscrire);
 	}

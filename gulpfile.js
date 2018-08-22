@@ -53,7 +53,7 @@ var options = {
 		files: function() {
 			return [
 				options.js.srcfiles, 
-				options.plugins.srcfiles
+				options.unique.srcfiles
 			]
 		},
 		run: function() {

@@ -4,128 +4,79 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 	return;
 }
 
-function formulaires_offrir_abonnement_saisies_dist() {
-	$saisies = array(
-		// France ou international ?
-		array(
-			'saisie' => 'fieldset',
-			'options' => array(
-				'nom' => 'localisation',
-				'label' => _T('abonnement:formulaire_offrir_localisation_titre'),
-			),
-			'saisies' => array(
-				array(
-					'saisie' => 'choix_abonnement',
-					'options' => array(
-						'nom' => 'region',
-						'class' => 'fsa__choix fsa__choix--medium',
-						'defaut' => '1077',
-						'datas' => array(
-							'1077' => _T('abonnement:formulaire_souscrire_localisation_choix_france'),
-							'1078' => _T('abonnement:formulaire_souscrire_localisation_choix_international')
-						)
-					)
-				)
-			)
-		),
-		// Durée
-		array(
-			'saisie' => 'fieldset',
-			'options' => array(
-				'nom' => 'duree',
-				'label' => _T('abonnement:formulaire_offrir_duree_titre'),
-			),
-			'saisies' => array(
-				array(
-					'saisie' => 'choix_abonnement',
-					'options' => array(
-						'nom' => 'duree',
-						'class' => 'fsa__choix fsa__choix--medium',
-						'defaut' => '12',
-						'datas' => array(
-							'12' => _T('abonnement:formulaire_souscrire_duree_12'),
-							'24' => _T('abonnement:formulaire_souscrire_duree_24')
-						)
-					)
-				)
-			)
-		),
-		// Offres
-		array(
-			'saisie' => 'fieldset',
-			'options' => array(
-				'nom' => 'fsabonnements_offre',
-				'label' => _T('abonnement:formulaire_offrir_offres_abonnements_titre'),
-			),
-			'saisies' => array(
-				array(
-					'saisie' => 'choix_abonnement_offres',
-					'options' => array(
-						'nom' => 'abonnements_offre',
-						'class' => 'fsa__choix'
-					)
-				)
-			)
-		),
-		// Numéro début
-		array(
-			'saisie' => 'fieldset',
-			'options' => array(
-				'nom' => 'fsnumero_debut',
-				'label' => _T('abonnement:formulaire_offrir_numero_debut_titre')
-			),
-			'saisies' => array(
-				array(
-					'saisie' => 'choix_numero_debut_abonnement',
-					'options' => array(
-						'nom' => 'numero_debut',
-						'class' => 'fsa__choix',
-					)
-				)
-			)
-		),
-		// Coordonnées du bénéficiaire
-		array(
-			'saisie' => 'fieldset',
-			'options' => array(
-				'nom' => 'fstiers',
-				'label' => _T('abonnement:formulaire_offrir_coordonnees_tiers_titre'),
-			)
-		),
-		
-		// Cadeau
-		array(
-			'saisie' => 'fieldset',
-			'options' => array(
-				'nom' => 'fscadeau',
-				'label' => _T('abonnement:formulaire_souscrire_cadeau_titre'),
-				'explication' => _T('abonnement:formulaire_souscrire_cadeau_desc')
-			),
-			'saisies' => array(
-				array(
-					'saisie' => 'choix_cadeaux_abonnement',
-					'options' => array(
-						'nom' => 'cadeau',
-						'id_rubrique' => _request('id_rubrique'),
-						'class' => 'fsa__choix',
-					)
-				)
-			)
-		)
-	);
-	
-	
-	
-	return $saisies;
-}
 
 function formulaires_offrir_abonnement_charger_dist() {
 	$valeurs = array();
+	// 1
+	$valeurs['localisation'] = (_request('localisation')) ? _request('localisation') : '';
+	$valeurs['duree'] = (_request('duree')) ? _request('duree') : '';
+	$valeurs['abonnements_offre'] = (_request('abonnements_offre')) ? _request('abonnements_offre') : '';
+	$valeurs['numero_debut'] = (_request('numero_debut')) ? _request('numero_debut') : '';
+	$valeurs['cadeau'] = (_request('cadeau')) ? _request('cadeau') : '';
+	$valeurs['id_rubrique'] = _request('id_rubrique');
+	
+	// 2
+	$valeurs['civilite'] = (_request('civilite')) ? _request('civilite') : '';
+	$valeurs['nom_inscription'] = (_request('nom_inscription')) ? _request('nom_inscription') : '';
+	$valeurs['prenom'] = (_request('prenom')) ? _request('prenom') : '';
+	$valeurs['mail_inscription'] = (_request('mail_inscription')) ? _request('mail_inscription') : '';
+	$valeurs['organisation'] = (_request('organisation')) ? _request('organisation') : '';
+	$valeurs['service'] = (_request('service')) ? _request('service') : '';
+	$valeurs['voie'] = (_request('voie')) ? _request('voie') : '';
+	$valeurs['complement'] = (_request('complement')) ? _request('complement') : '';
+	$valeurs['boite_postale'] = (_request('boite_postale')) ? _request('boite_postale') : '';
+	$valeurs['code_postal'] = (_request('code_postal')) ? _request('code_postal') : '';
+	$valeurs['ville'] = (_request('ville')) ? _request('ville') : '';
+	$valeurs['region'] = (_request('region')) ? _request('region') : '';
+	$valeurs['pays'] = (_request('pays')) ? _request('pays') : '';
+	
+	$valeurs['_etapes'] = 2;
+	
 	return $valeurs;
 }
 
-function formulaires_offrir_abonnement_verifier_dist() {
+function formulaires_offrir_abonnement_verifier_1_dist() {
 	$erreurs = array();
+	
+	$obligatoires = array('localisation', 'duree', 'abonnements_offre', 'numero_debut', 'cadeau');
+	
+	foreach ($obligatoires as $obligatoire) {
+		if (!strlen(_request($obligatoire))) {
+			$erreurs['fs'.$obligatoire] = _T('abonnement:erreur_' . $obligatoire . '_obligatoire');
+		}
+	}
+
+	return $erreurs;
+}
+
+function formulaires_offrir_abonnement_verifier_2_dist() {
+	$erreurs = array();
+	
+	include_spip('inc/editer');
+	include_spip('inc/filtres');
+	
+	if (!$nom = _request('nom_inscription')) {
+		$erreurs['nom_inscription'] = _T('info_obligatoire');
+	} elseif (!nom_acceptable(_request('nom_inscription'))) {
+		$erreurs['nom_inscription'] = _T('ecrire:info_nom_pas_conforme');
+	}
+	
+	if (!$mail = strval(_request('mail_inscription'))) {
+		$erreurs['mail_inscription'] = _T('info_obligatoire');
+	}
+	
+	if (!_request('organisation') and _request('service')) {
+		$erreurs['organisation'] = _T('vprofils:erreur_si_service_organisation_nonvide');
+	}
+	
+	$obligatoires = array('civilite', '_id_abonnement', 'prenom', 'voie', 'code_postal', 'ville', 'pays');
+	
+	foreach ($obligatoires as $obligatoire) {
+		if (!strlen(_request($obligatoire))) {
+			$erreurs[$obligatoire] = _T('vprofils:erreur_' . $obligatoire . '_obligatoire');
+		}
+	}
+	
 	return $erreurs;
 }
 

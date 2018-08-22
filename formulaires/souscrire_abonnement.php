@@ -3,7 +3,7 @@
 if (!defined("_ECRIRE_INC_VERSION")) {
 	return;
 }
-
+/*
 function formulaires_souscrire_abonnement_saisies_dist($region = '') {
 	$saisies = array(
 		// France ou international ?
@@ -106,15 +106,16 @@ function formulaires_souscrire_abonnement_saisies_dist($region = '') {
 	);
 	return $saisies;
 }
-
+*/
 
 function formulaires_souscrire_abonnement_charger_dist() {
 	$valeurs = array();
-	$valeurs['region'] = (_request('region')) ? _request('region') : '';
+	$valeurs['localisation'] = (_request('localisation')) ? _request('localisation') : '';
 	$valeurs['duree'] = (_request('duree')) ? _request('duree') : '';
 	$valeurs['abonnements_offre'] = (_request('abonnements_offre')) ? _request('abonnements_offre') : '';
 	$valeurs['numero_debut'] = (_request('numero_debut')) ? _request('numero_debut') : '';
 	$valeurs['cadeau'] = (_request('cadeau')) ? _request('cadeau') : '';
+	$valeurs['id_rubrique'] = _request('id_rubrique');
 
 	return $valeurs;
 }
@@ -122,7 +123,7 @@ function formulaires_souscrire_abonnement_charger_dist() {
 function formulaires_souscrire_abonnement_verifier_dist() {
 	$erreurs = array();
 	
-	$obligatoires = array('abonnements_offre', 'numero_debut', 'cadeau');
+	$obligatoires = array('localisation', 'duree', 'abonnements_offre', 'numero_debut', 'cadeau');
 	
 	foreach ($obligatoires as $obligatoire) {
 		if (!strlen(_request($obligatoire))) {

@@ -4,22 +4,22 @@
 
 
 function vabonnements($element) {
-	var classeOffres = 'js-fsa-offres-'; // classe de chaque groupe d'offre
+	var classeOffres = 'js-fa-offres-'; // classe de chaque groupe d'offre
 
 	var $conteneur = $element,
 		$form = $conteneur.find('> form'),
 		$inputs = $form.find('input[type="radio"]'),
-		$localisation = $inputs.filter('input[name="region"]'), // localisation
+		$localisation = $inputs.filter('input[name="localisation"]'), // localisation
 		$duree = $inputs.filter('input[name="duree"]'), // duree
-		$fsOffres = $form.find('.fieldset_fsabonnements_offre'), // fieldset offres
-		$offres = $fsOffres.find('.fsa-offres'), // offres par groupe
-		$offre = $fsOffres.find('.fsa-offre'); // offre individuelle
+		$fsOffres = $form.find('.editer_abonnements_offre'), // groupe offres
+		$offres = $fsOffres.find('.fa-offres'), // offres par groupe
+		$offre = $fsOffres.find('.fa-offre'); // offre individuelle
 
 	// Initialiser au chargement
 	// **************************
 	var chargement = true;
 	
-	$form.addClass('.js-form');
+	$form.addClass('js-form');
 
 	$inputs.change(function() {
 		toggleInput($(this), $offre, chargement);
@@ -70,13 +70,14 @@ function vabonnements($element) {
 
 
 function toggleInput($input, $offre, chargement) {
-	var classeParent = '.fsa__choix',
-		classeSelected = 'is-selected';
+	var classeParent = '.fa__choix',
+		classeSelected = 'is-selected',
+		inputName = 'abonnement_offre';
 		
 	if (chargement === true) {
 		$input.parents(classeParent).toggleClass(classeSelected);
 	} else {
-		if ($input.attr('name') == 'abonnements_offre') {
+		if ($input.attr('name') == inputName) {
 			$offre.removeClass(classeSelected);
 		}
 		$input.parents(classeParent).toggleClass(classeSelected).siblings().removeClass(classeSelected);
@@ -105,13 +106,12 @@ function toggleAffichageOffres(classeOffre, $offres, chargement) {
 				selectedIndex = i;
 			} else {
 				// On enregistre l'élément visible à masquer.
-				if (opacity > 0) {
+				if ($el.is(":visible")) {
 					// $el.animate({opacity: 0}, 100).hide();
 					deselectedIndex = i;
 				}
 			}
 		}
-		
 		
 	});
 	

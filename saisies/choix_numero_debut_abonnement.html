@@ -21,13 +21,13 @@
 ]
 <BOUCLE_data(DATA){source tableau, #GET{data}}>
 	#SET{disabled, #ENV{disable}|is_string|?{#ENV{disable}, #ENV{disable/#CLE}}}
-	<div class="#ENV{choix,choix}[ (#ENV{choix,choix})_#CLE][ (#ENV{class})] fsa__choix--small">
-		<label for="champ_[(#ENV{id,#ENV{nom}}|saisie_nom2classe)]_#COMPTEUR_BOUCLE" class="fsa__label[ (#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}}|=={#CLE}|oui)on]">
-			<input type="radio" name="#ENV{nom}" class="radio fsa__radio" id="champ_[(#ENV{id,#ENV{nom}}|saisie_nom2classe)]_#COMPTEUR_BOUCLE"[ (#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}}|=={#CLE}|oui)checked="checked"] value="#CLE"[(#GET{disabled}|ou{#CLE|in_array{#GET{disable_choix}}}) disabled="disabled"][ readonly="(#ENV{readonly})"][ aria-describedby="(#ENV{describedby})"] />
-			<span class="fsa__label-text fsa__label-text--vertical fsa-text">
-				<span class="fsa-text__titre">#VALEUR</span>
-				<span class="fsa-text__surtitre">#GET{surtitre/#CLE}</span>
-				[<span class="fsa-text__img">(#INCLURE{fond=inclure/logo/numero-abonnement, logo=#GET{logo/#CLE}})</span>]
+	<div class="#ENV{choix,choix}[ (#ENV{choix,choix})_#CLE][ (#ENV{class})] fa__choix--small">
+		<label for="champ_[(#ENV{id,#ENV{nom}}|saisie_nom2classe)]_#COMPTEUR_BOUCLE" class="fa__label[ (#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}}|=={#CLE}|oui)on]">
+			<input type="radio" name="#ENV{nom}" class="radio fa__radio" id="champ_[(#ENV{id,#ENV{nom}}|saisie_nom2classe)]_#COMPTEUR_BOUCLE"[ (#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}}|=={#CLE}|oui)checked="checked"] value="#CLE"[(#GET{disabled}|ou{#CLE|in_array{#GET{disable_choix}}}) disabled="disabled"][ readonly="(#ENV{readonly})"][ aria-describedby="(#ENV{describedby})"] />
+			<span class="fa__label-text fa__label-text--vertical fa-text">
+				<span class="fa-text__titre">#VALEUR</span>
+				<span class="fa-text__surtitre">#GET{surtitre/#CLE}</span>
+				[<span class="fa-text__img">(#INCLURE{fond=inclure/logo/numero-abonnement, logo=#GET{logo/#CLE}})</span>]
 			</span>
 		</label>
 	</div>
