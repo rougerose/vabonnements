@@ -69,7 +69,7 @@ function formulaires_offrir_abonnement_verifier_2_dist() {
 		$erreurs['organisation'] = _T('vprofils:erreur_si_service_organisation_nonvide');
 	}
 	
-	$obligatoires = array('civilite', '_id_abonnement', 'prenom', 'voie', 'code_postal', 'ville', 'pays');
+	$obligatoires = array('civilite', '_id_abonnement', 'prenom', 'voie', 'code_postal', 'ville', 'pays', 'message_date');
 	
 	foreach ($obligatoires as $obligatoire) {
 		if (!strlen(_request($obligatoire))) {
