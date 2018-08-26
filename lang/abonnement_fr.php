@@ -60,12 +60,13 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	
 	// E
 	'editer_abonnement_explication' => "La modification d'un abonnement n'est pas possible.",
-	'erreur_abonnements_offre_obligatoire' => "Veuillez choisir une offre d’abonnement",
+	'erreur_id_abonnements_offre_obligatoire' => "Veuillez choisir une offre d’abonnement",
 	'erreur_cadeau_obligatoire' => "Veuillez préciser quel cadeau vous souhaitez recevoir",
 	'erreur_duree_obligatoire' => "Veuillez préciser la durée de l’abonnement",
 	'erreur_code_cadeau_obligatoire' => "Un code cadeau est obligatoire",
 	'erreur_localisation_obligatoire' => "Veuillez préciser votre domiciliation",
 	'erreur_numero_debut_obligatoire' => "Veuillez choisir le premier numéro de votre abonnement",
+	'erreur_offre_soutien_prix_souscripteur_inferieur' => "Votre prix ne peut être inférieur à @prix_ttc@ euros, veuillez corriger votre saisie.",
 	
 	// F
 	'formulaire_abonnement_duree_12' => "1 an / 4 numéros",
@@ -137,6 +138,9 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'message_erreur_adresse' => "Cet auteur doit être lié à une adresse postale avant de pouvoir lui ajouter un abonnement",
 	'message_echec_valider_code_cadeau' => "Nous sommes désolés, mais le code est incorrect",
 	'message_succes_valider_code_cadeau' => "Le code est correct",
+	'message_erreur_auteur_deja_enregistre_saisie_incoherente' => "Une erreur empêche d'enregistrer votre demande. <br>Le bénéficiaire de l'abonnement est déjà enregistré sur ce site et les informations que nous possédons ne sont pas cohérentes avec celles que vous indiquez.
+	<br>Veuillez vérifier votre saisie.
+	<br>Si le problème persiste, nous vous invitons <a href='@urlcontact@'>à nous contacter</a>.",
 	
 	// N
 	'numero_encours_info'   => " (Numéro actuel)",

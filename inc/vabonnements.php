@@ -46,3 +46,42 @@ function vabonnements_offres_obligatoires() {
 	
 	return $offres_obligatoires;
 }
+
+
+
+function vabonnements_recuperer_offres_soutien() {
+	$inner = 'INNER JOIN spip_mots_liens AS L1 ON (L1.id_objet = abonnements_offres.id_abonnements_offre AND L1.objet ='.sql_quote('abonnements_offre').')';
+	$where = '(abonnements_offres.statut = '.sql_quote('publie').') AND (L1.id_mot = 1076)';
+	$offres = sql_allfetsel('id_abonnements_offre', 'spip_abonnements_offres AS abonnements_offres '.$inner, $where);
+	
+	$offres_soutien = array();
+	
+	if ($offres) {
+		foreach ($offres as $offre) {
+			$offres_soutien[] = $offre['id_abonnements_offre'];
+		}
+	}
+	
+	return $offres_soutien;
+}
+
+
+function vabonnements_verifier_montant_soutien($id_abonnements_offre) {
+	// les offres d'abonnement de soutien disponibles.
+	$offres_soutien = vabonnements_recuperer_offres_soutien();
+	
+	// si le souscripteur a choisi une de ces offres, vérifier le montant saisi.
+	if (in_array($id_abonnements_offre, $offres_soutien)) {
+		$inputs_soutien_montant = _request('soutien_montant');
+		$prix_souscripteur = $inputs_soutien_montant[$id_abonnements_offre];
+		
+		// le prix Vacarme
+		$prix_ttc = prix_objet($id_abonnements_offre, 'abonnements_offre');
+		
+		if ($prix_souscripteur and $prix_souscripteur < $prix_ttc) {
+			return _T('abonnement:erreur_offre_soutien_prix_souscripteur_inferieur', array('prix_ttc' => $prix_ttc));
+		}
+	} else {
+		return '';
+	}
+}

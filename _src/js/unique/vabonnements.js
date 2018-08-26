@@ -11,7 +11,7 @@ function vabonnements($element) {
 		$inputs = $form.find('input[type="radio"]'),
 		$localisation = $inputs.filter('input[name="localisation"]'), // localisation
 		$duree = $inputs.filter('input[name="duree"]'), // duree
-		$fsOffres = $form.find('.editer_abonnements_offre'), // groupe offres
+		$fsOffres = $form.find('.editer_id_abonnements_offre'), // groupe offres
 		$offres = $fsOffres.find('.fa-offres'), // offres par groupe
 		$offre = $fsOffres.find('.fa-offre'); // offre individuelle
 
@@ -72,7 +72,7 @@ function vabonnements($element) {
 function toggleInput($input, $offre, chargement) {
 	var classeParent = '.fa__choix',
 		classeSelected = 'is-selected',
-		inputName = 'abonnement_offre';
+		inputName = 'id_abonnements_offre';
 		
 	if (chargement === true) {
 		$input.parents(classeParent).toggleClass(classeSelected);
@@ -120,7 +120,7 @@ function toggleAffichageOffres(classeOffre, $offres, chargement) {
 		// de l'élément à sélectionner.
 		// Faire apparaître l'élément sélectionné.
 		$offres.eq(deselectedIndex).animate({opacity: 0}, 100).addClass(classeAbsolute).hide();
-		$offres.eq(selectedIndex).show().removeClass(classeAbsolute).animate({opacity: 1}, 500);
+		$offres.eq(selectedIndex).show().removeClass(classeAbsolute).animate({opacity: 1}, 300);
 	}
 }
 

@@ -1,6 +1,6 @@
 <BOUCLE_region_abonnements_offres(MOTS){id_groupe=20}{par num titre}>
 	<BOUCLE_offres(ABONNEMENTS_OFFRES){id_mot=#ID_MOT}{par num titre}>
-		#SET{mot, #ARRAY} #SET{soutien, ''}
+		#SET{mot, #ARRAY} #SET{soutien, ''} #SET{soutien_montant, #ENV{soutien_montant/#ID_ABONNEMENTS_OFFRE, #PRIX*}}
 		<BOUCLE_mots_offre(spip_mots_liens){id_objet=#ID_ABONNEMENTS_OFFRE}{objet='abonnements_offre'}>
 			[(#SET{mot, #GET{mot}|push{#ID_MOT}})]
 		</BOUCLE_mots_offre>
@@ -18,7 +18,7 @@
 				</label>
 				[(#GET{soutien}|oui)
 					[<div class="fa__extra fa-offre__prix-client">
-						(#SAISIE{input, soutien__montant, label=<:abonnement:formulaire_abonnement_offre_soutien_prix_client:>, min=#PRIX*, max=999, defaut=#PRIX*, type=number})
+						(#SAISIE{input, soutien_montant\[#ID_ABONNEMENTS_OFFRE\], defaut=#GET{soutien_montant}, label=<:abonnement:formulaire_abonnement_offre_soutien_prix_client:>, min=#PRIX*, max=999, type=number})
 					</div>]
 				]
 			</div>

@@ -1,0 +1,36 @@
+<BOUCLE_auteur(AUTEURS){id_auteur}>
+<title>Abonnement offert : erreur</title>
+<body>
+	<p>Une erreur vient de se produire lors de la validation des coordonnées du bénéficiaire par le souscripteur d'un abonnement offert. Une invitation à prendre contact a été affichée au souscripteur. Les données enregistrées sur le site et celles fournies par le souscripteur sont les suivantes : </p>
+	<ul>
+		<li>
+			<strong>Données saisies par le souscripteur</strong>
+			<ul>
+				<li><strong>Nom :</strong>[ (#ENV{datas/nom})]</li>
+				<li><strong>Prénom :</strong>[ (#ENV{datas/prenom})]</li>
+				<li><strong>Adresse email :</strong>[ (#ENV{datas/email})]</li>
+			</ul>
+		</li>
+	</ul>
+	<ul>
+		<li>
+			<strong>Données enregistrées sur le site</strong>
+			<ul>
+				<li><strong>Nom :</strong>[ (#NOM|nom)]</li>
+				<li><strong>Prénom :</strong>[ (#NOM|prenom)]</li>
+				<li><strong>Email </strong>[ (#EMAIL)]</li>
+			</ul>
+		</li>
+	</ul>
+	<ul>
+		<li>
+			<strong>Les données ont été comparées de la manière suivante :</strong>
+			<ul>
+				<li><strong>Nom du site / Nom saisi :</strong>[ (#ENV{datas/cmp_nom})]</li>
+				<li><strong>Prénom du site / Prénom saisi :</strong>[ (#ENV{datas/cmp_prenom})]</li>
+			</ul>
+		</li>
+	</ul>
+</body>
+#FILTRE{facteur_email_wrap_to_html}
+</BOUCLE_auteur>
