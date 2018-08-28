@@ -31,10 +31,9 @@ function formulaires_souscrire_abonnement_verifier_dist() {
 	}
 	
 	$id_abonnements_offre = intval(_request('id_abonnements_offre'));
-	$erreur_montant_soutien = vabonnements_verifier_montant_soutien($id_abonnements_offre);
 	
-	if ($erreur_montant_soutien) {
-		$erreurs['fsid_abonnements_offre'] = $erreur_montant_soutien;
+	if ($err = vabonnements_verifier_montant_soutien($id_abonnements_offre)) {
+		$erreurs['fsid_abonnements_offre'] = $err;
 	}
 	
 	return $erreurs;
@@ -46,9 +45,25 @@ function formulaires_souscrire_abonnement_traiter_dist() {
 	
 	// Options du panier 
 	$options = array();
-	$options['numero_debut'] = _request('numero_debut');
-	$options['cadeau'] =_request('cadeau');
-	$options['prix_souscripteur'] = '';
+	$options[0]['numero_debut'] = _request('numero_debut');
+	$options[0]['cadeau'] =_request('cadeau');
+	$options[0]['prix_souscripteur'] = '';
+	// Les options doivent contenir toutes les données possibles.
+	$options[0]['civilite'] = '';
+	$options[0]['nom_inscription'] = '';
+	$options[0]['prenom'] = '';
+	$options[0]['mail_inscription'] = '';
+	$options[0]['organisation'] = '';
+	$options[0]['service'] = '';
+	$options[0]['voie'] = '';
+	$options[0]['complement'] = '';
+	$options[0]['boite_postale'] = '';
+	$options[0]['code_postal'] = '';
+	$options[0]['ville'] = '';
+	$options[0]['region'] = '';
+	$options[0]['pays'] = '';
+	$options[0]['texte_message'] = '';
+	$options[0]['date_message'] = '';
 	
 	// les offres d'abonnement de soutien disponibles.
 	$offres_soutien = vabonnements_recuperer_offres_soutien();
@@ -58,7 +73,7 @@ function formulaires_souscrire_abonnement_traiter_dist() {
 		$prix_souscripteur = $inputs_soutien_montant[$id_abonnements_offre];
 		
 		if ($prix_souscripteur) {
-			$options['prix_souscripteur'] = $prix_souscripteur;
+			$options[0]['prix_souscripteur'] = $prix_souscripteur;
 		}
 	}
 	
@@ -70,12 +85,12 @@ function formulaires_souscrire_abonnement_traiter_dist() {
 	$ajouter = charger_fonction('remplir_panier', 'action');
 	$ajouter("$objet-$id_abonnements_offre-$quantite-$negatif-$options");
 	
-	// if (dans_panier($id_abonnements_offre, $objet)) {
-	// 	$res['message_ok'] = 'Abonnement ajouté';
-	// }
-	$res['message_ok'] = 'Abonnement ajouté';
-	// $res['redirect'] = parametre_url($redirect, 'a', 'panier');
-	$res['panier'] = 'oui';
+	if (dans_panier($id_abonnements_offre, $objet)) {
+		$res['message_ok'] = _T('abonnement:message_ok_abonnement_dans_panier');
+	} else {
+		$res['message_erreur'] = _T('abonnement:message_erreur_abonnement_dans_panier');
+	}
+	
 	$res['editable'] = true;
 	
 	return $res;

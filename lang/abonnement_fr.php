@@ -136,7 +136,9 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'message_erreur_contact_adresse' => "Cet auteur doit être lié à un contact et à une adresse postale avant de pouvoir lui ajouter un abonnement",
 	'message_erreur_contact' => "Cet auteur doit être lié à un contact avant de pouvoir lui ajouter un abonnement",
 	'message_erreur_adresse' => "Cet auteur doit être lié à une adresse postale avant de pouvoir lui ajouter un abonnement",
+	'message_ok_abonnement_dans_panier' => "Erreur : l’abonnement n’a pas pu être ajouté à votre panier.",
 	'message_echec_valider_code_cadeau' => "Nous sommes désolés, mais le code est incorrect",
+	'message_ok_abonnement_dans_panier' => "L’abonnement a bien été ajouté à votre panier",
 	'message_succes_valider_code_cadeau' => "Le code est correct",
 	'message_erreur_auteur_deja_enregistre_saisie_incoherente' => "Une erreur empêche d'enregistrer votre demande. <br>Le bénéficiaire de l'abonnement est déjà enregistré sur ce site et les informations que nous possédons ne sont pas cohérentes avec celles que vous indiquez.
 	<br>Veuillez vérifier votre saisie.

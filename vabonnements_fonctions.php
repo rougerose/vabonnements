@@ -60,16 +60,26 @@ function filtre_duree_en_clair($periodicite) {
  * Traduire la durée d'abonnement en nombre de numéros
  * La fonction retourne également la chaîne "numéro(s)".
  * 
- * @param  string $periodicite
+ * @param  string $periodicite (12|24 month)
  * @return string
  */
 function filtre_numeros_nombre_en_clair($periodicite) {
-	$nombre = intval($periodicite);
-	$nb = $nombre / 3;
+	$nb = filtre_numeros_nombre($periodicite);
 	$numeros = ($nb == 1 ? _T('abonnements_offre:numero') : _T('abonnements_offre:numeros', array('nb' => $nb)));
 	return $numeros;
 }
 
+
+/**
+ * Traduire la durée d'abonnement en nombre de numéros. 
+ * 
+ * @param  string $periodicite (12|24 month)
+ * @return int
+ */
+function filtre_numeros_nombre($periodicite) {
+	$nombre = intval($periodicite);
+	return $nombre / 3;
+}
 
 
 /**

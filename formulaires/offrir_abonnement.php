@@ -4,6 +4,7 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 	return;
 }
 
+include_spip('inc/vabonnements');
 
 function formulaires_offrir_abonnement_charger_dist() {
 	$valeurs = array();
@@ -52,10 +53,9 @@ function formulaires_offrir_abonnement_verifier_1_dist() {
 	}
 	
 	$id_abonnements_offre = intval(_request('id_abonnements_offre'));
-	$erreur_montant_soutien = vabonnements_verifier_montant_soutien($id_abonnements_offre);
 	
-	if ($erreur_montant_soutien) {
-		$erreurs['fsid_abonnements_offre'] = $erreur_montant_soutien;
+	if ($err = vabonnements_verifier_montant_soutien($id_abonnements_offre)) {
+		$erreurs['fsid_abonnements_offre'] = $err;
 	}
 
 	return $erreurs;
@@ -104,9 +104,9 @@ function formulaires_offrir_abonnement_traiter_dist() {
 	
 	// Options du panier 
 	$options = array();
-	$options['numero_debut'] = _request('numero_debut');
-	$options['cadeau'] =_request('cadeau');
-	$options['prix_souscripteur'] = '';
+	$options[0]['numero_debut'] = _request('numero_debut');
+	$options[0]['cadeau'] =_request('cadeau');
+	$options[0]['prix_souscripteur'] = '';
 	
 	// un abonnement de soutien peut avoir un prix modifié par le souscripteur
 	$offres_soutien = vabonnements_recuperer_offres_soutien();
@@ -116,40 +116,36 @@ function formulaires_offrir_abonnement_traiter_dist() {
 		$prix_souscripteur = $inputs_soutien_montant[$id_abonnements_offre];
 		
 		if ($prix_souscripteur) {
-			$options['prix_souscripteur'] = $prix_souscripteur;
+			$options[0]['prix_souscripteur'] = $prix_souscripteur;
 		}
 	}
 	
+	$options[0]['civilite'] = _request('civilite');
+	$options[0]['nom_inscription'] = _request('nom_inscription');
+	$options[0]['prenom'] = _request('prenom');
+	$options[0]['mail_inscription'] = _request('mail_inscription');
+	$options[0]['organisation'] = _request('organisation');
+	$options[0]['service'] = _request('service');
+	$options[0]['voie'] = _request('voie');
+	$options[0]['complement'] = _request('complement');
+	$options[0]['boite_postale'] = _request('boite_postale');
+	$options[0]['code_postal'] = _request('code_postal');
+	$options[0]['ville'] = _request('ville');
+	$options[0]['region'] = _request('region');
+	$options[0]['pays'] = _request('pays');
+	$options[0]['texte_message'] = _request('texte_message');
+	$options[0]['date_message'] = _request('date_message');
 	
-	$beneficiaire = array();
-	$beneficiaire['civilite'] = _request('civilite');
-	$beneficiaire['nom_inscription'] = _request('nom_inscription');
-	$beneficiaire['prenom'] = _request('prenom');
-	$beneficiaire['mail_inscription'] = _request('mail_inscription');
-	$beneficiaire['organisation'] = _request('organisation');
-	$beneficiaire['service'] = _request('service');
-	$beneficiaire['voie'] = _request('voie');
-	$beneficiaire['complement'] = _request('complement');
-	$beneficiaire['boite_postale'] = _request('boite_postale');
-	$beneficiaire['code_postal'] = _request('code_postal');
-	$beneficiaire['ville'] = _request('ville');
-	$beneficiaire['region'] = _request('region');
-	$beneficiaire['pays'] = _request('pays');
-	$beneficiaire['pays'] = _request('pays');
-	$beneficiaire['texte_message'] = _request('texte_message');
-	$beneficiaire['date_message'] = _request('date_message');
-	
-	$options['beneficiaire'] = $beneficiaire;
 	
 	// Vérifier si le bénéficiaire n'est pas déjà connu
-	$auteur = sql_fetsel('id_auteur, nom', 'spip_auteurs', 'email='.sql_quote($beneficiaire['mail_inscription']));
+	$auteur = sql_fetsel('id_auteur, nom', 'spip_auteurs', 'email='.sql_quote($options[0]['mail_inscription']));
 	
 	if ($auteur) {
 		// Comparer les nom et prénom avec suppression des accents et diacritiques
 		$nom_base = strtolower(vprofils_supprimer_accents(nom($auteur['nom'])));
 		$prenom_base = strtolower(vprofils_supprimer_accents(prenom($auteur['nom'])));
-		$nom_saisie = strtolower(vprofils_supprimer_accents($beneficiaire['nom_inscription']));
-		$prenom_saisie = strtolower(vprofils_supprimer_accents($beneficiaire['prenom']));
+		$nom_saisie = strtolower(vprofils_supprimer_accents($options[0]['nom_inscription']));
+		$prenom_saisie = strtolower(vprofils_supprimer_accents($options[0]['prenom']));
 		
 		// Si des différences existent au niveau du nom ou du prénom,
 		// on refuse de poursuivre.
@@ -161,9 +157,9 @@ function formulaires_offrir_abonnement_traiter_dist() {
 			// nous contacte comme on l'invite dans le message d'erreur.
 			// 
 			$datas = array(
-				'nom' => $beneficiaire['nom_inscription'],
-				'prenom' => $beneficiaire['prenom'],
-				'email' => $beneficiaire['mail_inscription'],
+				'nom' => $options[0]['nom_inscription'],
+				'prenom' => $options[0]['prenom'],
+				'email' => $options[0]['mail_inscription'],
 				'cmp_nom' =>  $nom_base.' / '.$nom_saisie,
 				'cmp_prenom' => $prenom_base.' / '.$prenom_saisie
 			);
@@ -193,6 +189,14 @@ function formulaires_offrir_abonnement_traiter_dist() {
 		$negatif = '';
 		$ajouter = charger_fonction('remplir_panier', 'action');
 		$ajouter("$objet-$id_abonnements_offre-$quantite-$negatif-$options");
+		
+		if (dans_panier($id_abonnements_offre, $objet)) {
+			$res['message_ok'] = _T('abonnement:message_ok_abonnement_dans_panier');
+			$res['editable'] = false;
+		} else {
+			$res['message_erreur'] = _T('abonnement:message_erreur_abonnement_dans_panier');
+			$res['editable'] = true;
+		}
 	}
 	return $res;
 }
