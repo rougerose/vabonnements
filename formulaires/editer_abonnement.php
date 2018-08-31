@@ -205,6 +205,7 @@ function formulaires_editer_abonnement_verifier_dist($id_abonnement = 'new', $re
  *     Retours des traitements
  */
 function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $retour = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+	/*
 	$id_abonnement = intval($id_abonnement);
 	$numero_debut = _request('numero_debut');
 	$id_abonnements_offre = _request('id_abonnements_offre');
@@ -299,5 +300,6 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 	} else {
 		$res = formulaires_editer_objet_traiter('abonnements', $id_abonnement, '', $lier_trad, $retour, $config_fonc, $row, $hidden);
 		return $res;
-	} 
+	}
+	*/
 }
