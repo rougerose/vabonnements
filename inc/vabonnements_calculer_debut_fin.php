@@ -5,8 +5,15 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 	return;
 }
 
-
-function vabonnements_calculer_numeros_debut_fin($id_abonnements_offre, $numero_debut) {
+/**
+ * Calculer un numéro de fin et les dates début|fin d'un abonnement
+ * en fonction de sa durée et du numéro qui débute.
+ * 
+ * @param  int $id_abonnements_offre
+ * @param  string $numero_debut
+ * @return array
+ */
+function vabonnements_calculer_debut_fin($id_abonnements_offre, $numero_debut) {
 	include_spip('inc/vabonnements_calculer_date');
 	include_spip('vabonnements_fonctions');
 	
@@ -47,8 +54,7 @@ function vabonnements_calculer_numeros_debut_fin($id_abonnements_offre, $numero_
 	// Date_fin
 	// -----------
 	// 
-	$duree_ = explode(" ", $duree); // 12 month ou 24 month
-	$duree_valeur = reset($duree_);
+	$duree_valeur = intval($duree); // 12 month ou 24 month
 	$date_fin = vabonnements_calculer_date_fin($date_debut, $duree_valeur);
 	
 	// 

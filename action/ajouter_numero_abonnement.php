@@ -18,9 +18,9 @@ function action_ajouter_numero_abonnement_dist($arg = null) {
 		
 		$abonnement = sql_fetsel('*', 'spip_abonnements', 'id_abonnement='.$id_abonnement);
 		
-		include_spip('inc/vabonnements_calculer_numeros_debut_fin');
+		include_spip('inc/vabonnements_calculer_debut_fin');
 		
-		$numeros = vabonnements_calculer_numeros_debut_fin($abonnement['id_abonnements_offre'], $numero_debut);
+		$numeros = vabonnements_calculer_debut_fin($abonnement['id_abonnements_offre'], $numero_debut);
 		
 		// Log
 		include_spip('inc/vabonnements');
