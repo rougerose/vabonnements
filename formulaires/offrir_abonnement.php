@@ -31,7 +31,7 @@ function formulaires_offrir_abonnement_charger_dist() {
 	$valeurs['ville'] = (_request('ville')) ? _request('ville') : '';
 	$valeurs['region'] = (_request('region')) ? _request('region') : '';
 	$valeurs['pays'] = (_request('pays')) ? _request('pays') : '';
-	$valeurs['texte_message'] = (_request('texte_message')) ? _request('texte_message') : '';
+	$valeurs['message'] = (_request('message')) ? _request('message') : '';
 	$valeurs['date_message'] = (_request('date_message')) ? _request('date_message') : '';
 	
 	$valeurs['_etapes'] = 2;
@@ -133,7 +133,7 @@ function formulaires_offrir_abonnement_traiter_dist() {
 	$options[0]['ville'] = _request('ville');
 	$options[0]['region'] = _request('region');
 	$options[0]['pays'] = _request('pays');
-	$options[0]['texte_message'] = _request('texte_message');
+	$options[0]['message'] = _request('message');
 	$options[0]['date_message'] = _request('date_message');
 	
 	

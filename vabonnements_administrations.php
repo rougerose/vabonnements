@@ -77,6 +77,13 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 		array('sql_alter', 'TABLE spip_abonnements_offres CHANGE prix_ht prix_ht DECIMAL(10,3) NOT NULL DEFAULT 0'),
 		array('sql_alter', 'TABLE spip_abonnements CHANGE prix_echeance prix_echeance DECIMAL(10,3) NOT NULL DEFAULT 0')
 	);
+	
+	$maj['1.1.3'] = array(
+		array('sql_alter', 'TABLE spip_abonnements ADD id_auteur_payeur bigint(21) not null default 0 AFTER id_auteur'),
+		array('sql_alter', 'TABLE spip_abonnements CHANGE offert offert varchar(3) default "non" not null AFTER coupon'),
+		array('sql_alter', 'TABLE spip_abonnements ADD message text not null default "" AFTER coupon'),
+		array('sql_alter', 'TABLE spip_abonnements ADD date_message datetime not null default "0000-00-00 00:00:00" AFTER message')
+	);
 
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);

@@ -201,3 +201,20 @@ function autoriser_vabonnements_configurer_dist($faire, $type, $id, $qui, $opt) 
 function autoriser_abonnement_iconifier_dist($faire, $type, $id, $qui, $opt){
 	return false;
 }
+
+/**
+ * Autorisation à souscrire un abonnement
+ * 
+ * @param  [type] $faire [description]
+ * @param  [type] $type  [description]
+ * @param  [type] $id    [description]
+ * @param  [type] $qui   [description]
+ * @param  [type] $opt   [description]
+ * @return [type]        [description]
+ */
+function autoriser_abonner_dist($faire, $type, $id, $qui, $opt) {
+	if ($qui['id_auteur'] > 0) {
+		return true;
+	}
+	return false;
+} 

@@ -11,28 +11,28 @@ function vabonnements_pre_edition($flux) {
 	// ou 'paye' (réglement CB ou gratuit) : 
 	// il faut alors créer l'abonnement.
 	// 
-	if ($flux['args']['table'] == 'spip_commandes'
-		&& $flux['args']['action'] == 'instituer'
-		&& $flux['args']['statut_ancien'] == 'encours'
-		&& in_array($flux['data']['statut'], array('attente', 'paye'))
-	) {
-		$id_commande = $flux['args']['id_objet'];
-		$commande = sql_fetsel('*', 'spip_commandes', 'id_commande='.$id_commande);
-		
-		if ($commande) {
-			if ($details = sql_allfetsel(
-				'*',
-				'spip_commandes_details',
-				'id_commande='.$id_commande .' AND objet='.sql_quote('abonnements_offre')
-			)) {
-				foreach ($details as $detail) {
-					if ($ajouter = charger_fonction('inserer_abonnement', 'abonnements')) {
-						$ajouter($detail['id_objet'], $detail, $commande);
-					}
-				}
-			}
-		}
-	}
+	// if ($flux['args']['table'] == 'spip_commandes'
+	// 	&& $flux['args']['action'] == 'instituer'
+	// 	&& $flux['args']['statut_ancien'] == 'encours'
+	// 	&& in_array($flux['data']['statut'], array('attente', 'paye'))
+	// ) {
+	// 	$id_commande = $flux['args']['id_objet'];
+	// 	$commande = sql_fetsel('*', 'spip_commandes', 'id_commande='.$id_commande);
+	// 
+	// 	if ($commande) {
+	// 		if ($details = sql_allfetsel(
+	// 			'*',
+	// 			'spip_commandes_details',
+	// 			'id_commande='.$id_commande .' AND objet='.sql_quote('abonnements_offre')
+	// 		)) {
+	// 			foreach ($details as $detail) {
+	// 				if ($ajouter = charger_fonction('inserer_abonnement', 'abonnements')) {
+	// 					$ajouter($detail['id_objet'], $detail, $commande);
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
 	
 	return $flux;
 }

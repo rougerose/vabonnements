@@ -6,7 +6,7 @@
 	compatibilite="[3.2.0;3.2.*]"
 	logo="prive/themes/spip/images/vabonnements-64.png"
 	documentation=""
-	schema="1.1.2" 
+	schema="1.1.3" 
 >
 	<nom>Vacarme Abonnements</nom>
 	<auteur lien="http://rouge-rose.net">Christophe Le Drean</auteur>
@@ -22,6 +22,7 @@
 	<utilise nom="facteur" />
 	<utilise nom="prix" />
 	<utilise nom="venvois" />
+	<utilise nom="nospam" />
 
 	<pipeline nom="autoriser" inclure="vabonnements_autorisations.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/vabonnements.php" />
