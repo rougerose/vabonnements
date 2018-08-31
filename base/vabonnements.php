@@ -198,20 +198,22 @@ function vabonnements_declarer_tables_auxiliaires($tables) {
 
 
 /**
- * Champs extra numero_debut dans les détails de commandes
+ * Champ extra options dans les détails de commandes
+ *
+ * Ce champ permettra de stocker les options du panier
  *
  * @pipeline declarer_champs_extras
  * @param  array  $stables
  * @return array
  */
 function vabonnements_declarer_champs_extras($champs = array()) {
-	$champs['spip_commandes_details']['numero_debut'] = array(
+	$champs['spip_commandes_details']['options'] = array(
 		'saisie' => 'input',
 		'options' => array(
-			'nom' => 'numero_debut',
-			'label' => "Numéro debut",
+			'nom' => 'options',
+			'label' => "Options",
 			'type' => 'text',
-			'sql' => "tinytext NOT NULL DEFAULT ''",
+			'sql' => "text NOT NULL DEFAULT ''",
 		)
 	);
 	return $champs;

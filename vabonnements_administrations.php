@@ -84,6 +84,14 @@ function vabonnements_upgrade($nom_meta_base_version, $version_cible) {
 		array('sql_alter', 'TABLE spip_abonnements ADD message text not null default "" AFTER coupon'),
 		array('sql_alter', 'TABLE spip_abonnements ADD date_message datetime not null default "0000-00-00 00:00:00" AFTER message')
 	);
+	
+	$maj['1.1.4'] = array(
+		array('sql_alter', 'TABLE spip_commandes_details DROP COLUMN numero_debut'),
+		array('sql_alter', 'TABLE spip_commandes_details ADD options text not null default "" AFTER id_objet'),
+	);
+	
+	// maj['1.1.5'] : Oubli de déclaration conforme du champ extra options à la mise à jour précédente
+	cextras_api_upgrade(vabonnements_declarer_champs_extras(), $maj['1.1.5']);
 
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
