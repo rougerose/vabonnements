@@ -36,29 +36,21 @@ function abonnement_inserer($id_parent = null, $champs = array()) {
 		// id_abonnements_offre, id_auteur, id_commande, numero_debut.
 		// Les champs duree_echeance et prix_echeance sont déduits de l'offre d'abonnement.
 		// 
-		$abonnements_completer = charger_fonction('completer', 'abonnements');
-		$champs_complets = $abonnements_completer($champs);
+		$completer = charger_fonction('completer', 'abonnements');
+		$champs_complets = $completer($champs);
 		
 		// Vérifier et insérer
 		if ($champs_complets) {
 			
-			// 
-			// Ne retenir que les informations nécessaires à la création
-			// de l'abonnement (à l'exclusion des infos relatives au bénéficiaire).
-			// 
-			$champs_exclus = array_flip(array('civilite', 'nom_inscription', 'prenom', 'mail_inscription', 'organisation', 'service', 'voie', 'complement', 'boite_postale', 'code_postal', 'ville', 'region', 'pays'));
-			$champs_abonnement = array_diff_key($champs_complets, $champs_exclus);
-		
-			
 			// Pipeline pre_insertion
-			$champs_abonnement = pipeline('pre_insertion', 
+			$champs_complets = pipeline('pre_insertion', 
 				array(
 					'args' => array('table' => 'spip_abonnements'),
-					'data' => $champs_abonnement
+					'data' => $champs_complets
 				)
 			);
 			
-			$id_abonnement = sql_insertq('spip_abonnements', $champs_abonnement);
+			$id_abonnement = sql_insertq('spip_abonnements', $champs_complets);
 			
 			// Pipeline post_insertion
 			pipeline('post_insertion',
@@ -67,7 +59,7 @@ function abonnement_inserer($id_parent = null, $champs = array()) {
 						'table' => 'spip_abonnements',
 						'id_objet' => $id_abonnement
 					),
-					'data' => $champs_abonnement
+					'data' => $champs_complets
 				)
 			);
 			

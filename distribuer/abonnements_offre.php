@@ -59,6 +59,12 @@ function distribuer_abonnements_offre_dist($id_abonnements_offre, $detail, $comm
 		$mode = $commande['mode'];
 		$envoi = false;
 		
+		
+		// TODO: [02/09/2018] ici il faudra vérifier que l'abonnement n'existe 
+		// pas déjà. En effet, si l'on créé un abonnement dans l'espace privé,
+		// le formulaire créé la commande (en attente de paiement pour un 
+		// virement ou un chèque ou payée si abonnement gratuit) et l'abonnement
+		// dans la foulée.
 		$abonnement = sql_fetsel(
 			'id_abonnement, log', 
 			'spip_abonnements', 
