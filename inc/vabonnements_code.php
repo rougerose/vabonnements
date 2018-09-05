@@ -4,8 +4,6 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 	return;
 }
 
-define('_ACTION_OFFRIR_ABONNEMENT', '1');
-
 /**
  * Caculer un coupon/bon cadeau
  *

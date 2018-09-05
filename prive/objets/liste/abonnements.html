@@ -30,7 +30,7 @@
 					<td class="duree">[(#INFO_DUREE{abonnements_offre, #ID_ABONNEMENTS_OFFRE}|duree_en_clair)]</td>
 					<td class="numero_debut">[(#NUMERO_DEBUT|replace{'v', ''}|ltrim{'0'})]</td>
 					<td class="numero_fin">[(#NUMERO_FIN|replace{'v', ''}|ltrim{'0'})]</td>
-					<td class="paiement">[(#MODE_PAIEMENT|paiement_en_clair)]</td>
+					<td class="paiement">[(#MODE_PAIEMENT|appliquer_filtre{bank_titre_type_paiement})]</td>
 					<td class="lien_voir"><a href="[(#ID_ABONNEMENT|generer_url_entite{abonnement})]"><:abonnement:info_afficher:></a></td>
 				</tr>
 			</BOUCLE_liste_abonnements>

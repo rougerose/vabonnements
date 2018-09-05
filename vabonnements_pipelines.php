@@ -4,6 +4,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
+/*
 function vabonnements_pre_edition($flux) {
 	// 
 	// Une commande change de statut, 
@@ -36,7 +37,7 @@ function vabonnements_pre_edition($flux) {
 	
 	return $flux;
 }
-
+*/
 
 
 /**
@@ -170,6 +171,36 @@ function vabonnements_affiche_auteurs_interventions($flux) {
  * @return array       Données du pipeline
  */
 function vabonnements_optimiser_base_disparus($flux) {
+	
+	// 
+	// Mettre à la poubelle les abonnements liés à une commande abandonnée
+	// 
+	// action_abandonner_commande et action_supprimer_commande n'utilisent
+	// pas "instituer_objet", donc il ne semble pas possible d'intercepter
+	// l'action dans le pipeline post_edition utilisé par instituer. 
+	// Par conséquent, on utilise le pipeline d'optimisation.
+	// 
+	// include_spip('inc/config');
+	// // Date de péremption des commandes (par défaut 1h)
+	// $depuis = date('Y-m-d H:i:s', time() - 3600 * intval(lire_config('commandes/duree_vie', 1)));
+	// 
+	// // Abonnements en statut=prepa liés à une commande en statut=poubelle
+	// $abonnements_poubelle = sql_allfetsel('abonnements.id_abonnement',
+	// 	'spip_abonnements AS abonnements LEFT JOIN spip_commandes AS commandes
+	// 		ON abonnements.id_commande = commandes.id_commande',
+	// 	'abonnements.statut='.sql_quote('prepa')
+	// 	.' AND commandes.statut='.sql_quote('poubelle')
+	// 	.' AND abonnements.date < '.sql_quote($depuis)
+	// );
+	
+	// if ($abonnements_poubelle) {
+	// 	$abonnements_poubelle = array_map('reset', $abonnements_poubelle);
+	// 	$in_abonnements_poubelle = sql_in('id_abonnement', $abonnements_poubelle);
+	// 
+	// 	sql_updateq('spip_abonnements', 
+	// 		array('statut' => 'poubelle', 'date' => date('Y-m-d H:i:s')),
+	// 		$in_abonnements_poubelle);
+	// }
 
 	sql_delete('spip_abonnements_offres', "statut='poubelle' AND maj < " . $flux['args']['date']);
 

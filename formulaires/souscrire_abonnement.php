@@ -83,7 +83,7 @@ function formulaires_souscrire_abonnement_traiter_dist() {
 	$quantite = 1;
 	$negatif = '';
 	$ajouter = charger_fonction('remplir_panier', 'action');
-	$ajouter("$objet-$id_abonnements_offre-$quantite-$negatif-$options");
+	$ajouter("$objet/$id_abonnements_offre/$quantite/$negatif/$options");
 	
 	if (dans_panier($id_abonnements_offre, $objet)) {
 		$res['message_ok'] = _T('abonnement:message_ok_abonnement_dans_panier');

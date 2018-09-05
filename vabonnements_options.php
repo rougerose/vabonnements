@@ -1,7 +1,7 @@
 <?php
 
 if (!defined("_ECRIRE_INC_VERSION")) {
-    return;
+	return;
 }
 
 
@@ -9,6 +9,8 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 // Nombre maximum de mails de relances que le cron peut envoyer en une fois.
 // 
 define('_ABONNEMENTS_RELANCE_POOL', 10);
+
+define('_ACTION_OFFRIR_ABONNEMENT', 1);
 
 // 
 // Formulaires et nospam

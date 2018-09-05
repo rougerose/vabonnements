@@ -20,6 +20,18 @@ function formulaires_editer_abonnement_saisies_dist($id_abonnement='new', $retou
 	$id_auteur = _request('id_auteur');
 	$id_abonnement = intval($id_abonnement);
 	
+	// les paiements disponibles (mais on ne garde que gratuit/virement/chèque)
+	include_spip('inc/bank');
+	$bank_configs = bank_lister_configs('acte');
+	$bank_config_gratuit = bank_config('gratuit');
+	$paiements = array($bank_config_gratuit['presta'] => _T('abonnement:info_paiement_gratuit'));
+	
+	foreach ($bank_configs as $k => $bank_config) {
+		if (preg_match("/virement|cheque/", $k) and $bank_config['actif'] == 1) {
+			$paiements[$k] = bank_titre_type_paiement($bank_config['presta']);
+		}
+	}
+	
 	// création d'abonnement
 	if ($id_abonnement == 0) {
 		$saisies = array(
@@ -53,11 +65,7 @@ function formulaires_editer_abonnement_saisies_dist($id_abonnement='new', $retou
 					'nom' => 'mode_paiement',
 					'label' => _T('abonnement:champ_mode_paiement_label'),
 					'obligatoire' => 'oui',
-					'datas' => array(
-						'gratuit' => _T('abonnement:info_paiement_gratuit'),
-						'cheque' => _T('abonnement:info_paiement_cheque'),
-						'virement' => _T('abonnement:info_paiement_virement')
-					)
+					'datas' => $paiements,
 				)
 			)
 		);
@@ -217,9 +225,7 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 	if ($mode_paiement == 'gratuit') {
 		$prix = 0;
 		$prix_ht = 0;
-		
 	} else {
-
 		$fonction_prix = charger_fonction('prix', 'inc/');
 		$fonction_prix_ht = charger_fonction('ht', 'inc/prix');
 		
@@ -228,7 +234,10 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 	}
 	
 	// 
-	// Ajout d'un nouvel abonnement
+	// Ajout d'un abonnement : 
+	// - créer la commande
+	// - créer l'abonnement
+	// - créer la transaction
 	// 
 	if ($id_abonnement == 0) {
 		
@@ -282,6 +291,29 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 		}
 		
 		// 
+		// Créer l'abonnement
+		// 
+		$champs_abonnement = array(
+			'id_auteur' => $id_auteur,
+			'id_abonnements_offre' => $id_abonnements_offre,
+			'id_commande' => $id_commande,
+			'numero_debut' => $numero_debut,
+			'prix_echeance' => $prix_ht,
+			'offert' => 'non',
+		);
+		
+		include_spip('action/editer_abonnement');
+		$id_abonnement = abonnement_inserer($id_parent = null, $champs_abonnement);
+		
+		if (!$id_abonnement) {
+			spip_log("Auteur $id_auteur : la création de l'abonnement a échoué pendant l'enregistrement du formulaire.", 'vabonnements_prive'._LOG_ERREUR);
+			$res['editable'] = true;
+			$res['message_erreur'] = "La création de l'abonnement a échoué.";
+			return $res;
+		}
+		
+		
+		// 
 		// Créer la transaction
 		// 
 		$options_transaction = array(
@@ -330,39 +362,10 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 				return $res;
 			}
 		}
-		
-		// 
-		// Créer l'abonnement
-		// 
-		$champs_abonnement = array(
-			'id_auteur' => $id_auteur,
-			'id_abonnements_offre' => $id_abonnements_offre,
-			'id_commande' => $id_commande,
-			'numero_debut' => $numero_debut,
-			'mode_paiement' => $config['presta'].'/'.$config_id,
-			'prix_echeance' => $prix_ht,
-			'offert' => 'non',
-		);
-		
-		include_spip('action/editer_abonnement');
-		$id_abonnement = abonnement_inserer($id_parent = null, $champs_abonnement);
-		
-		if (!$id_abonnement) {
-			spip_log("Auteur $id_auteur : la création de l'abonnement a échoué pendant l'enregistrement du formulaire.", 'vabonnements_prive'._LOG_ERREUR);
-			$res['editable'] = true;
-			$res['message_erreur'] = "La création de l'abonnement a échoué.";
-			return $res;
-		}
-		
-		if ($retour) {
-			if (strncmp($retour, 'javascript:', 11) == 0) {
-					$res['message_ok'] .= '<script type="text/javascript">/*<![CDATA[*/' . substr($retour, 11) . '/*]]>*/</script>';
-					$res['editable'] = true;
-			} else {
-					$res['redirect'] = parametre_url($retour, 'auteur', $id_auteur);
-			}
-		}
-		
-		return $res;
 	}
+	
+	$res['editable'] = false;
+	$res['message_ok'] = "L'abonnement a bien été créé. Une commande et une transaction ont également été ajoutées et liées à cet abonnement.";
+	
+	return $res;
 }

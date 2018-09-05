@@ -42,7 +42,7 @@ include_spip('inc/filtres');
  *  - pays
  * 
  * @param  array $champs 
- * @return array
+ * @return array|boolean
  */
 function abonnements_completer_dist($champs) {
 	// 
@@ -66,7 +66,7 @@ function abonnements_completer_dist($champs) {
 		'pays' => $champs['pays']
 	);
 	
-	// Supprimer les données inutiles
+	// Supprimer les données inutiles pour l'abonnement
 	$champs_abonnement = array_diff_key($champs, $champs_auteur);
 	if (isset($champs_abonnement['cadeau'])) {
 		unset($champs_abonnement['cadeau']);
@@ -108,6 +108,8 @@ function abonnements_completer_dist($champs) {
 		$prix_ht = $fonction_prix_ht('abonnements_offre', $champs_abonnement['id_abonnements_offre'], 3);
 		$champs_abonnement['prix_echeance'] = $prix_ht;
 	}
+	
+	unset($champs_abonnement['prix_souscripteur']);
 	
 	
 	// Completer les champs selon le type d'abonnement (personnel ou offert)
@@ -163,7 +165,7 @@ function completer_abonnement_offert($champs_auteur, $champs_abonnement) {
 		// 
 		$titre = generer_info_entite($champs_abonnement['id_abonnements_offre'], 'abonnements_offre', 'titre');
 		$duree_en_clair = filtre_duree_en_clair($champs_abonnement['duree_echeance']);
-		$prix_en_clair = $champs_abonnement['prix_echeance'];
+		$prix_en_clair = (intval($champs_abonnement['prix_echeance']) == 0) ? 'Gratuit' : $champs_abonnement['prix_echeance'].' euros HT';
 		$commande_en_clair = 'Commande n°'.$champs_abonnement['id_commande'].' : ';
 		$date_envoi_en_clair = affdate($champs_abonnement['date_message']);
 		$nom_payeur = prenom_nom(generer_info_entite($champs_abonnement['id_auteur_payeur'], 'auteur', 'nom'));
@@ -198,7 +200,7 @@ function completer_abonnement_personnel($champs_abonnement) {
 	// 
 	$titre = generer_info_entite($champs_abonnement['id_abonnements_offre'], 'abonnements_offre', 'titre');
 	$duree_en_clair = filtre_duree_en_clair($champs_abonnement['duree_echeance']);
-	$prix_en_clair = $champs_abonnement['prix_echeance'];
+	$prix_en_clair = (intval($champs_abonnement['prix_echeance']) == 0) ? 'Gratuit' : $champs_abonnement['prix_echeance'].' euros HT';
 	$commande_en_clair = 'Commande n°'.$champs_abonnement['id_commande'].' : ';
 	
 	$log_abo = $commande_en_clair."création de l'abonnement $titre $duree_en_clair ($prix_en_clair), ";
