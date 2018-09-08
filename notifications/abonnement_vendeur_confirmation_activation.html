@@ -1,10 +1,8 @@
 <BOUCLE_abonnement(ABONNEMENTS){id_abonnement}>
-	<BOUCLE_auteur(AUTEURS){id_auteur}{tout}>
+	<BOUCLE_auteur(AUTEURS){id_auteur=#ENV{id_auteur}}{tout}>
 		[(#SET{prenom_nom, #NOM|prenom_nom})]
 	</BOUCLE_auteur>
-	<BOUCLE_commande(COMMANDES){id_commande}>
-		#SET{id_payeur, #ID_AUTEUR}
-	</BOUCLE_commande>
+	#SET{id_payeur, #ID_AUTEUR_PAYEUR}
 	<BOUCLE_offre(ABONNEMENTS_OFFRES){id_abonnements_offre}>
 	#SET{duree, #DUREE}
 	#SET{titre, #TITRE}

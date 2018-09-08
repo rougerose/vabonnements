@@ -1,12 +1,9 @@
 <BOUCLE_abonnement(ABONNEMENTS){id_abonnement}>
-	<BOUCLE_contact_auteur(CONTACTS){id_auteur}>
+	<BOUCLE_contact_auteur(CONTACTS){id_auteur=#ENV{id_auteur}}>
 		#SET{auteur_civilite, #CIVILITE}
 		#SET{auteur_prenom, #PRENOM}
 		#SET{auteur_nom, #NOM}
 	</BOUCLE_contact_auteur>
-	<BOUCLE_commande(COMMANDES){id_commande}>
-		#SET{id_payeur, #ID_AUTEUR}
-	</BOUCLE_commande>
 	<BOUCLE_offre(ABONNEMENTS_OFFRES){id_abonnements_offre}>
 	#SET{duree, #DUREE}
 	#SET{titre, #TITRE}
@@ -17,12 +14,12 @@
 	[(#SET{titre_numero_prochain, #NUMERO_DEBUT|calculer_numero_futur_titre{0}})]
 	<//B_numero>
 
-<title>[(#NOM_SITE_SPIP)] : votre abonnement est maintenant actif</title>
+<title>[(#NOM_SITE_SPIP)] : votre abonnement est maintenant en cours</title>
 <body>
 	<p><:email:cher_chere_{=#GET{auteur_civilite}}:>[ (#GET{auteur_prenom})][ (#GET{auteur_nom})],</p>
 	[(#GET{titre_numero_encours}|oui)<:email:confirmation_activation_numero_actuel{titre_numero_encours=#GET{titre_numero_encours}}|propre:>]
 	[(#GET{titre_numero_prochain}|oui)<:email:confirmation_activation_numero_prochain{titre_numero_prochain=#GET{titre_numero_prochain}}|propre:>]
 	<p><:email:politesse_signature:></p>
 </body>
-#FILTRE{facteur_email_wrap_to_html}
 </BOUCLE_abonnement>
+#FILTRE{facteur_email_wrap_to_html}

@@ -1,36 +1,29 @@
-#CACHE{0}
-<BOUCLE_auteur(AUTEURS){id_auteur}{tout}>
-	<BOUCLE_contact_payeur(CONTACTS){id_auteur=#ENV{id_payeur}}>
-		#SET{payeur_civilite, #CIVILITE}
-		#SET{payeur_prenom, #PRENOM}
-		#SET{payeur_nom, #NOM}
-	</BOUCLE_contact_payeur>
-	<BOUCLE_contact_auteur(CONTACTS){id_auteur}>
-		#SET{auteur_civilite, #CIVILITE}
-		#SET{auteur_prenom, #PRENOM}
-		#SET{auteur_nom, #NOM}
-	</BOUCLE_contact_auteur>
-	<BOUCLE_abonnement(ABONNEMENTS){id_abonnement=#ENV{id_abonnement}}>
-		#SET{coupon, #COUPON}
-		[(#SET{url_cadeau, #URL_PAGE{cadeau}|parametre_url{offrir, abonnement}|parametre_url{code, #GET{coupon}}})]
-		<BOUCLE_offre(ABONNEMENTS_OFFRES){id_abonnements_offre}>
-			#SET{offre_titre, #TITRE}
-			[(#SET{offre_duree, #DUREE|duree_en_clair})]
-			[(#SET{offre_nombre_numeros, #DUREE|numeros_nombre_en_clair})]
-		</BOUCLE_offre>
-	</BOUCLE_abonnement>
-	<BOUCLE_message_payeur(MESSAGES){id_message=#ENV{id_message}}{statut=prepa}>
-		#SET{payeur_message, #TEXTE}
-	</BOUCLE_message_payeur>
+<BOUCLE_abonnement(ABONNEMENTS){id_abonnement}>
+<BOUCLE_auteur(AUTEURS){id_auteur=#ID_AUTEUR}{tout}>
+	<BOUCLE_contact(CONTACTS){id_auteur}>#SET{civilite, #CIVILITE}</BOUCLE_contact>
+	[(#SET{beneficiaire, #NOM|prenom_nom})]
+</BOUCLE_auteur>
+<BOUCLE_payeur(AUTEURS){id_auteur=#ID_AUTEUR_PAYEUR}{tout}>[(#SET{payeur,#NOM|prenom_nom})]</BOUCLE_payeur>
 
-<title>[(#NOM_SITE_SPIP)] - Rappel - Votre abonnement à Vacarme n'est toujours pas activé</title>
+
+<title>[(#NOM_SITE_SPIP)] - Votre abonnement est toujours en attente d'activation</title>
 <body>
-	<p><:email:cher_chere_{=#GET{auteur_civilite}}:>[ (#GET{auteur_prenom})][ (#GET{auteur_nom})],</p>
-	<p>Votre abonnement à Vacarme, offert par[ (#GET{payeur_prenom})][ (#GET{payeur_nom})], est toujours en attente d'activation de votre part.</p>
-	[<p><center>
-		(#INCLURE{fond=emails/inc-button, url=[(#GET{url_cadeau}|url_absolue)], label=Activer votre abonnement, width=250px})
-	</center></p>]
+	<p><:email:cher_chere_{=#GET{civilite}}:>[ (#GET{beneficiaire})],</p>
+	<p>Votre abonnement à Vacarme offert par[ (#GET{payeur})] est toujours en attente d'activation.</p>
+	
+	[<blockquote>
+		(#GET{payeur_message})
+	</blockquote>]
+	
+	[(#INCLURE{fond=inclure/notifications/recapitulatif_abonnement_offert, id_abonnement})]
+	
+	<p>Pour profiter de votre abonnement :</p>
+	<ul>
+		<li>Rendez-vous sur <a href="[(#URL_PAGE{cadeau}|url_absolue|parametre_url{offrir, abonnement}|parametre_url{code, #COUPON})]">la page d'activation de votre abonnement</a>.</li>
+		<li>Saisissez le code d'activation :[ (#COUPON)].</li>
+		<li>Confimez ou modifiez vos coordonnées postales que[ (#GET{payeur}) ]a pré-enregistré. Et votre abonnement sera activé.</li>
+	</ul>
 	<p><:email:politesse_signature:></p>
 </body>
-</BOUCLE_auteur>
+</BOUCLE_abonnement>
 #FILTRE{facteur_email_wrap_to_html}

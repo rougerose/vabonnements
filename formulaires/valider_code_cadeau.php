@@ -39,8 +39,8 @@ function formulaires_valider_code_cadeau_traiter_dist($retour = '') {
 	
 	if (
 		is_string($code_cadeau)
-		&& $code_cadeau  
-		&& $abonnement = sql_fetsel('*', 'spip_abonnements', 'coupon='.sql_quote($code_cadeau))
+		and $code_cadeau
+		and $abonnement = sql_fetsel('*', 'spip_abonnements', 'coupon='.sql_quote($code_cadeau))
 	) {
 		$code = vabonnements_lire_code($code_cadeau);
 		
@@ -52,10 +52,10 @@ function formulaires_valider_code_cadeau_traiter_dist($retour = '') {
 		// 
 		if (
 			$code 
-			&& is_array($code)
-			&& $code['id'] == $abonnement['id_auteur']
-			&& $date_commande == $code['date']
-			&& $offrir == 'abonnement'
+			and is_array($code)
+			and $code['id'] == $abonnement['id_auteur']
+			and $date_commande == $code['date']
+			and $offrir == 'abonnement'
 		) {
 			// 
 			// L'abonné est identifié automatiquement
@@ -68,7 +68,7 @@ function formulaires_valider_code_cadeau_traiter_dist($retour = '') {
 			
 			if ($retour) {
 				$hash = vabonnements_calcul_hash_abonnement($abonnement['id_auteur'], $abonnement['id_abonnement'], $abonnement['date']);
-				$res['redirect'] = parametre_url($retour, 'cadeau_hash', $hash);
+				$res['redirect'] = parametre_url(parametre_url($retour, 'cadeau_hash', $hash), 'id_abonnement', $abonnement['id_abonnement']);
 			}
 			
 			return $res;

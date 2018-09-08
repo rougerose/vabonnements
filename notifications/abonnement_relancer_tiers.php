@@ -11,9 +11,7 @@ function notifications_abonnement_relancer_tiers_dist($quoi, $id_auteur, $option
 	if ($email) {
 		$texte = recuperer_fond('notifications/abonnement_relancer_tiers', array(
 			'id_auteur' => $id_auteur,
-			'id_payeur' => $options['id_payeur'],
-			'id_abonnement' => $options['id_abonnement'],
-			'id_message' => $options['id_message']
+			'id_abonnement' => $options['id_abonnement']
 		));
 		
 		notifications_envoyer_mails($email, $texte);

@@ -21,13 +21,16 @@ function genie_vabonnements_inviter_tiers_dist($timestamp) {
 	// Prendre les abonnements offerts pour lesquels le mail d'invitation
 	// doit partir aujourd'hui. 
 	// 
+	// Important : cette invitation ne concerne que les abonnement *payés*
+	// 
 	$abonnements = sql_allfetsel(
 		'*', 
 		'spip_abonnements',
 		'statut=' . sql_quote('paye')
+		.' AND offert='.sql_quote('oui')
 		.' AND coupon <> ' . sql_quote('')
 		.' AND relance=' . sql_quote('')
-		.' AND date_debut<=' . sql_quote($date_jour)
+		.' AND date_message<=' . sql_quote($date_jour)
 	);
 	
 	if (count($abonnements)) {
@@ -38,20 +41,11 @@ function genie_vabonnements_inviter_tiers_dist($timestamp) {
 		
 		foreach ($abonnements as $abonnement) {
 			$id_auteur = intval($abonnement['id_auteur']);
-			$id_payeur = sql_getfetsel('id_auteur', 'spip_commandes', 'id_commande=' . intval($abonnement['id_commande']));
 			$id_abonnement = intval($abonnement['id_abonnement']);
-			$id_message = sql_getfetsel(
-				'id_message', 
-				'spip_messages', 
-				'id_auteur=' . intval($id_payeur)
-				. ' AND destinataires=' . intval($abonnement['id_auteur'])
-				. ' AND statut=' . sql_quote('prepa')
-				. ' AND type=' . sql_quote('kdo')
-			);
 			
 			autoriser_exception('modifier', 'abonnement', $id_abonnement);
 			
-			$log_invitation = "Envoi du message d'invitation à activer l'abonnement.";
+			$log_invitation = "Envoi du message d'invitation au bénéficiaire.";
 			$log = $abonnement['log'];
 			$log .= vabonnements_log($log_invitation);
 			
@@ -70,11 +64,7 @@ function genie_vabonnements_inviter_tiers_dist($timestamp) {
 			
 			autoriser_exception('modifier', 'abonnement', $id_abonnement, false);
 			
-			$options = array(
-				'id_payeur' => $id_payeur,
-				'id_abonnement' => $id_abonnement,
-				'id_message' => ($id_message) ? $id_message : ''
-			);
+			$options = array('id_abonnement' => $id_abonnement);
 			
 			$notifications('abonnement_inviter_tiers', $id_auteur, $options);
 		}

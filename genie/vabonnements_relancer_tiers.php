@@ -6,7 +6,7 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 
 /**
  * Relancer le bénéficiaire d'un abonnement offert qui n'aurait pas répondu
- * au premier mail d'invitation (est-ce possible ???).
+ * au premier mail d'invitation.
  *
  * Le rythme des relances est défini dans le configuration du plugin.
  *
@@ -17,7 +17,8 @@ if (!defined("_ECRIRE_INC_VERSION")) {
  * @return int
  */
 function genie_vabonnements_relancer_tiers_dist($timestamp) {
-	$now = date('U');
+	$d = strtotime('+1 day');
+	$now =  date('U', $d);
 	
 	include_spip('inc/vabonnements_relance');
 	$relances = vabonnements_get_relances('tiers');
@@ -29,15 +30,19 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 	$premiere_relance = reset($relances);
 	$date = vabonnements_date_relance($premiere_relance, $now);
 	
-	// marquer en première relance les abonnements offerts dont la date_debut 
-	// est antérieure à la date calculée et qui ont été marqués à relance = 0
+	// marquer en première relance les abonnements offerts dont la date_message 
+	// est antérieure à la date de référence et qui ont été marqués à relance = 0
+	// 
+	// Important : on ne relance que les abonnements *payés*
+	// 
 	$abonnements_relances = sql_allfetsel(
 		'*',
 		'spip_abonnements',
 		'statut='.sql_quote('paye')
+			.' AND offert='.sql_quote('oui')
 			.' AND relance='.sql_quote('0')
 			.' AND relance <>'.sql_quote('off')
-			.' AND date_debut <'.sql_quote($date)
+			.' AND date_message <'.sql_quote($date)
 			.' AND coupon <> '.sql_quote('')
 	);
 	
@@ -49,6 +54,7 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 		'DISTINCT relance', 
 		'spip_abonnements', 
 		'statut='.sql_quote('paye')
+			.' AND offert='.sql_quote('oui')
 			.' AND relance <> '.sql_quote('off')
 			.' AND relance <> '.sql_quote('')
 			.' AND relance > ' .sql_quote('0')
@@ -61,7 +67,7 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 		
 		foreach ($rappels as $rappel) {
 			$where[] = '(relance='.sql_quote($rappel, '', 'text') 
-				.' AND date_debut < '.sql_quote(vabonnements_date_relance($rappel, $now)).')';
+				.' AND date_message < '.sql_quote(vabonnements_date_relance($rappel, $now)).')';
 		}
 		
 		$where = "(".implode(") OR (", $where).")";
@@ -75,19 +81,10 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 		include_spip('action/editer_objet');
 		
 		while ($nb--){
-			if ($row = sql_fetsel('id_abonnement, id_commande, id_auteur, date_debut, relance, log', 'spip_abonnements', $where, '', 'date_debut', '0,1')) {
-				$relance = vabonnements_prochaine_relance('tiers', $row['date_debut'], $now);
+			if ($row = sql_fetsel('id_abonnement, id_commande, id_auteur, date_message, relance, log', 'spip_abonnements', $where, '', 'date_message', '0,1')) {
+				$relance = vabonnements_prochaine_relance('tiers', $row['date_message'], $now);
 				
-				$id_payeur = sql_getfetsel('id_auteur', 'spip_commandes', 'id_commande=' . intval($row['id_commande']));
 				$id_abonnement = intval($row['id_abonnement']);
-				$id_message = sql_getfetsel(
-					'id_message', 
-					'spip_messages', 
-					'id_auteur=' . intval($id_payeur)
-						.' AND destinataires='.intval($row['id_auteur'])
-						.' AND statut='.sql_quote('prepa')
-						.' AND type='.sql_quote('kdo')
-				);
 				
 				autoriser_exception('modifier', 'abonnement', $id_abonnement);
 				
@@ -109,9 +106,7 @@ function genie_vabonnements_relancer_tiers_dist($timestamp) {
 				autoriser_exception('modifier', 'abonnement', $id_abonnement, false);
 				
 				$options = array(
-					'id_payeur' => $id_payeur,
 					'id_abonnement' => $id_abonnement,
-					'id_message' => ($id_message) ? $id_message : ''
 				);
 				
 				$notifications('abonnement_relancer_tiers', $row['id_auteur'], $options);

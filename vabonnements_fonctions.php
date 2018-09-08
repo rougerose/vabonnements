@@ -192,10 +192,10 @@ function filtre_vacarme_saison_annee($date) {
  * @param  int $date_abonnement
  * @return string
  */
-// function vabonnements_calcul_hash_abonnement($id_auteur, $id_abonnement, $date_abonnement) {
-// 	$donnees = array($id_auteur, $id_abonnement, $date_abonnement);
-// 	return md5(implode(';', array_values($donnees)));
-// }
+function vabonnements_calcul_hash_abonnement($id_auteur, $id_abonnement, $date_abonnement) {
+	$donnees = array($id_auteur, $id_abonnement, $date_abonnement);
+	return md5(implode(';', array_values($donnees)));
+}
 
 
 

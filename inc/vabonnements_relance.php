@@ -48,11 +48,11 @@ function vabonnements_date_relance($relance, $now){
  * Fonction reprise du plugin Abos de Nursit et en particulier
  * https://github.com/nursit/abos/blob/master/genie/abos_relancer.php
  * 
- * @param  string $date_debut Date début d'abonnement
+ * @param  string $date_reference Date de relance ou date du message d'invitation
  * @param  int $now     Timestamp
  * @return string
  */
-function vabonnements_prochaine_relance($type = 'tiers', $date, $now = null){
+function vabonnements_prochaine_relance($type = 'tiers', $date_reference, $now = null){
 	if (!$now){
 		$now = time();
 	}
@@ -64,17 +64,12 @@ function vabonnements_prochaine_relance($type = 'tiers', $date, $now = null){
 	while (count($relances)){
 		$jours = array_shift($relances);
 		$date_relance = vabonnements_date_relance($jours, $now);
-		if (
-			$type == 'tiers' and date('Y-m-d', strtotime($date_relance)) > date('Y-m-d', strtotime($date)) 
-			or $type == 'echeances' and $date < $date_relance) {
-				return $next;
+		
+		if (($type == 'tiers' and $date_relance > $date_reference)
+			or ($type == 'echeances' and $date_reference < $date_relance)) {
+			return $next;
 		}
-		// if ($date_fin<abos_date_fin($jours, $now)){
-		// 	return $next;
-		// }
-		// if (date('Y-m-d', strtotime($date_relance)) > date('Y-m-d', strtotime($date))){
-		// 	return $next;
-		// }
+		
 		$next = $jours;
 	}
 
