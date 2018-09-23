@@ -111,7 +111,6 @@ function abonnements_completer_dist($champs) {
 	
 	unset($champs_abonnement['prix_souscripteur']);
 	
-	
 	// Completer les champs selon le type d'abonnement (personnel ou offert)
 	if ((isset($champs_abonnement['offert']) and $champs_abonnement['offert'] == oui) or (isset($champs_auteur['nom_inscription']) and strlen($champs_auteur['nom_inscription']))) {
 		$champs_abonnement['offert'] = 'oui';

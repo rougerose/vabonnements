@@ -17,7 +17,9 @@ function abonnement_inserer($id_parent = null, $champs = array()) {
 	if (autoriser('abonner', '', 0, $id_auteur)) {
 		
 		// La date de création
-		$champs['date'] = date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
+		if (!isset($champs['date'])) {
+			$champs['date'] = date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
+		}
 		
 		// Le statut par défaut
 		if (!isset($champs['statut'])) {
@@ -36,8 +38,13 @@ function abonnement_inserer($id_parent = null, $champs = array()) {
 		// id_abonnements_offre, id_auteur, id_commande, numero_debut.
 		// Les champs duree_echeance et prix_echeance sont déduits de l'offre d'abonnement.
 		// 
-		$completer = charger_fonction('completer', 'abonnements');
-		$champs_complets = $completer($champs);
+		if (isset($champs['completer']) and $champs['completer'] == false) {
+			unset($champs['completer']);
+			$champs_complets = $champs;
+		} else {
+			$completer = charger_fonction('completer', 'abonnements');
+			$champs_complets = $completer($champs);
+		}
 		
 		// Vérifier et insérer
 		if ($champs_complets) {
