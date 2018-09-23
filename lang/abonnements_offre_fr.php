@@ -35,8 +35,6 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'info_nb_abonnements_offres' => '@nb@ offres d\'abonnement',
 	
 	// N
-	'numero' => "1 numéro",
-	'numeros' => "@nb@ numéros",
 	
 	// P
 	'periodicite_month'=>'mensuel',

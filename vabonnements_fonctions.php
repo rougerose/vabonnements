@@ -11,31 +11,11 @@ if (!defined("_ECRIRE_INC_VERSION")) return;
  * @param $duree
  * @return mixed|string
  */
-function filtre_periode_en_clair($periodicite){
-	$nb = intval($periodicite);
-	$duree = trim(preg_replace(",^\d+\s+,", "", $periodicite));
-	$duree = ($nb==1 ? _T('abonnements_offre:periodicite_' . $duree) : _T('abonnements_offre:periodicite_tous_les_nb_' . $duree, array('nb' => $nb)));
-	return $duree;
-}
-
-
-
-/**
- * Traduire le mode de paiement enregistré en base
- * en infos texte.
- * 
- * @param  string $mode_paiement
- * @return string
- */
-function filtre_paiement_en_clair($mode_paiement) {
-	if ($mode_paiement == 'gratuit') {
-		$mode = $mode_paiement;
-	} else {
-		$mode = strstr($mode_paiement, '/', true);
-	}
-	
-	$texte_paiement = _T('abonnement:info_paiement_'.$mode);
-	return $texte_paiement;
+function filtre_periodicite_en_clair($duree){
+	$nb = intval($duree);
+	$periode = trim(preg_replace(",^\d+\s+,", "", $duree));
+	$periodicite = ($nb == 1 ? _T('abonnements_offre:periodicite_' . $periode) : _T('abonnements_offre:periodicite_tous_les_nb_' . $periode, array('nb' => $nb)));
+	return $periodicite;
 }
 
 
@@ -44,41 +24,14 @@ function filtre_paiement_en_clair($mode_paiement) {
  * Traduire la duree d'abonnement en nombre d'années.
  * La traduction n'est valable que si les abonnements sont annuels...
  *
- * @param  string $periodicite
+ * @param  string $duree
  * @return string
  */
-function filtre_duree_en_clair($periodicite) {
-	$nombre = intval($periodicite);
+function filtre_duree_en_clair($duree) {
+	$nombre = intval($duree);
 	$nb = $nombre / 12; // Les données sont en mois, on converti en annee.
 	$duree = ($nb == 1 ? _T('abonnements_offre:duree_annee') : _T('abonnements_offre:duree_annees', array('nb' => $nb)));
 	return $duree;
-}
-
-
-
-/**
- * Traduire la durée d'abonnement en nombre de numéros
- * La fonction retourne également la chaîne "numéro(s)".
- * 
- * @param  string $periodicite (12|24 month)
- * @return string
- */
-function filtre_numeros_nombre_en_clair($periodicite) {
-	$nb = filtre_numeros_nombre($periodicite);
-	$numeros = ($nb == 1 ? _T('abonnements_offre:numero') : _T('abonnements_offre:numeros', array('nb' => $nb)));
-	return $numeros;
-}
-
-
-/**
- * Traduire la durée d'abonnement en nombre de numéros. 
- * 
- * @param  string $periodicite (12|24 month)
- * @return int
- */
-function filtre_numeros_nombre($periodicite) {
-	$nombre = intval($periodicite);
-	return $nombre / 3;
 }
 
 

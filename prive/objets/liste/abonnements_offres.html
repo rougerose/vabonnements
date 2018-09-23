@@ -25,7 +25,7 @@
 				<td class="statut">[(#STATUT|puce_statut{abonnements_offre,#ID_ABONNEMENTS_OFFRE})]</td> 
 				<td class="titre principale"><a href="[(#ID_ABONNEMENTS_OFFRE|generer_url_entite{abonnements_offre})]" title="<:info_numero_abbreviation|attribut_html:> #ID_ABONNEMENTS_OFFRE">[(#RANG). ]#TITRE</a></td>
 				<td class="reference">[(#REFERENCE)]</td>
-				<td class="duree">[(#DUREE|periode_en_clair)]</td>
+				<td class="duree">[(#DUREE|periodicite_en_clair)]</td>
 				<td class="prix_ht">[(#PRIX_HT)]</td>
 				<td class="taxe">[(#TAXE|mult{100}|round{2}) %]</td>
 				<td class="prix_ttc">[(#PRIX)]</td>
