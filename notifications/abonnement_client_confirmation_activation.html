@@ -11,7 +11,7 @@
 	<BOUCLE_numero(RUBRIQUES){reference=#NUMERO_DEBUT}>
 	#SET{titre_numero_encours, #TITRE}
 	</BOUCLE_numero>
-	[(#SET{titre_numero_prochain, #NUMERO_DEBUT|calculer_numero_futur_titre{0}})]
+	[(#SET{titre_numero_prochain, #VAL{'Vacarme '}|concat{#NUMERO_DEBUT|plus{1}}})]
 	<//B_numero>
 
 <title>[(#NOM_SITE_SPIP)] : votre abonnement est maintenant en cours</title>

@@ -16,8 +16,8 @@
 <BOUCLE_numeros(RUBRIQUES){id_rubrique IN #GET{numeros}}{par titre}>
 	[(#SET{data, #GET{data}|plus{#ARRAY{#REFERENCE, #TITRE}}})]
 	[(#COMPTEUR_BOUCLE|=={2}|oui)
-		[(#SET{prochain_reference, #REFERENCE|calculer_numero_futur_reference})]
-		[(#SET{prochain_titre, #REFERENCE|calculer_numero_futur_titre})]
+		[(#SET{prochain_reference, #REFERENCE|plus{1}})]
+		[(#SET{prochain_titre, #VAL{Vacarme}|concat{#GET{prochain_reference}}})]
 		[(#SET{data, #GET{data}|plus{#ARRAY{#GET{prochain_reference}, #GET{prochain_titre}}}})]
 	]
 </BOUCLE_numeros>
