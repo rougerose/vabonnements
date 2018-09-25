@@ -29,6 +29,8 @@ function abonnement_inserer($id_parent = null, $champs = array()) {
 		// 
 		// Déléguer à une fonction spécifique l'ajout des informations nécessaires
 		// pour un abonnement personnel et pour un abonnement offert.
+		// Sauf si il existe un champ['completer'] = false qui est utilisé
+		// lors de l'import du fichier abonné. 
 		// 
 		// Dans ce dernier cas, toutes les informations relatives au bénéficiaire
 		// sont présentes également.
