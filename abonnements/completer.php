@@ -75,19 +75,8 @@ function abonnements_completer_dist($champs) {
 	// 
 	// Champs en commun pour tous les abonnements
 	// 
-	
-	// Calculer numero_fin et date_debut|fin
-	// 
-	// Il s'agit d'une insertion, ces informations n'ont pas été déjà calculées.
-	// 
-	include_spip('inc/vabonnements_calculer_debut_fin');
-	$numeros = vabonnements_calculer_debut_fin($champs_abonnement['id_abonnements_offre'], $champs_abonnement['numero_debut']);
-	$champs_abonnement['numero_fin'] = $numeros['numero_fin'];
-	$champs_abonnement['date_debut'] = $numeros['date_debut'];
-	$champs_abonnement['date_fin'] = $numeros['date_fin'];
-	
-	
-	// La durée
+		
+	// Durée
 	if (!isset($champs_abonnement['duree_echeance']) or !strlen($champs_abonnement['duree_echeance'])) {
 		$duree = generer_info_entite($champs_abonnement['id_abonnements_offre'], 'abonnements_offre', 'duree', '*');
 		$champs_abonnement['duree_echeance'] = $duree;
@@ -95,6 +84,20 @@ function abonnements_completer_dist($champs) {
 		$duree = $champs_abonnement['duree_echeance'];
 	}
 	
+	// Date_debut et date_fin d'abonnement
+	include_spip('inc/vabonnements_calculer_date');
+	$dates_abonnement = vabonnements_calculer_dates(
+		$champs_abonnement['id_abonnements_offre'],
+		$champs_abonnement['numero_debut']
+	);
+	
+	$champs_abonnement['date_debut'] = reset($dates_abonnement);
+	$champs_abonnement['date_fin'] = end($dates_abonnement);
+	
+	// Numero_fin
+	spip_include('inc/vnumeros');
+	$duree_nbre = intval($duree);
+	$champs['numero_fin'] = vnumeros_calculer_reference_numero_futur($duree_nbre, $champs_abonnement['numero_debut']);
 	
 	// Le prix
 	if (isset($champs_abonnement['prix_souscripteur']) and strlen($champs_abonnement['prix_souscripteur'])) {
@@ -134,7 +137,6 @@ function abonnements_completer_dist($champs) {
 function completer_abonnement_offert($champs_auteur, $champs_abonnement) {
 	include_spip('inc/vprofils');
 	include_spip('inc/vabonnements_code');
-	include_spip('inc/vabonnements_calculer_debut_fin');
 	
 	// Créer ou récupérer id_auteur, id_contact et id_adresse
 	$id_auteur_tiers = vprofils_verifier_ou_creer_auteur_tiers($champs_auteur);

@@ -2,6 +2,43 @@
 
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
+/**
+ * Calculer dates début et fin d'abonnement 
+ * 
+ * @param  int $id_abonnements_offre
+ * @param  int $reference Référence du numéro
+ * @return array date_debut et date_fin
+ */
+function vabonnements_calculer_dates($id_abonnements_offre, $reference) {
+	$date_parution_numero = sql_getfetsel('date_numero', 'spip_rubriques', 'reference='.sql_quote(intval($reference)));
+	
+	// date_debut
+	if ($date_parution_numero) {
+		$date_debut = vabonnements_calculer_date_debut($date_parution_numero);
+	} else {
+		include_spip('inc/config');
+		$id_rubrique_numeros = lire_config('vnumeros/rubrique_numeros');
+		$numero_encours = sql_fetsel(
+			"date_numero, reference", 
+			"spip_rubriques", 
+			"statut='publie' AND id_parent=".sql_quote(intval($id_rubrique_numeros)), 
+			"", 
+			"titre DESC"
+		);
+		$ecart = $reference - $numero_encours['reference'];
+		$periodicite = _VACARME_PERIODICITE;
+		$nombre_mois = $ecart * $periodicite;
+		$date_debut_encours = vabonnements_calculer_date_debut($numero_encours['date_numero']);
+		$date_debut = vabonnements_calculer_date_duree($date_debut_encours, $nombre_mois);
+	}
+	
+	// date_fin
+	$duree = sql_getfetsel('duree', 'spip_abonnements_offres', 'id_abonnements_offre='.intval($id_abonnements_offre));
+	$duree_nbre = intval($duree); // 12 month ou 24 month
+	$date_fin = vabonnements_calculer_date_fin($date_debut, $duree_nbre);
+	
+	return array($date_debut, $date_fin);
+}
 
 /**
  * Calculer la date de début d'abonnement
@@ -63,7 +100,7 @@ function vabonnements_calculer_date_fin($date, $duree) {
 
 
 /**
- * Calculer une date en fonction d'une date et d'une durée en mois. 
+ * Calculer une date future en fonction d'une date connue et d'une durée en mois. 
  * 
  * @param  date $date Date mysql
  * @param  int $duree Durée en nombre de mois

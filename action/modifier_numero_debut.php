@@ -38,7 +38,7 @@ function action_modifier_numero_debut_dist($arg = null) {
 			// Log
 			// 
 			$log_numeros = "Activation de l'abonnement par son bénéficiaire (auteur n°".$abonnement['id_auteur']."). ";
-			$log_numeros .= "Le premier numéro a été confirmé par l'abonné. Son abonnement débute avec le numéro ".$numero_debut." jusqu'au numéro ".$abonnement['numero_fin'].".";
+			$log_numeros .= "Le premier numéro a été modifié par l'abonné : son abonnement débute avec le numéro ".$numero_debut." jusqu'au numéro ".$abonnement['numero_fin'].".";
 			$log = $abonnement['log'];
 			$log .= vabonnements_log($log_numeros);
 			
@@ -50,25 +50,33 @@ function action_modifier_numero_debut_dist($arg = null) {
 			);
 			
 		} else {
-			include_spip('inc/vabonnements_calculer_debut_fin');
-			$numeros = vabonnements_calculer_debut_fin($abonnement['id_abonnements_offre'], $numero_debut);
+			// Date_debut et date_fin d'abonnement
+			include_spip('inc/vabonnements_calculer_date');
+			$dates_abonnement = vabonnements_calculer_dates($abonnement['id_abonnements_offre'], $numero_debut);
+			
+			// Numero_fin
+			spip_include('inc/vnumeros');
+			$duree_nbre = intval($abonnement['duree']);
+			$numero_fin = vnumeros_calculer_reference_numero_futur($duree_nbre, $numero_debut);
 			
 			// 
 			// Log
 			// 
 			$log_numeros = "Activation de l'abonnement par son bénéficiaire (auteur n°".$abonnement['id_auteur']."). ";
-			$log_numeros .= "Le premier numéro a été modifié par l'abonné. Son abonnement débute avec le numéro ".$numero_debut." jusqu'au numéro ".$numeros['numero_fin'].".";
+			$log_numeros .= "Le premier numéro a été modifié par l'abonné : son abonnement débute avec le numéro $numero_debut jusqu'au numéro $numero_fin.";
 			$log = $abonnement['log'];
 			$log .= vabonnements_log($log_numeros);
 			
 			$set = array(
 				'numero_debut' => $numero_debut,
-				'numero_fin' => $numeros['numero_fin'],
-				'date_debut' => $numeros['date_debut'],
-				'date_fin' => $numeros['date_fin'],
+				'numero_fin' => $numero_fin,
+				'date_debut' => reset($dates_abonnement),
+				'date_fin' => end($dates_abonnement),
 				'statut' => 'actif',
 				'coupon' => '',
-				'relance' => '', // le champs devient vide. Pour être identifié correctement lors des relances à l'échéance.
+				// le champs relance devient vide, 
+				// pour être identifié correctement lors des relances à l'échéance.
+				'relance' => '',
 				'log' => $log,
 			);
 		}
