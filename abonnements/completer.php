@@ -95,9 +95,9 @@ function abonnements_completer_dist($champs) {
 	$champs_abonnement['date_fin'] = end($dates_abonnement);
 	
 	// Numero_fin
-	spip_include('inc/vnumeros');
+	include_spip('inc/vnumeros');
 	$duree_nbre = intval($duree);
-	$champs['numero_fin'] = vnumeros_calculer_reference_numero_futur($duree_nbre, $champs_abonnement['numero_debut']);
+	$champs_abonnement['numero_fin'] = vnumeros_calculer_reference_numero_futur($duree_nbre, $champs_abonnement['numero_debut']);
 	
 	// Le prix
 	if (isset($champs_abonnement['prix_souscripteur']) and strlen($champs_abonnement['prix_souscripteur'])) {

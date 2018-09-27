@@ -55,7 +55,7 @@ function action_modifier_numero_debut_dist($arg = null) {
 			$dates_abonnement = vabonnements_calculer_dates($abonnement['id_abonnements_offre'], $numero_debut);
 			
 			// Numero_fin
-			spip_include('inc/vnumeros');
+			include_spip('inc/vnumeros');
 			$duree_nbre = intval($abonnement['duree']);
 			$numero_fin = vnumeros_calculer_reference_numero_futur($duree_nbre, $numero_debut);
 			
