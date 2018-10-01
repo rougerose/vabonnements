@@ -151,6 +151,8 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	
 	// O
 	'offrir' => "<span>Offrir</span> un abonnement",
+	'offrir_info_progression_etape_choix' => "Choisir un abonnement",
+	'offrir_info_progression_etape_coordonnees' => "Coordonnées du bénéficiaire",
 
 	// R
 	'renouveler' => "<span>Renouveler</span> votre abonnement",

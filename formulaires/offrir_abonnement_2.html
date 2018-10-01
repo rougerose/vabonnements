@@ -1,7 +1,5 @@
-#SET{datas_etapes, #LISTE{"Choisir l'abonnement", "Les coordonnées du bénéficiaire"}}
-
 <div class="formulaire_spip formulaire_#FORM formulaire_inscription formulaire_inscription--abonnement-tiers">
-	<INCLURE{fond=inclure/progression, datas=#GET{datas_etapes}, etape=#ENV{_etape}} />
+	<INCLURE{fond=formulaires/inc_offrir_abonnement_progression, _etape=#ENV{_etape}} />
 	
 	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
 	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]

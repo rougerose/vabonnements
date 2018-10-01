@@ -1,0 +1,5 @@
+[(#SET{progression_etapes, #ARRAY{
+	1,<:abonnement:offrir_info_progression_etape_choix:>,
+	2,<:abonnement:offrir_info_progression_etape_coordonnees:>}
+})]
+<INCLURE{fond=inclure/progression, progression_etapes=#GET{progression_etapes}, progression_etape=#ENV{_etape}} />
