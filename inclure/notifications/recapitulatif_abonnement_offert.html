@@ -1,4 +1,8 @@
 <BOUCLE_abonnement_offert(ABONNEMENTS){id_abonnement}>
-	<h2>Votre abonnement</h2>
-	<p>Modèle récapitulatif à faire</p>
+	<h3>Votre abonnement</h3>
+	[(#SET{duree, #DUREE_ECHEANCE|intval})]
+	<ul>
+		<li>[Abonnement (#VAL{abonnement:formulaire_abonnement_duree_#GET{duree}}|_T).]</li>
+		<li>À partir de <em>Vacarme #NUMERO_DEBUT</em> (ou d'un autre numéro de votre choix).</li>
+	</ul>
 </BOUCLE_abonnement_offert>

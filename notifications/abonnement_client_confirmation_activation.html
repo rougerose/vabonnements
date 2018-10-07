@@ -5,13 +5,13 @@
 		#SET{auteur_nom, #NOM}
 	</BOUCLE_contact_auteur>
 	<BOUCLE_offre(ABONNEMENTS_OFFRES){id_abonnements_offre}>
-	#SET{duree, #DUREE}
-	#SET{titre, #TITRE}
+		#SET{duree, #DUREE}
+		#SET{titre, #TITRE}
 	</BOUCLE_offre>
 	<BOUCLE_numero(RUBRIQUES){reference=#NUMERO_DEBUT}>
-	#SET{titre_numero_encours, #TITRE}
+		#SET{titre_numero_encours, #TITRE}
 	</BOUCLE_numero>
-	[(#SET{titre_numero_prochain, #VAL{'Vacarme '}|concat{#NUMERO_DEBUT|plus{1}}})]
+		[(#SET{titre_numero_prochain, #VAL{'Vacarme '}|concat{#NUMERO_DEBUT|plus{1}}})]
 	<//B_numero>
 
 <title>[(#NOM_SITE_SPIP)] : votre abonnement est maintenant en cours</title>
