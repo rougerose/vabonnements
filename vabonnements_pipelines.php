@@ -220,7 +220,7 @@ function vabonnements_taches_generales_cron($taches_generales) {
 	$taches_generales['vabonnements_relancer_tiers'] = 3600 * 12;
 	
 	// Relance des abonnements à échéance
-	$taches_generales['vabonnements_relancer_echeances'] = 3600 * 12;
+	//$taches_generales['vabonnements_relancer_echeances'] = 3600 * 12;
 	
 	// Maintenance des abonnements 
 	$taches_generales['vabonnements_reparer'] = 3600 * 12;
