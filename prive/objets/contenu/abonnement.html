@@ -22,15 +22,15 @@
 [<div class="champ contenu_numero_debut[ (#NUMERO_DEBUT*|strlen|?{'',vide})]">
 	<label class="label"><:abonnement:champ_numero_debut_label:> : </label>
 	<span dir='#LANG_DIR' class='numero_debut'>
-		(#NUMERO_DEBUT|oui) [(#VAL{Vacarme }|concat{#NUMERO_DEBUT|replace{'v', ''}|ltrim{0}})]
-		[\((#DATE_DEBUT|saison)[ (#DATE_DEBUT|annee)]\)]
+		(#NUMERO_DEBUT|oui) [(#VAL{Vacarme }|concat{#NUMERO_DEBUT})]
+		[\((#DATE_DEBUT|vacarme_saison_annee)\)]
 	</span>
 </div>]
 [<div class="champ contenu_numero_fin[ (#NUMERO_FIN*|strlen|?{'',vide})]">
 	<label class="label"><:abonnement:champ_numero_fin_label:> : </label>
 	<span dir='#LANG_DIR' class='numero_fin'>
-		(#NUMERO_FIN|oui)[(#VAL{Vacarme }|concat{#NUMERO_FIN|replace{'v', ''}|ltrim{0}})]
-		[\((#DATE_FIN|saison)[ (#DATE_FIN|annee)]\)]
+		(#NUMERO_FIN|oui)[(#VAL{Vacarme }|concat{#NUMERO_FIN})]
+		[\((#DATE_FIN|vacarme_saison_annee)\)]
 	</span>
 </div>]
 [<div class="champ contenu_mode_paiement[ (#MODE_PAIEMENT*|strlen|?{'',vide})]">
