@@ -1,0 +1,19 @@
+<div class="formulaire_spip formulaire_#FORM formulaire_inscription formulaire_inscription--abonnement-tiers">
+	<INCLURE{fond=formulaires/inc_offrir_abonnement_progression, _etape=#ENV{_etape}} />
+	
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	
+	[(#EDITABLE|oui)
+		<form method="post" action="#ENV{action}">
+		<div>
+			#ACTION_FORMULAIRE{#ENV{action}, #FORM}
+			<INCLURE{fond=formulaires/inc-inscription-tiers,env} />
+			<p class="boutons boutons--multiples">
+				<input type="submit" class="submit submit--primaire" value="<:abonnement:bouton_panier_ajouter:>" />
+				<input type="submit" class="submit submit--secondaire" name="_retour_etape_1" value="<:abonnement:bouton_retour_etape_precedente:>" />
+			</p>
+		</div>
+		</form>
+	]
+</div>

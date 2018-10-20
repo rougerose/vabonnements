@@ -1,0 +1,16 @@
+<div class="formulaire_spip[ formulaire_(#ENV{form})]">
+	[<p class="reponse_formulaire reponse_formulaire_ok c-message c-message--ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur c-message c-message--erreur">(#ENV*{message_erreur})</p>]
+	[(#ENV{editable})
+		<form method="post" action="#ENV{action}">
+			#ACTION_FORMULAIRE{#ENV{action}}
+			<div class="editer-groupe">
+				[(#SAISIE{hidden, offrir, defaut=#ENV{offrir}})]
+				[(#SAISIE{input, code_cadeau, obligatoire=oui, label=<:abonnement:champ_code_cadeau_label:>})]
+			</div>
+			<p class="boutons">
+				<input type="submit" class="submit" value="<:bouton_valider:>" />
+			</p>
+		</form>
+	]
+</div>

@@ -1,0 +1,21 @@
+<div class="nettoyeur"></div>
+<div class="abonnements">
+	#SET{erreur, ''}
+	<INCLURE{fond=prive/objets/liste/abonnements,id_auteur,titre=<:abonnement:info_abonnements_auteur:>,ajax,env} />
+	<BOUCLE_contact(CONTACTS){id_auteur}> </BOUCLE_contact>
+		[(#SET{erreur,_contact})]
+	<//B_contact>
+	<BOUCLE_adresse(ADRESSES){id_auteur}> </BOUCLE_adresse>
+		[(#SET{erreur, #GET{erreur}|concat{_adresse}})]
+	<//B_adresse>
+	[(#GET{erreur}|oui)
+		#BOITE_OUVRIR{'','notice'}
+			<p><:abonnement:message_erreur{=#GET{erreur}}:></p>
+		#BOITE_FERMER
+	][(#GET{erreur}|non)
+		[(#AUTORISER{creer,abonnement})
+			[(#URL_ECRIRE{abonnement_edit}|parametre_url{new, oui}|parametre_url{id_auteur, #ID_AUTEUR}|icone_verticale{<:abonnement:icone_creer_abonnement:>,abonnement,new,right})]
+		]
+	]
+</div>
+<div class="nettoyeur"></div>

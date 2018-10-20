@@ -1,0 +1,33 @@
+/**
+ * 
+ * Styles privés du plugin
+ * 
+ */
+
+/* formulaires */
+.formulaire_editer .champ_width_auto {
+	width: auto !important;
+}
+
+/* Prévisualisation */
+.abonnement #wysiwyg label {display: inline; color: #888;}
+.abonnement pre {font-family: monospace;overflow: auto;max-height: 40em;white-space: pre-wrap;}
+
+
+/* Tableaux liste-objets.vacarme */
+	/* statuts */
+	.liste-objets.vacarme .statut_actif {
+		background-color: #9dba00;
+	}
+	
+	.liste-objets.vacarme .statut_paye {
+		color: #9dba00;
+	}
+	
+	.liste-objets.vacarme .statut_prop {
+		background-color: #f89058;
+	}
+	
+	.liste-objets.vacarme .statut_resilie {
+		background-color: #ff0000;
+	}

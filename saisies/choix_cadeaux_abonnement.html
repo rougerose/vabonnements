@@ -1,0 +1,25 @@
+<B_cadeaux>
+<BOUCLE_cadeaux(PRODUITS){id_rubrique}>
+	<div class="[(#ENV{choix,choix})_#ID_PRODUIT][ (#ENV{class})]">
+		<label for="champ_[(#ENV{id,#ENV{nom}}|saisie_nom2classe)]_#COMPTEUR_BOUCLE" class="fa__label[ (#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}}|=={#ID_PRODUIT}|oui)on]">
+			<input type="radio" name="#ENV{nom}" class="radio fa__radio" id="champ_[(#ENV{id,#ENV{nom}}|saisie_nom2classe)]_#COMPTEUR_BOUCLE"[ (#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}}|=={#ID_PRODUIT}|oui)checked="checked"] value="#ID_PRODUIT"[(#GET{disabled}) disabled="disabled"][ readonly="(#ENV{readonly})"][ aria-describedby="(#ENV{describedby})"] />
+			<span class="fa__label-text fa__label-text--vertical fa-text">
+				<span class="fa-text__titre">#TITRE</span>
+				[<span class="fa-text__img">(#INCLURE{fond=inclure/logo/numero-abonnement, logo=#LOGO_PRODUIT|extraire_attribut{src}})</span>]
+			</span>
+		</label>
+		[<div class="fa__extra fa-text__desc">
+			(#TEXTE)
+		</div>]
+	</div>
+</BOUCLE_cadeaux>
+	<div class="[(#ENV{choix,choix})_0][ (#ENV{class})]">
+		<label for="champ_[(#ENV{id,#ENV{nom}}|saisie_nom2classe)]_0" class="fa__label[ (#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}}|=={0}|oui)on]">
+			<input type="radio" name="#ENV{nom}" class="radio fa__radio" id="champ_[(#ENV{id,#ENV{nom}}|saisie_nom2classe)]_0"[ (#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}}|=={0}|oui)checked="checked"] value="0"[(#GET{disabled}) disabled="disabled"][ readonly="(#ENV{readonly})"][ aria-describedby="(#ENV{describedby})"] />
+			<span class="fa__label-text fa__label-text--vertical fa-text">
+				<span class="fa-text__titre"><:abonnement:formulaire_abonnement_sans_cadeau_titre:></span>
+				<span class="fa-text__desc"><:abonnement:info_abonnement_sans_cadeau:></span>
+			</span>
+		</label>
+	</div>
+</B_cadeaux>

@@ -1,0 +1,52 @@
+<div class='formulaire_spip formulaire_editer formulaire_#FORM formulaire_#FORM-#ENV{id_abonnements_offre,nouveau}'>
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	
+	[(#ENV{editable})
+	<form method="post" action="#ENV{action}"><div>
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<input type="hidden" name="id_abonnements_offre" value="#ENV{id_abonnements_offre}" />
+		<div class="editer-groupe">
+
+			[(#SAISIE{input, titre, obligatoire=oui,
+				label=<:abonnements_offre:champ_titre_label:>})]
+
+			[(#SAISIE{textarea, descriptif,
+				label=<:abonnements_offre:champ_descriptif_label:>,
+				conteneur_class=pleine_largeur, rows=4})]
+			
+			[(#SAISIE{input, reference, obligatoire=oui,
+				label=<:abonnements_offre:champ_reference_label:>})]
+			
+			#SET{name, duree} #SET{obli, 'obligatoire'} #SET{defaut, ''} #SET{erreurs, #ENV**{erreurs}|table_valeur{#GET{name}}}
+			<[(#DIV|sinon{li})] class="editer editer_[(#GET{name})][ (#GET{obli})][ (#GET{erreurs}|oui)erreur]">
+				<label for="duree_valeur"><:abonnements_offre:champ_duree_label:></label>[
+				<span class='erreur_message'>(#GET{erreurs})</span>
+				]#SET{name,duree_valeur} #SET{defaut,'12'}
+				<select name="#GET{name}" class="select champ_duree champ_width_auto" id="#GET{name}">
+					#SET{val, 12}
+					<option value="#GET{val}"[(#ENV{#GET{name},#GET{defaut}}|=={#GET{val}}|oui)selected="selected"]>#GET{val}</option>
+					#SET{val, 24}
+					<option value="#GET{val}"[(#ENV{#GET{name},#GET{defaut}}|=={#GET{val}}|oui)selected="selected"]>#GET{val}</option>
+				</select>
+				#SET{name,duree_unite} #SET{obli,'obligatoire'} #SET{defaut,'month'}
+				<select name="#GET{name}" class="select champ_duree champ_width_auto" id="#GET{name}">
+					#SET{val, month}
+					<option value="#GET{val}"[(#ENV{#GET{name},#GET{defaut}}|=={#GET{val}}|oui)selected="selected"]>mois</option>
+				</select>
+			</[(#DIV|sinon{li})]>
+
+			[(#SAISIE{input, prix_ht, obligatoire=oui, size=5, class=champ_width_auto,
+				label=<:abonnements_offre:champ_prix_ht_label:>})]
+			
+			[(#SET{taxe, #CONFIG{vabonnements/taxe, 0}})]
+			[(#SAISIE{input, taxe, defaut=#GET{taxe}|mult{100}, obligatoire=oui, size=5, class=champ_width_auto,
+				label=<:abonnements_offre:champ_edit_taxe_label:>})]
+
+		</div>
+		[(#REM) ajouter les saisies supplementaires : extra et autre, a cet endroit ]
+		<!--extra-->
+		<p class="boutons"><input type="submit" class="submit" value="<:bouton_enregistrer:>" /></p>
+	</div></form>
+	]
+</div>

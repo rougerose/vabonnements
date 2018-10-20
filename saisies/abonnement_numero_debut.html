@@ -1,0 +1,24 @@
+[(#REM)
+<!-- 
+	Saisie de début d'abonnement 
+	============================
+	Le calcul préalable détermine : 
+	- le numéro le plus récent et qui est en stock
+	- le numéro précédent et qui est en stock
+	- le numéro à venir
+-->
+]
+#SET{data, #ARRAY} #SET{numeros, #ARRAY}
+<BOUCLE_epuise(RUBRIQUES){id_parent=115}{id_mot=108}{doublons}> </BOUCLE_epuise>
+<BOUCLE_derniers_numeros(RUBRIQUES){id_parent=115}{!par titre}{0,2}{doublons}>
+	[(#SET{numeros, #GET{numeros}|push{#ID_RUBRIQUE}})]
+</BOUCLE_derniers_numeros>
+<BOUCLE_numeros(RUBRIQUES){id_rubrique IN #GET{numeros}}{par titre}>
+	[(#SET{data, #GET{data}|plus{#ARRAY{#REFERENCE, #TITRE}}})]
+	[(#COMPTEUR_BOUCLE|=={2}|oui)
+		[(#SET{prochain_reference, #REFERENCE|plus{1}})]
+		[(#SET{prochain_titre, #VAL{Vacarme }|concat{#GET{prochain_reference}}})]
+		[(#SET{data, #GET{data}|plus{#ARRAY{#GET{prochain_reference}, #GET{prochain_titre}}}})]
+	]
+</BOUCLE_numeros>
+#INCLURE{fond=saisies/radio, env, datas=#GET{data}}

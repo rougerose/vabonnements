@@ -1,0 +1,76 @@
+#SET{datas_regions, #ARRAY}
+<BOUCLE_regions(MOTS){id_groupe=20}{par num titre, id_mot}>
+	[(#COMPTEUR_BOUCLE|=={1}|oui)#SET{defaut_regions, #ID_MOT}]
+	[(#SET{datas_regions, #GET{datas_regions}|plus{#ARRAY{#ID_MOT, <:abonnement:formulaire_abonnement_localisation_choix_{=#TITRE}:>}}})]
+</BOUCLE_regions>
+
+#SET{datas_duree, #ARRAY}
+<BOUCLE_durees(ABONNEMENTS_OFFRES){par duree}{unique}>
+	[(#DUREE|unique|oui) 
+		[(#SET{duree, #DUREE|intval})]
+		[(#COMPTEUR_BOUCLE|=={1}|oui)#SET{defaut_durees, #GET{duree}}]
+		[(#SET{label, #VAL{abonnement:formulaire_abonnement_duree_#GET{duree}}|_T})]
+		[(#SET{datas_duree, #GET{datas_duree}|plus{#ARRAY{#GET{duree}, #GET{label}}}})]
+	]
+</BOUCLE_durees>
+
+<div class="formulaire_spip formulaire_#FORM formulaire_abonnement fa">
+	<INCLURE{fond=formulaires/inc_offrir_abonnement_progression, _etape=#ENV{_etape}} />
+	
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	
+	[(#EDITABLE|oui)
+		<form method="post" action="#ENV{action}">
+		<div>
+			#ACTION_FORMULAIRE{#ENV{action},#FORM}
+			<fieldset>
+				<legend><:abonnement:formulaire_abonnement_offrir_localisation_titre:></legend>
+				[<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{fslocalisation})</span>]
+				<div class="editer-groupe">
+					[(#SAISIE{choix_abonnement, localisation, 
+						class='fa__choix fa__choix--medium',
+						defaut=#GET{defaut_regions},
+						datas=#GET{datas_regions}
+					})]
+				</div>
+			</fieldset>
+			<fieldset>
+				<legend><:abonnement:formulaire_abonnement_offrir_duree_titre:></legend>
+				[<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{fsduree})</span>]
+				<div class="editer-groupe">
+					[(#SAISIE{choix_abonnement, duree, 
+						class='fa__choix fa__choix--medium',
+						defaut=#GET{defaut_durees},
+						datas=#GET{datas_duree}
+					})]
+				</div>
+			</fieldset>
+			<fieldset>
+				<legend><:abonnement:formulaire_abonnement_offrir_offres_abonnements_titre:></legend>
+				[<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{fsid_abonnements_offre})</span>]
+				<div class="editer-groupe">
+					[(#SAISIE{choix_abonnement_offres, id_abonnements_offre, class='fa__choix', soutien_montant=#ENV{soutien_montant}})]
+				</div>
+			</fieldset>
+			<fieldset>
+				<legend><:abonnement:formulaire_abonnement_offrir_numero_debut_titre:></legend>
+				[<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{fsnumero_debut})</span>]
+				<div class="editer-groupe">
+					[(#SAISIE{choix_numero_debut_abonnement, numero_debut, class='fa__choix'})]
+				</div>
+			</fieldset>
+			<fieldset>
+				<legend><:abonnement:formulaire_abonnement_cadeau_titre:></legend>
+				<p><:abonnement:formulaire_abonnement_offrir_cadeau_desc:></p>
+				[<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{fscadeau})</span>]
+				<div class="editer-groupe">
+					[(#SAISIE{choix_cadeaux_abonnement, cadeau, class='fa__choix fa__choix--small', id_rubrique=#ENV{id_rubrique}})]
+				</div>
+			</fieldset>
+			<p class="boutons"><span class="image_loading">&nbsp;</span><input type="submit" class="submit" value="<:abonnement:bouton_etape_suivante:>" /></p>
+		</div>
+		</form>
+	]
+</div>
+[<script src="(#CHEMIN{js/vabonnements_init.min.js})" charset="utf-8"></script>]

@@ -1,0 +1,15 @@
+[(#REM)
+<!-- TODO: A REFAIRE -->
+<!--
+	Taille max et x2 du logo selon mediaqueries
+
+	mobile     (<439):  366 732
+	mobilePlus (<640):  362 724
+	tablet     (<768):  447 894
+	tabletPlus (<1024): 174 348
+	Desktop    (>1024): 191 382
+
+						174, 447, 894
+-->
+][(#SET{img, #ENV{image}|image_reduire{#ENV{largeur,250},0}})]
+[<img src="(#GET{img}|extraire_attribut{src})" alt="Vacarme">]

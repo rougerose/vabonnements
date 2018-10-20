@@ -1,0 +1,22 @@
+<BOUCLE_abonnement(ABONNEMENTS){id_abonnement}>
+	<BOUCLE_auteur(AUTEURS){id_auteur=#ENV{id_auteur}}{tout}>
+		[(#SET{prenom_nom, #NOM|prenom_nom})]
+	</BOUCLE_auteur>
+	#SET{id_payeur, #ID_AUTEUR_PAYEUR}
+	<BOUCLE_offre(ABONNEMENTS_OFFRES){id_abonnements_offre}>
+	#SET{duree, #DUREE}
+	#SET{titre, #TITRE}
+	</BOUCLE_offre>
+
+<title>L'abonnement n°#ID_ABONNEMENT a été activé</title>
+<body>
+	<p>L'abonnement n°#ID_ABONNEMENT a été activé par son bénéficiaire :[ (#GET{prenom_nom, #NOM|prenom_nom})][ \(auteur n°(#ID_AUTEUR)\)].</p>
+	<ul>
+		<li><strong>Abonnement souscrit :</strong> [(#GET{titre}|supprimer_numero)]</li>
+		<li><strong>Durée :</strong>[ (#GET{duree}|duree_en_clair)]</li>
+		<li><strong>Du numéro </strong>[ (#NUMERO_DEBUT)] au numéro[ (#NUMERO_FIN)]</li>
+		<li><strong>L'abonnement a été offert par</strong>[ (#INFO_NOM{auteur, #GET{id_payeur}}|prenom_nom)][ \(auteur n°(#GET{id_payeur})\)].</li>
+	</ul>
+</body>
+#FILTRE{facteur_email_wrap_to_html}
+</BOUCLE_abonnement>

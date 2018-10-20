@@ -1,0 +1,28 @@
+<BOUCLE_region_abonnements_offres(MOTS){id_groupe=20}{par num titre}>
+	<BOUCLE_offres(ABONNEMENTS_OFFRES){id_mot=#ID_MOT}{par num titre}>
+		#SET{mot, #ARRAY} #SET{soutien, ''} #SET{soutien_montant, #ENV{soutien_montant/#ID_ABONNEMENTS_OFFRE, #PRIX*}}
+		<BOUCLE_mots_offre(spip_mots_liens){id_objet=#ID_ABONNEMENTS_OFFRE}{objet='abonnements_offre'}>
+			[(#SET{mot, #GET{mot}|push{#ID_MOT}})]
+		</BOUCLE_mots_offre>
+		[(#COMPTEUR_BOUCLE|modulo{3}|=={1}|oui)
+		<div class="fa-offres[ js-fa-offres-#ID_MOT-(#DUREE|intval)]">]
+			[(#VAL{1076}|in_array{#GET{mot}}|oui) #SET{soutien, ' '}]
+			<div class="[(#ENV{choix,choix})_#ID_ABONNEMENTS_OFFRE][ (#ENV{class})] fa__choix--small fa-offre[(#GET{soutien}|oui) js-fa-offre-soutien]">
+				<label for="champ_[(#ENV{id,#ENV{nom}}|saisie_nom2classe)]_#ID_ABONNEMENTS_OFFRE" class="fa__label[ (#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}}|=={#ID_ABONNEMENTS_OFFRE}|oui)on]">
+					<input type="radio" name="#ENV{nom}" class="radio fa__radio" id="champ_[(#ENV{id,#ENV{nom}}|saisie_nom2classe)]_#ID_ABONNEMENTS_OFFRE"[ (#ENV{valeur_forcee,#ENV{valeur,#ENV{defaut}}}|=={#ID_ABONNEMENTS_OFFRE}|oui)checked="checked"] value="#ID_ABONNEMENTS_OFFRE"[(#GET{disabled}) disabled="disabled"][ readonly="(#ENV{readonly})"][ aria-describedby="(#ENV{describedby})"] />
+					<span class="fa__label-text fsa-text fa-offre__text">
+						<span class="fa-text__titre fa-offre__titre">#TITRE</span>
+						<span class="fa-text__desc fa-offre__desc">#DESCRIPTIF*</span>
+						<span class="fa-offre__prix">#PRIX</span>
+					</span>
+				</label>
+				[(#GET{soutien}|oui)
+					[<div class="fa__extra fa-offre__prix-client">
+						(#SAISIE{input, soutien_montant\[#ID_ABONNEMENTS_OFFRE\], defaut=#GET{soutien_montant}, label=<:abonnement:formulaire_abonnement_offre_soutien_prix_client:>, min=#PRIX*, max=999, type=number})
+					</div>]
+				]
+			</div>
+		[(#COMPTEUR_BOUCLE|modulo{3}|=={0}|oui)
+		</div>]
+	</BOUCLE_offres>
+</BOUCLE_region_abonnements_offres>

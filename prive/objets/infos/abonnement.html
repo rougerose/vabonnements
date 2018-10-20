@@ -1,0 +1,9 @@
+<BOUCLE_abonnement(ABONNEMENTS){id_abonnement=#ENV{id}}{statut?}>
+<div class='infos'>
+	[(#SET{texte_objet,<:abonnement:titre_abonnement:>})]
+<div class='numero'><:titre_cadre_numero_objet{objet=#GET{texte_objet}}:>
+	<p>#ID_ABONNEMENT</p>
+</div>
+	[(#FORMULAIRE_INSTITUER_OBJET{abonnements,#ID_ABONNEMENT,"",0})]
+</div>
+</BOUCLE_abonnement>

@@ -1,0 +1,4 @@
+[(#AUTORISER{menu,_abonnementsoffre}|sinon_interdire_acces)]
+<BOUCLE_has_offre(ABONNEMENTS_OFFRES){0,1}>
+	<INCLURE{fond=prive/squelettes/inclure/abonnements-filtres, statut=#ENV{statut}, env, ajax} />
+</BOUCLE_has_offre>
