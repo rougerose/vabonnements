@@ -44,8 +44,8 @@ function formulaires_valider_code_cadeau_traiter_dist($retour = '') {
 	) {
 		$code = vabonnements_lire_code($code_cadeau);
 		
-		$date_commande = sql_getfetsel('date', 'spip_commandes', 'id_commande='.intval($abonnement['id_commande']));
-		$date_commande = date('Y-n-j', strtotime($date_commande));
+		$date_abonnement = $abonnement['date'];
+		$date_abonnement = date('Y-n-j', strtotime($date_abonnement));
 		
 		// 
 		// Vérifier le code et sa cohérence
@@ -54,7 +54,7 @@ function formulaires_valider_code_cadeau_traiter_dist($retour = '') {
 			$code 
 			and is_array($code)
 			and $code['id'] == $abonnement['id_auteur']
-			and $date_commande == $code['date']
+			and $date_abonnement == $code['date']
 			and $offrir == 'abonnement'
 		) {
 			// 
