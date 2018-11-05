@@ -37,8 +37,8 @@ function action_modifier_numero_debut_dist($arg = null) {
 			// 
 			// Log
 			// 
-			$log_numeros = "Activation de l'abonnement par son bénéficiaire (auteur n°".$abonnement['id_auteur']."). ";
-			$log_numeros .= "Le premier numéro a été modifié par l'abonné : son abonnement débute avec le numéro ".$numero_debut." jusqu'au numéro ".$abonnement['numero_fin'].".";
+			$log_numeros = "Activation de l'abonnement par son bénéficiaire (auteur n° ".$abonnement['id_auteur']."). ";
+			$log_numeros .= "Le premier numéro a été confirmé par l'abonné : son abonnement débute avec le numéro ".$numero_debut." jusqu'au numéro ".$abonnement['numero_fin'].".";
 			$log = $abonnement['log'];
 			$log .= vabonnements_log($log_numeros);
 			
@@ -56,13 +56,13 @@ function action_modifier_numero_debut_dist($arg = null) {
 			
 			// Numero_fin
 			include_spip('inc/vnumeros');
-			$duree_nbre = intval($abonnement['duree']);
+			$duree_nbre = intval($abonnement['duree_echeance']);
 			$numero_fin = vnumeros_calculer_reference_numero_futur($duree_nbre, $numero_debut);
 			
 			// 
 			// Log
 			// 
-			$log_numeros = "Activation de l'abonnement par son bénéficiaire (auteur n°".$abonnement['id_auteur']."). ";
+			$log_numeros = "Activation de l'abonnement par son bénéficiaire (auteur n° ".$abonnement['id_auteur']."). ";
 			$log_numeros .= "Le premier numéro a été modifié par l'abonné : son abonnement débute avec le numéro $numero_debut jusqu'au numéro $numero_fin.";
 			$log = $abonnement['log'];
 			$log .= vabonnements_log($log_numeros);
