@@ -251,6 +251,13 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 		// Créer la ligne de détail de commande
 		// 
 		if ($id_commande) {
+			include_spip('action/editer_objet');
+			
+			// Préciser dans le champ Source de la commande qu'elle a été créée
+			// par un admin. Ce qui permettra de ne pas envoyer de notifications
+			// automatiques.
+			$id_admin = session_get('id_auteur');
+			objet_modifier('commandes', $id_commande, array('source' => "admin#$id_admin"));
 			
 			$options = array(
 				0 => array(
@@ -278,8 +285,6 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 				'prix_unitaire_ht' => $prix_ht,
 				'options' => $options, 
 			);
-			
-			include_spip('action/editer_objet');
 			
 			$err = objet_modifier('commandes_detail', $id_commandes_detail, $set);
 			
