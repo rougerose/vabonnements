@@ -70,10 +70,7 @@ function formulaires_editer_abonnement_saisies_dist($id_abonnement='new', $retou
 			)
 		);
 	} else {
-		// une modification d'abonnement, on ne peut modifier
-		// que le numéro de départ d'abonnement. 
-		// $id_abonnements_offre = _request('id_abonnements_offre');
-		
+		// Aucune modification des abonnements
 		$saisies = array(
 			array(
 				'saisie' => 'explication',
@@ -82,16 +79,6 @@ function formulaires_editer_abonnement_saisies_dist($id_abonnement='new', $retou
 					'texte' => _T('abonnement:editer_abonnement_explication')
 				)
 			)
-			// aucun champ modifiable ?
-			// array(
-			// 	'saisie' => 'abonnement_numero_debut',
-			// 	'options' => array(
-			// 		'nom' => 'numero_debut',
-			// 		'label' => _T('abonnement:champ_numero_debut_label'),
-			// 		'obligatoire' => 'oui',
-			// 		'explication' => _T('abonnement:champ_numero_debut_explication')
-			// 	)
-			// )
 		);
 	}
 	
