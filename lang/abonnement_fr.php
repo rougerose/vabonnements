@@ -40,6 +40,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'bouton_etape_suivante' => "étape suivante &#8594;",
 
 	// C
+	'champ_cadeau_label' => "Cadeau d'abonnement",
 	'champ_code_cadeau_label' => "Votre code cadeau",
 	'champ_date_debut_label'           => 'Date de début',
 	'champ_date_fin_label'             => 'Date de fin',

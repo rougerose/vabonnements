@@ -32,6 +32,16 @@ function formulaires_editer_abonnement_saisies_dist($id_abonnement='new', $retou
 		}
 	}
 	
+	// les cadeaux disponibles
+	//$cadeaux = array(0 => _T('abonnement:formulaire_abonnement_sans_cadeau_titre'));	
+	$cadeaux = array(0 => _T('abonnement:formulaire_abonnement_sans_cadeau_titre'));
+	
+	$cadeaux_l = sql_allfetsel('id_produit, titre', 'spip_produits', 'statut='.sql_quote('publie').' AND id_rubrique='.sql_quote('517'));
+	
+	foreach ($cadeaux_l as $cadeau) {
+		$cadeaux[$cadeau['id_produit']] = $cadeau['titre'];
+	}
+	
 	// création d'abonnement
 	if ($id_abonnement == 0) {
 		$saisies = array(
@@ -67,7 +77,16 @@ function formulaires_editer_abonnement_saisies_dist($id_abonnement='new', $retou
 					'obligatoire' => 'oui',
 					'datas' => $paiements,
 				)
-			)
+			),
+			array(
+				'saisie' => 'selection',
+				'options' => array(
+					'nom' => 'cadeau',
+					'label' => _T('abonnement:champ_cadeau_label'),
+					'obligatoire' => 'oui',
+					'data' => $cadeaux,
+				)
+			),
 		);
 	} else {
 		// Aucune modification des abonnements
@@ -208,6 +227,7 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 	$id_abonnements_offre = _request('id_abonnements_offre');
 	$id_auteur = _request('id_auteur');
 	$mode_paiement = _request('mode_paiement');
+	$cadeau = _request('cadeau');
 	
 	if ($mode_paiement == 'gratuit') {
 		$prix = 0;
@@ -249,7 +269,7 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 			$options = array(
 				0 => array(
 					'numero_debut' => $numero_debut,
-					'cadeau' => 0
+					'cadeau' => $cadeau
 				),
 			);
 			
@@ -262,8 +282,6 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 			);
 			
 			// nouvelle ligne de commande et données attendues.
-			// Les données supplémentaires sont insérées à la modification, 
-			// c'est beaucoup de complexité pour rien, mais c'est ainsi...
 			$id_commandes_detail = commandes_ajouter_detail($id_commande, $set);
 			
 			unset($set);
@@ -279,6 +297,31 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 				$res['message_erreur'] = $err;
 				$res['editable'] = true;
 				return $res;
+			}
+			
+			// Ajouter le cadeau
+			if ($cadeau > 0) {
+				unset($set);
+				
+				$set = array(
+					'id_commande' => $id_commande,
+					'objet' => 'produit',
+					'id_objet' => $cadeau,
+					'quantite' => 1,
+					'statut' => 'attente',
+					'descriptif' => generer_info_entite($cadeau, 'produit', 'titre').' cadeau@abonnement',
+					'prix_unitaire_ht' => 0 // c'est un cadeau
+				);
+				
+				$id_commandes_detail_cadeau = objet_inserer('commandes_detail');
+				
+				$err = objet_modifier('commandes_detail', $id_commandes_detail_cadeau, $set);
+				
+				if ($err) {
+					$res['message_erreur'] = $err;
+					$res['editable'] = true;
+					return $res;
+				}
 			}
 		}
 		
@@ -357,7 +400,7 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 	}
 	
 	$res['editable'] = false;
-	$res['message_ok'] = "L'abonnement a bien été créé. Une commande et une transaction ont également été ajoutées et liées à cet abonnement.";
+	$res['message_ok'] = "L'abonnement a bien été créé. La commande et la transaction liées à cet abonnement ont été également créées.";
 	
 	return $res;
 }
