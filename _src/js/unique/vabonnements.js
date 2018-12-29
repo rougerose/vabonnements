@@ -69,6 +69,7 @@ function vabonnements($element) {
 };
 
 
+
 function toggleInput($input, $offre, chargement) {
 	var classeParent = '.fa__choix',
 		classeSelected = 'is-selected',
