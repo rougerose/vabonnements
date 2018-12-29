@@ -37,7 +37,7 @@
 	
 	<menu nom="abonnements_offre" titre="abonnements_offre:titre_abonnements_offres" parent="menu_edition" icone="images/abonnements_offre-16.png" action="abonnements_offres" />
 	<menu nom="abonnement" titre="abonnement:titre_abonnements" parent="menu_activite" icone="images/abonnement-16.png" action="abonnements" />
-	<menu nom="abonnement_stat" titre="abonnement:titre_menu_abonnements_statistiques" parent="menu_activite" icone="images/abonnement-16.png" action="abonnements_stats" />
+	<!-- <menu nom="abonnement_stat" titre="abonnement:titre_menu_abonnements_statistiques" parent="menu_activite" icone="images/abonnement-16.png" action="abonnements_stats" /> -->
 	
 	<spip compatibilite="[3.2.0;3.2.*]">
 		<style type="prive" source="css/vabonnements.css" />
