@@ -61,6 +61,21 @@ function formulaires_editer_abonnement_saisies_dist($id_abonnement='new', $retou
 				)
 			),
 			array(
+				'saisie' => 'oui_non',
+				'options' => array(
+					'nom' => 'abonnements_offre_prix_modifier',
+					'label' => _T('abonnement:champ_prix_modifier_question_label')
+				)
+			),
+			array(
+				'saisie' => 'input',
+				'options' => array(
+					'nom' => 'abonnements_offre_prix',
+					'label' => _T('abonnement:champ_prix_modifier_saisie_label'),
+					'afficher_si' => '@abonnements_offre_prix_modifier@ == "on"'
+				)
+			),
+			array(
 				'saisie' => 'abonnement_numero_debut',
 				'options' => array(
 					'nom' => 'numero_debut',
@@ -189,6 +204,13 @@ function formulaires_editer_abonnement_verifier_dist($id_abonnement = 'new', $re
 	$offre = _request('id_abonnements_offre');
 	$mode = _request('mode_paiement');
 	
+	$prix_modifier = _request('abonnements_offre_prix_modifier');
+	$prix_mod = intval(_request('abonnements_offre_prix'));
+	
+	if ($prix_modifier == 'on' and $prix_mod <= 0 ) {
+		$erreurs['abonnements_offre_prix'] .= 'Saisir un prix valide';
+	}
+	
 	if (in_array($offre, $offres_obligatoires) and $mode != 'gratuit') {
 		$erreurs['message_erreur'] .= _T('abonnement:message_erreur_abonnement_obligatoire_paiement_gratuit');
 	}
@@ -228,6 +250,8 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 	$id_auteur = _request('id_auteur');
 	$mode_paiement = _request('mode_paiement');
 	$cadeau = _request('cadeau');
+	$prix_modifier = _request('abonnements_offre_prix_modifier');
+	$prix_mod = _request('abonnements_offre_prix');
 	
 	if ($mode_paiement == 'gratuit') {
 		$prix = 0;
@@ -236,8 +260,16 @@ function formulaires_editer_abonnement_traiter_dist($id_abonnement = 'new', $ret
 		$fonction_prix = charger_fonction('prix', 'inc/');
 		$fonction_prix_ht = charger_fonction('ht', 'inc/prix');
 		
-		$prix_ht = $fonction_prix_ht('abonnements_offre', $id_abonnements_offre, 6);
-		$prix = $fonction_prix('abonnements_offre', $id_abonnements_offre, 6);
+		if ($prix_modifier == 'on') {
+			include_spip('inc/config');
+			$tva = lire_config('vabonnements/taxe', '');
+			$prix = $prix_mod;
+			$prix_ht = round($prix / ($tva + 1), 6);
+			
+		} else {
+			$prix_ht = $fonction_prix_ht('abonnements_offre', $id_abonnements_offre, 6);
+			$prix = $fonction_prix('abonnements_offre', $id_abonnements_offre, 6);
+		}
 	}
 	
 	// 
