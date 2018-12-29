@@ -6,7 +6,7 @@ if (!defined("_ECRIRE_INC_VERSION")) {
 
 include_spip('inc/vabonnements');
 
-function formulaires_offrir_abonnement_charger_dist() {
+function formulaires_offrir_abonnement_charger_dist($id_rubrique = '') {
 	$valeurs = array();
 	// 1
 	$valeurs['localisation'] = (_request('localisation')) ? _request('localisation') : '';
@@ -14,7 +14,7 @@ function formulaires_offrir_abonnement_charger_dist() {
 	$valeurs['id_abonnements_offre'] = (_request('id_abonnements_offre')) ? _request('id_abonnements_offre') : '';
 	$valeurs['numero_debut'] = (_request('numero_debut')) ? _request('numero_debut') : '';
 	$valeurs['cadeau'] = (_request('cadeau')) ? _request('cadeau') : '';
-	$valeurs['id_rubrique'] = _request('id_rubrique');
+	$valeurs['id_rubrique'] = $id_rubrique;
 	$valeurs['soutien_montant'] = (_request('soutien_montant')) ? _request('soutien_montant') : '';
 	
 	// 2
@@ -41,7 +41,7 @@ function formulaires_offrir_abonnement_charger_dist() {
 
 
 
-function formulaires_offrir_abonnement_verifier_1_dist() {
+function formulaires_offrir_abonnement_verifier_1_dist($id_rubrique = '') {
 	$erreurs = array();
 	
 	$obligatoires = array('localisation', 'duree', 'id_abonnements_offre', 'numero_debut', 'cadeau');
@@ -63,7 +63,7 @@ function formulaires_offrir_abonnement_verifier_1_dist() {
 
 
 
-function formulaires_offrir_abonnement_verifier_2_dist() {
+function formulaires_offrir_abonnement_verifier_2_dist($id_rubrique = '') {
 	$erreurs = array();
 	
 	include_spip('inc/editer');
@@ -96,7 +96,7 @@ function formulaires_offrir_abonnement_verifier_2_dist() {
 
 
 
-function formulaires_offrir_abonnement_traiter_dist() {
+function formulaires_offrir_abonnement_traiter_dist($id_rubrique = '') {
 	$res = array();
 	$ajouter_panier = true;
 	
