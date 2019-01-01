@@ -10,8 +10,8 @@ function action_distribuer_aposteriori_dist($arg=null) {
 		$securiser_action = charger_fonction('securiser_action', 'inc');
 		$arg = $securiser_action();
 	}
-	$arg = intval($arg);
-	$distribuer_commande = charger_fonction('distribuer_commande', 'action', true);
+	$id_commande = intval($arg);
+	$distribuer_commande = charger_fonction('distribuer_commande', 'action');
 	
-	$distribuer_commande($arg);
+	$distribuer_commande($id_commande);
 }
