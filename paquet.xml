@@ -1,24 +1,24 @@
 <paquet
 	prefix="vabonnements"
 	categorie="divers"
-	version="1.2.4"
+	version="1.2.5"
 	etat="dev"
 	compatibilite="[3.2.0;3.2.*]"
 	logo="prive/themes/spip/images/vabonnements-64.png"
 	documentation=""
-	schema="1.1.5" 
+	schema="1.1.5"
 >
 	<nom>Vacarme Abonnements</nom>
 	<auteur lien="http://rouge-rose.net">Christophe Le Drean</auteur>
 	<credit lien="https://github.com/nursit/abos">Fortement inspiré du plugin "Abos" de Nursit</credit>
 
-	<necessite nom="saisies" compatibilite="[2.4.0;]" /> 
-	<necessite nom="verifier" compatibilite="[1.0.6;]" /> 
+	<necessite nom="saisies" compatibilite="[2.4.0;]" />
+	<necessite nom="verifier" compatibilite="[1.0.6;]" />
 	<necessite nom="cextras" compatibilite="[3.11.3;[" />
 	<necessite nom="commandes" compatibilite="[1.15.3;]" />
 	<necessite nom="paniers" compatibilite="[1.3.3;]" />
 	<necessite nom="bank" compatibilite="[3.5.9;]" />
-	
+
 	<utilise nom="facteur" />
 	<utilise nom="prix" />
 	<utilise nom="venvois" />
@@ -34,11 +34,11 @@
 	<pipeline nom="affiche_auteurs_interventions" inclure="vabonnements_pipelines.php" />
 	<pipeline nom="compter_contributions_auteur" inclure="vabonnements_pipelines.php" />
 	<pipeline nom="post_edition" inclure="vabonnements_pipelines.php" />
-	
+
 	<menu nom="abonnements_offre" titre="abonnements_offre:titre_abonnements_offres" parent="menu_edition" icone="images/abonnements_offre-16.png" action="abonnements_offres" />
 	<menu nom="abonnement" titre="abonnement:titre_abonnements" parent="menu_activite" icone="images/abonnement-16.png" action="abonnements" />
 	<!-- <menu nom="abonnement_stat" titre="abonnement:titre_menu_abonnements_statistiques" parent="menu_activite" icone="images/abonnement-16.png" action="abonnements_stats" /> -->
-	
+
 	<spip compatibilite="[3.2.0;3.2.*]">
 		<style type="prive" source="css/vabonnements.css" />
 		<script type="public" source="js/vabonnements.min.js" />
