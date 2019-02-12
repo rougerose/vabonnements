@@ -176,8 +176,8 @@ function autoriser_abonnement_supprimer_dist($faire, $type, $id, $qui, $opt) {
 }
 
 /**
- * Autorisation de configurer le plugin 
- * 
+ * Autorisation de configurer le plugin
+ *
  * @param  [type] $faire [description]
  * @param  [type] $type  [description]
  * @param  [type] $id    [description]
@@ -204,7 +204,7 @@ function autoriser_abonnement_iconifier_dist($faire, $type, $id, $qui, $opt){
 
 /**
  * Autorisation à souscrire un abonnement
- * 
+ *
  * @param  [type] $faire [description]
  * @param  [type] $type  [description]
  * @param  [type] $id    [description]
@@ -217,4 +217,4 @@ function autoriser_abonner_dist($faire, $type, $id, $qui, $opt) {
 		return true;
 	}
 	return false;
-} 
+}

@@ -1,0 +1,30 @@
+<table class="spip">
+	<thead>
+		<tr>
+			<th>id_commande</th>
+			<th>statut commande</th>
+			<th>id_abonnement</th>
+			<th>statut abonnement</th>
+			<th>corriger</th>
+		</tr>
+	</thead>
+	<tbody>
+		<BOUCLE_commandes(COMMANDES){statut IN paye, envoye}{par date}>
+			<tr>
+				<BOUCLE_commandes_abonnements(COMMANDES_DETAILS){id_commande}{objet = abonnements_offre}>
+					<td><a href="[(#URL_ECRIRE{commande}|parametre_url{id_commande, #ID_COMMANDE})]">#ID_COMMANDE</a></td>
+					<td>#_commandes:STATUT</td>
+					<BOUCLE_abonnement(ABONNEMENTS){id_commande}>
+						<td>#ID_ABONNEMENT</td>
+						<td>#STATUT</td>
+						<td></td>
+					</BOUCLE_abonnement>
+						<td>--</td>
+						<td>--</td>
+						<td>[(#BOUTON_ACTION{distribuer, #URL_ACTION_AUTEUR{distribuer_aposteriori, #ID_COMMANDE, #SELF}, 'ajax noscroll'})]</td>
+					<//B_abonnement>
+				</BOUCLE_commandes_abonnements>
+			</tr>
+		</BOUCLE_commandes>
+	</tbody>
+</table>
