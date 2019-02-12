@@ -20,4 +20,4 @@ $GLOBALS['formulaires_no_spam'][] = 'offrir_abonnement';
 // 
 // simulation pour Bank
 // 
-define('_SIMU_BANK_ALLOWED',true);
+//define('_SIMU_BANK_ALLOWED',true);
